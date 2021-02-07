@@ -1,6 +1,17 @@
-# New Project
+# Svelte Template for P5.js
 
 > ✨ Bootstrapped with Create Snowpack App (CSA).
+
+Here is a template I intent to use to publish projects that I tryout using
+processing.js
+
+What works
+- [x] include p5.js as an npm dependency
+- [x] Configure 3D / WebGL
+
+Todo
+- [ ] test typings
+- [ ] publish to github.io
 
 ## Available Scripts
 
