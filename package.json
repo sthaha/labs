@@ -5,6 +5,7 @@
     "test": "web-test-runner \"src/**/*.test.ts\""
   },
   "dependencies": {
+    "p5": "^1.2.0",
     "svelte": "^3.24.0"
   },
   "devDependencies": {
@@ -15,6 +16,7 @@
     "@testing-library/svelte": "^3.0.0",
     "@types/chai": "^4.2.13",
     "@types/snowpack-env": "^2.3.2",
+    "@types/p5": "^0.9.1",
     "@web/test-runner": "^0.10.0",
     "chai": "^4.2.0",
     "snowpack": "^2.18.4",
