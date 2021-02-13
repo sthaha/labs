@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "p5": "./p5.js",
+    "svelte": "./svelte.js",
+    "svelte/internal": "./svelte/internal.js"
+  }
+}
