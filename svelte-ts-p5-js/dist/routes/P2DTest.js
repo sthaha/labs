@@ -20,7 +20,7 @@ import {
 	to_number,
 	transition_in,
 	transition_out
-} from "../../web_modules/svelte/internal.js";
+} from "../../../web_modules/svelte/internal.js";
 
 import Canvas from "../p5/Canvas.js";
 

@@ -15,30 +15,13 @@ import {
 	text,
 	transition_in,
 	transition_out
-} from "../web_modules/svelte/internal.js";
+} from "../../web_modules/svelte/internal.js";
 
-import { Router, Link, Route } from "../web_modules/svelte-routing.js";
+import { Router, Link, Route } from "../../web_modules/svelte-routing.js";
 import P2DTest from "./routes/P2DTest.js";
 import P3DTest from "./routes/P3DTest.js";
 
-function create_default_slot_4(ctx) {
-	let t;
-
-	return {
-		c() {
-			t = text("Home");
-		},
-		m(target, anchor) {
-			insert(target, t, anchor);
-		},
-		d(detaching) {
-			if (detaching) detach(t);
-		}
-	};
-}
-
-// (21:4) <Link to="demo/2d">
-function create_default_slot_3(ctx) {
+function create_default_slot_2(ctx) {
 	let t;
 
 	return {
@@ -54,8 +37,8 @@ function create_default_slot_3(ctx) {
 	};
 }
 
-// (22:4) <Link to="demo/3d">
-function create_default_slot_2(ctx) {
+// (21:4) <Link to="demo/3d">
+function create_default_slot_1(ctx) {
 	let t;
 
 	return {
@@ -71,35 +54,6 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (25:4) <Route path="/">
-function create_default_slot_1(ctx) {
-	let p2dtest;
-	let current;
-	p2dtest = new P2DTest({});
-
-	return {
-		c() {
-			create_component(p2dtest.$$.fragment);
-		},
-		m(target, anchor) {
-			mount_component(p2dtest, target, anchor);
-			current = true;
-		},
-		i(local) {
-			if (current) return;
-			transition_in(p2dtest.$$.fragment, local);
-			current = true;
-		},
-		o(local) {
-			transition_out(p2dtest.$$.fragment, local);
-			current = false;
-		},
-		d(detaching) {
-			destroy_component(p2dtest, detaching);
-		}
-	};
-}
-
 // (18:0) <Router url="{url}">
 function create_default_slot(ctx) {
 	let nav;
@@ -107,47 +61,31 @@ function create_default_slot(ctx) {
 	let t0;
 	let link1;
 	let t1;
-	let link2;
-	let t2;
 	let div;
 	let route0;
-	let t3;
+	let t2;
 	let route1;
-	let t4;
+	let t3;
 	let route2;
 	let current;
 
 	link0 = new Link({
 			props: {
-				to: "/",
-				$$slots: { default: [create_default_slot_4] },
+				to: "demo/2d",
+				$$slots: { default: [create_default_slot_2] },
 				$$scope: { ctx }
 			}
 		});
 
 	link1 = new Link({
 			props: {
-				to: "demo/2d",
-				$$slots: { default: [create_default_slot_3] },
-				$$scope: { ctx }
-			}
-		});
-
-	link2 = new Link({
-			props: {
 				to: "demo/3d",
-				$$slots: { default: [create_default_slot_2] },
-				$$scope: { ctx }
-			}
-		});
-
-	route0 = new Route({
-			props: {
-				path: "/",
 				$$slots: { default: [create_default_slot_1] },
 				$$scope: { ctx }
 			}
 		});
+
+	route0 = new Route({ props: { path: "/", component: P2DTest } });
 
 	route1 = new Route({
 			props: { path: "demo/2d", component: P2DTest }
@@ -164,13 +102,11 @@ function create_default_slot(ctx) {
 			t0 = space();
 			create_component(link1.$$.fragment);
 			t1 = space();
-			create_component(link2.$$.fragment);
-			t2 = space();
 			div = element("div");
 			create_component(route0.$$.fragment);
-			t3 = space();
+			t2 = space();
 			create_component(route1.$$.fragment);
-			t4 = space();
+			t3 = space();
 			create_component(route2.$$.fragment);
 		},
 		m(target, anchor) {
@@ -178,14 +114,12 @@ function create_default_slot(ctx) {
 			mount_component(link0, nav, null);
 			append(nav, t0);
 			mount_component(link1, nav, null);
-			append(nav, t1);
-			mount_component(link2, nav, null);
-			insert(target, t2, anchor);
+			insert(target, t1, anchor);
 			insert(target, div, anchor);
 			mount_component(route0, div, null);
-			append(div, t3);
+			append(div, t2);
 			mount_component(route1, div, null);
-			append(div, t4);
+			append(div, t3);
 			mount_component(route2, div, null);
 			current = true;
 		},
@@ -204,26 +138,11 @@ function create_default_slot(ctx) {
 			}
 
 			link1.$set(link1_changes);
-			const link2_changes = {};
-
-			if (dirty & /*$$scope*/ 2) {
-				link2_changes.$$scope = { dirty, ctx };
-			}
-
-			link2.$set(link2_changes);
-			const route0_changes = {};
-
-			if (dirty & /*$$scope*/ 2) {
-				route0_changes.$$scope = { dirty, ctx };
-			}
-
-			route0.$set(route0_changes);
 		},
 		i(local) {
 			if (current) return;
 			transition_in(link0.$$.fragment, local);
 			transition_in(link1.$$.fragment, local);
-			transition_in(link2.$$.fragment, local);
 			transition_in(route0.$$.fragment, local);
 			transition_in(route1.$$.fragment, local);
 			transition_in(route2.$$.fragment, local);
@@ -232,7 +151,6 @@ function create_default_slot(ctx) {
 		o(local) {
 			transition_out(link0.$$.fragment, local);
 			transition_out(link1.$$.fragment, local);
-			transition_out(link2.$$.fragment, local);
 			transition_out(route0.$$.fragment, local);
 			transition_out(route1.$$.fragment, local);
 			transition_out(route2.$$.fragment, local);
@@ -242,8 +160,7 @@ function create_default_slot(ctx) {
 			if (detaching) detach(nav);
 			destroy_component(link0);
 			destroy_component(link1);
-			destroy_component(link2);
-			if (detaching) detach(t2);
+			if (detaching) detach(t1);
 			if (detaching) detach(div);
 			destroy_component(route0);
 			destroy_component(route1);

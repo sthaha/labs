@@ -8,10 +8,10 @@ import {
 	insert,
 	noop,
 	safe_not_equal
-} from "../../web_modules/svelte/internal.js";
+} from "../../../web_modules/svelte/internal.js";
 
-import { onMount } from "../../web_modules/svelte.js";
-import p5 from "../../web_modules/p5.js";
+import { onMount } from "../../../web_modules/svelte.js";
+import p5 from "../../../web_modules/p5.js";
 
 function create_fragment(ctx) {
 	let div;
