@@ -15,9 +15,9 @@ import {
 	text,
 	transition_in,
 	transition_out
-} from "../web_modules/svelte/internal.js";
+} from "../../web_modules/svelte/internal.js";
 
-import { Router, Link, Route } from "../web_modules/svelte-routing.js";
+import { Router, Link, Route } from "../../web_modules/svelte-routing.js";
 import P2DTest from "./routes/P2DTest.js";
 import P3DTest from "./routes/P3DTest.js";
 
