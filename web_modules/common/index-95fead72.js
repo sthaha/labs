@@ -1,4 +1,10 @@
 function noop() { }
+function assign(tar, src) {
+    // @ts-ignore
+    for (const k in src)
+        tar[k] = src[k];
+    return tar;
+}
 function run(fn) {
     return fn();
 }
@@ -16,6 +22,67 @@ function safe_not_equal(a, b) {
 }
 function is_empty(obj) {
     return Object.keys(obj).length === 0;
+}
+function subscribe(store, ...callbacks) {
+    if (store == null) {
+        return noop;
+    }
+    const unsub = store.subscribe(...callbacks);
+    return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+}
+function component_subscribe(component, store, callback) {
+    component.$$.on_destroy.push(subscribe(store, callback));
+}
+function create_slot(definition, ctx, $$scope, fn) {
+    if (definition) {
+        const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+        return definition[0](slot_ctx);
+    }
+}
+function get_slot_context(definition, ctx, $$scope, fn) {
+    return definition[1] && fn
+        ? assign($$scope.ctx.slice(), definition[1](fn(ctx)))
+        : $$scope.ctx;
+}
+function get_slot_changes(definition, $$scope, dirty, fn) {
+    if (definition[2] && fn) {
+        const lets = definition[2](fn(dirty));
+        if ($$scope.dirty === undefined) {
+            return lets;
+        }
+        if (typeof lets === 'object') {
+            const merged = [];
+            const len = Math.max($$scope.dirty.length, lets.length);
+            for (let i = 0; i < len; i += 1) {
+                merged[i] = $$scope.dirty[i] | lets[i];
+            }
+            return merged;
+        }
+        return $$scope.dirty | lets;
+    }
+    return $$scope.dirty;
+}
+function update_slot(slot, slot_definition, ctx, $$scope, dirty, get_slot_changes_fn, get_slot_context_fn) {
+    const slot_changes = get_slot_changes(slot_definition, $$scope, dirty, get_slot_changes_fn);
+    if (slot_changes) {
+        const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+        slot.p(slot_context, slot_changes);
+    }
+}
+function exclude_internal_props(props) {
+    const result = {};
+    for (const k in props)
+        if (k[0] !== '$')
+            result[k] = props[k];
+    return result;
+}
+function compute_rest_props(props, keys) {
+    const rest = {};
+    keys = new Set(keys);
+    for (const k in props)
+        if (!keys.has(k) && k[0] !== '$')
+            rest[k] = props[k];
+    return rest;
 }
 
 function append(target, node) {
@@ -36,14 +103,58 @@ function text(data) {
 function space() {
     return text(' ');
 }
+function empty() {
+    return text('');
+}
+function listen(node, event, handler, options) {
+    node.addEventListener(event, handler, options);
+    return () => node.removeEventListener(event, handler, options);
+}
 function attr(node, attribute, value) {
     if (value == null)
         node.removeAttribute(attribute);
     else if (node.getAttribute(attribute) !== value)
         node.setAttribute(attribute, value);
 }
+function set_attributes(node, attributes) {
+    // @ts-ignore
+    const descriptors = Object.getOwnPropertyDescriptors(node.__proto__);
+    for (const key in attributes) {
+        if (attributes[key] == null) {
+            node.removeAttribute(key);
+        }
+        else if (key === 'style') {
+            node.style.cssText = attributes[key];
+        }
+        else if (key === '__value') {
+            node.value = node[key] = attributes[key];
+        }
+        else if (descriptors[key] && descriptors[key].set) {
+            node[key] = attributes[key];
+        }
+        else {
+            attr(node, key, attributes[key]);
+        }
+    }
+}
+function to_number(value) {
+    return value === '' ? null : +value;
+}
 function children(element) {
     return Array.from(element.childNodes);
+}
+function set_data(text, data) {
+    data = '' + data;
+    if (text.wholeText !== data)
+        text.data = data;
+}
+function set_input_value(input, value) {
+    input.value = value == null ? '' : value;
+}
+function custom_event(type, detail) {
+    const e = document.createEvent('CustomEvent');
+    e.initCustomEvent(type, false, false, detail);
+    return e;
 }
 
 let current_component;
@@ -57,6 +168,29 @@ function get_current_component() {
 }
 function onMount(fn) {
     get_current_component().$$.on_mount.push(fn);
+}
+function onDestroy(fn) {
+    get_current_component().$$.on_destroy.push(fn);
+}
+function createEventDispatcher() {
+    const component = get_current_component();
+    return (type, detail) => {
+        const callbacks = component.$$.callbacks[type];
+        if (callbacks) {
+            // TODO are there situations where events could be dispatched
+            // in a server (non-DOM) environment?
+            const event = custom_event(type, detail);
+            callbacks.slice().forEach(fn => {
+                fn.call(component, event);
+            });
+        }
+    };
+}
+function setContext(key, context) {
+    get_current_component().$$.context.set(key, context);
+}
+function getContext(key) {
+    return get_current_component().$$.context.get(key);
 }
 
 const dirty_components = [];
@@ -124,6 +258,19 @@ function update($$) {
 }
 const outroing = new Set();
 let outros;
+function group_outros() {
+    outros = {
+        r: 0,
+        c: [],
+        p: outros // parent group
+    };
+}
+function check_outros() {
+    if (!outros.r) {
+        run_all(outros.c);
+    }
+    outros = outros.p;
+}
 function transition_in(block, local) {
     if (block && block.i) {
         outroing.delete(block);
@@ -145,6 +292,43 @@ function transition_out(block, local, detach, callback) {
         });
         block.o(local);
     }
+}
+
+function get_spread_update(levels, updates) {
+    const update = {};
+    const to_null_out = {};
+    const accounted_for = { $$scope: 1 };
+    let i = levels.length;
+    while (i--) {
+        const o = levels[i];
+        const n = updates[i];
+        if (n) {
+            for (const key in o) {
+                if (!(key in n))
+                    to_null_out[key] = 1;
+            }
+            for (const key in n) {
+                if (!accounted_for[key]) {
+                    update[key] = n[key];
+                    accounted_for[key] = 1;
+                }
+            }
+            levels[i] = n;
+        }
+        else {
+            for (const key in o) {
+                accounted_for[key] = 1;
+            }
+        }
+    }
+    for (const key in to_null_out) {
+        if (!(key in update))
+            update[key] = undefined;
+    }
+    return update;
+}
+function get_spread_object(spread_props) {
+    return typeof spread_props === 'object' && spread_props !== null ? spread_props : {};
 }
 function create_component(block) {
     block && block.c();
@@ -271,4 +455,4 @@ class SvelteComponent {
     }
 }
 
-export { SvelteComponent as S, append as a, attr as b, create_component as c, destroy_component as d, detach as e, element as f, insert as g, space as h, init as i, transition_out as j, binding_callbacks as k, mount_component as m, noop as n, onMount as o, safe_not_equal as s, transition_in as t };
+export { destroy_component as A, element as B, set_attributes as C, listen as D, compute_rest_props as E, createEventDispatcher as F, append as G, space as H, text as I, binding_callbacks as J, attr as K, set_data as L, set_input_value as M, to_number as N, SvelteComponent as S, subscribe as a, init as b, create_slot as c, transition_out as d, component_subscribe as e, setContext as f, getContext as g, empty as h, is_function as i, insert as j, group_outros as k, check_outros as l, detach as m, noop as n, onMount as o, onDestroy as p, assign as q, run_all as r, safe_not_equal as s, transition_in as t, update_slot as u, exclude_internal_props as v, create_component as w, mount_component as x, get_spread_update as y, get_spread_object as z };
