@@ -4,7 +4,7 @@
   import P2DTest from "./routes/P2DTest.svelte";
   import P3DTest from "./routes/P3DTest.svelte";
 
-   export let url = "";
+  export let url = "";
 </script>
 
 <style>
@@ -20,14 +20,13 @@
 
 <Router url="{url}">
   <nav>
-    <Link to="/">Home</Link>
-    <Link to="demo/2d">2D Demo</Link>
-    <Link to="demo/3d">3D Demo</Link>
+    <Link to="svelte-ts-p5-js/demo/2d">2D Demo</Link>
+    <Link to="svelte-ts-p5-js/demo/3d">3D Demo</Link>
   </nav>
   <div>
-    <Route path="/"><P2DTest /></Route>
-    <Route path="demo/2d" component="{P2DTest}" />
-    <Route path="demo/3d" component="{P3DTest}" />
+    <Route path="/" component="{P2DTest}" />
+    <Route path="svelte-ts-p5-js/demo/2d" component="{P2DTest}" />
+    <Route path="svelte-ts-p5-js/demo/3d" component="{P3DTest}" />
   </div>
 </Router>
 
