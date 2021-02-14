@@ -37,7 +37,7 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (21:4) <Link to="demo/3d">
+// (21:4) <Link to="svelte-ts-p5-js/demo/3d">
 function create_default_slot_1(ctx) {
 	let t;
 
@@ -71,7 +71,7 @@ function create_default_slot(ctx) {
 
 	link0 = new Link({
 			props: {
-				to: "demo/2d",
+				to: "svelte-ts-p5-js/demo/2d",
 				$$slots: { default: [create_default_slot_2] },
 				$$scope: { ctx }
 			}
@@ -79,7 +79,7 @@ function create_default_slot(ctx) {
 
 	link1 = new Link({
 			props: {
-				to: "demo/3d",
+				to: "svelte-ts-p5-js/demo/3d",
 				$$slots: { default: [create_default_slot_1] },
 				$$scope: { ctx }
 			}
@@ -88,11 +88,17 @@ function create_default_slot(ctx) {
 	route0 = new Route({ props: { path: "/", component: P2DTest } });
 
 	route1 = new Route({
-			props: { path: "demo/2d", component: P2DTest }
+			props: {
+				path: "svelte-ts-p5-js/demo/2d",
+				component: P2DTest
+			}
 		});
 
 	route2 = new Route({
-			props: { path: "demo/3d", component: P3DTest }
+			props: {
+				path: "svelte-ts-p5-js/demo/3d",
+				component: P3DTest
+			}
 		});
 
 	return {
