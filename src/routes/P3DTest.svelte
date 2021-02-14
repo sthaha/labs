@@ -1,5 +1,5 @@
 <script lang="typescript">
-  import Canvas from './Canvas.svelte'
+  import Canvas from '../p5/Canvas.svelte'
 
   const sketch = (p: p5) => {
     let x = 100;
