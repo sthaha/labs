@@ -1,6 +1,6 @@
 // [snowpack] add styles to the page (skip if no document exists)
 if (typeof document !== 'undefined') {
-  const code = "body{margin:0;font-family:Arial, Helvetica, sans-serif}";
+  const code = "body{margin:0;font-family:Arial, Helvetica, sans-serif}.App.svelte-1krci7m{text-align:center}";
 
   const styleEl = document.createElement("style");
   const codeEl = document.createTextNode(code);

@@ -3,6 +3,7 @@ import './App.css.proxy.js';
 import {
 	SvelteComponent,
 	append,
+	attr,
 	create_component,
 	destroy_component,
 	detach,
@@ -10,230 +11,64 @@ import {
 	init,
 	insert,
 	mount_component,
+	noop,
 	safe_not_equal,
 	space,
-	text,
 	transition_in,
 	transition_out
 } from "../web_modules/svelte/internal.js";
 
-import { Router, Link, Route } from "../web_modules/svelte-routing.js";
-import P2DTest from "./routes/P2DTest.js";
-import P3DTest from "./routes/P3DTest.js";
-
-function create_default_slot_2(ctx) {
-	let t;
-
-	return {
-		c() {
-			t = text("2D Demo");
-		},
-		m(target, anchor) {
-			insert(target, t, anchor);
-		},
-		d(detaching) {
-			if (detaching) detach(t);
-		}
-	};
-}
-
-// (21:4) <Link to="svelte-ts-p5-js/demo/3d">
-function create_default_slot_1(ctx) {
-	let t;
-
-	return {
-		c() {
-			t = text("3D Demo");
-		},
-		m(target, anchor) {
-			insert(target, t, anchor);
-		},
-		d(detaching) {
-			if (detaching) detach(t);
-		}
-	};
-}
-
-// (18:0) <Router url="{url}">
-function create_default_slot(ctx) {
-	let nav;
-	let link0;
-	let t0;
-	let link1;
-	let t1;
-	let div;
-	let route0;
-	let t2;
-	let route1;
-	let t3;
-	let route2;
-	let current;
-
-	link0 = new Link({
-			props: {
-				to: "svelte-ts-p5-js/demo/2d",
-				$$slots: { default: [create_default_slot_2] },
-				$$scope: { ctx }
-			}
-		});
-
-	link1 = new Link({
-			props: {
-				to: "svelte-ts-p5-js/demo/3d",
-				$$slots: { default: [create_default_slot_1] },
-				$$scope: { ctx }
-			}
-		});
-
-	route0 = new Route({ props: { path: "/", component: P2DTest } });
-
-	route1 = new Route({
-			props: {
-				path: "svelte-ts-p5-js/demo/2d",
-				component: P2DTest
-			}
-		});
-
-	route2 = new Route({
-			props: {
-				path: "svelte-ts-p5-js/demo/3d",
-				component: P3DTest
-			}
-		});
-
-	return {
-		c() {
-			nav = element("nav");
-			create_component(link0.$$.fragment);
-			t0 = space();
-			create_component(link1.$$.fragment);
-			t1 = space();
-			div = element("div");
-			create_component(route0.$$.fragment);
-			t2 = space();
-			create_component(route1.$$.fragment);
-			t3 = space();
-			create_component(route2.$$.fragment);
-		},
-		m(target, anchor) {
-			insert(target, nav, anchor);
-			mount_component(link0, nav, null);
-			append(nav, t0);
-			mount_component(link1, nav, null);
-			insert(target, t1, anchor);
-			insert(target, div, anchor);
-			mount_component(route0, div, null);
-			append(div, t2);
-			mount_component(route1, div, null);
-			append(div, t3);
-			mount_component(route2, div, null);
-			current = true;
-		},
-		p(ctx, dirty) {
-			const link0_changes = {};
-
-			if (dirty & /*$$scope*/ 2) {
-				link0_changes.$$scope = { dirty, ctx };
-			}
-
-			link0.$set(link0_changes);
-			const link1_changes = {};
-
-			if (dirty & /*$$scope*/ 2) {
-				link1_changes.$$scope = { dirty, ctx };
-			}
-
-			link1.$set(link1_changes);
-		},
-		i(local) {
-			if (current) return;
-			transition_in(link0.$$.fragment, local);
-			transition_in(link1.$$.fragment, local);
-			transition_in(route0.$$.fragment, local);
-			transition_in(route1.$$.fragment, local);
-			transition_in(route2.$$.fragment, local);
-			current = true;
-		},
-		o(local) {
-			transition_out(link0.$$.fragment, local);
-			transition_out(link1.$$.fragment, local);
-			transition_out(route0.$$.fragment, local);
-			transition_out(route1.$$.fragment, local);
-			transition_out(route2.$$.fragment, local);
-			current = false;
-		},
-		d(detaching) {
-			if (detaching) detach(nav);
-			destroy_component(link0);
-			destroy_component(link1);
-			if (detaching) detach(t1);
-			if (detaching) detach(div);
-			destroy_component(route0);
-			destroy_component(route1);
-			destroy_component(route2);
-		}
-	};
-}
+import P2DTest from "./P2DTest.js";
+import P3DTest from "./P3DTest.js";
 
 function create_fragment(ctx) {
-	let router;
+	let div;
+	let p3dtest;
+	let t;
+	let p2dtest;
 	let current;
-
-	router = new Router({
-			props: {
-				url: /*url*/ ctx[0],
-				$$slots: { default: [create_default_slot] },
-				$$scope: { ctx }
-			}
-		});
+	p3dtest = new P3DTest({});
+	p2dtest = new P2DTest({});
 
 	return {
 		c() {
-			create_component(router.$$.fragment);
+			div = element("div");
+			create_component(p3dtest.$$.fragment);
+			t = space();
+			create_component(p2dtest.$$.fragment);
+			attr(div, "class", "App svelte-1krci7m");
 		},
 		m(target, anchor) {
-			mount_component(router, target, anchor);
+			insert(target, div, anchor);
+			mount_component(p3dtest, div, null);
+			append(div, t);
+			mount_component(p2dtest, div, null);
 			current = true;
 		},
-		p(ctx, [dirty]) {
-			const router_changes = {};
-			if (dirty & /*url*/ 1) router_changes.url = /*url*/ ctx[0];
-
-			if (dirty & /*$$scope*/ 2) {
-				router_changes.$$scope = { dirty, ctx };
-			}
-
-			router.$set(router_changes);
-		},
+		p: noop,
 		i(local) {
 			if (current) return;
-			transition_in(router.$$.fragment, local);
+			transition_in(p3dtest.$$.fragment, local);
+			transition_in(p2dtest.$$.fragment, local);
 			current = true;
 		},
 		o(local) {
-			transition_out(router.$$.fragment, local);
+			transition_out(p3dtest.$$.fragment, local);
+			transition_out(p2dtest.$$.fragment, local);
 			current = false;
 		},
 		d(detaching) {
-			destroy_component(router, detaching);
+			if (detaching) detach(div);
+			destroy_component(p3dtest);
+			destroy_component(p2dtest);
 		}
 	};
-}
-
-function instance($$self, $$props, $$invalidate) {
-	let { url = "" } = $$props;
-
-	$$self.$$set = $$props => {
-		if ("url" in $$props) $$invalidate(0, url = $$props.url);
-	};
-
-	return [url];
 }
 
 class App extends SvelteComponent {
 	constructor(options) {
 		super();
-		init(this, options, instance, create_fragment, safe_not_equal, { url: 0 });
+		init(this, options, null, create_fragment, safe_not_equal, {});
 	}
 }
 
