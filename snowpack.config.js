@@ -5,26 +5,27 @@ module.exports = {
     src: {url: '/dist'},
   },
   plugins: [
+    '@snowpack/plugin-postcss',
     '@snowpack/plugin-svelte',
     '@snowpack/plugin-dotenv',
     '@snowpack/plugin-typescript',
+    '@snowpack/plugin-optimize',
   ],
-  install: [
-    /* ... */
+  routes: [
+    /* Enable an SPA Fallback in development: */
+    // {"match": "routes", "src": ".*", "dest": "/index.html"},
   ],
-  installOptions: {
+  optimize: {
+    /* Example: Bundle your final build: */
+    // "bundle": true,
+  },
+  packageOptions: {
     /* ... */
   },
   devOptions: {
     /* ... */
   },
   buildOptions: {
-    /* ... */
-  },
-  proxy: {
-    /* ... */
-  },
-  alias: {
     /* ... */
   },
 };
