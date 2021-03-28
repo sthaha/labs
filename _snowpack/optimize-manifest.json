@@ -5,22 +5,11 @@
         "/dist/index.js"
       ],
       "css": [
+        "/dist/index.css",
         "/favicon.ico"
       ],
       "js": [
-        "/_snowpack/pkg/common/index-e37c7fca.js",
-        "/_snowpack/pkg/p5.js",
-        "/_snowpack/pkg/svelte-routing.js",
-        "/_snowpack/pkg/svelte.js",
-        "/_snowpack/pkg/svelte/internal.js",
-        "/dist/App.svelte.js",
-        "/dist/index.js",
-        "/dist/p5/Canvas.svelte.js",
-        "/dist/Routes.svelte.js",
-        "/dist/routes/P2DTest.svelte.js",
-        "/dist/routes/P3DTest.svelte.js",
-        "/dist/styles.svelte.css.proxy.js",
-        "/dist/styles.svelte.js"
+        "/dist/index.js"
       ]
     }
   },
