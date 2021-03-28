@@ -12,11 +12,11 @@
 </script>
 
 <Router url="{url}">
-  <div class="bg-gray-100 h-screen">
+  <div class="bg-gray-300 h-screen">
     <div class="flex flex-col">
       <!--Navigation -->
       <div class="h-14 bg-gray-100">  </div>
-      <nav class="inset-x-0 fixed h-14 opacity-95 bg-gray-700 text-gray-100">
+      <nav class="inset-x-0 fixed h-14 opacity-95 bg-gray-700 text-gray-100 ">
         <div class="flex flex-row p-2 items-end">
           <!-- Home -->
           <div class="flex flex-row space-x-1 items-end">
@@ -34,16 +34,18 @@
 
           <!--title -->
           <div class="px-10 text-gray-100 bold text-3xl">
-            Experiments with Svelte, Tailwind and P5.js
+            Experiments with Svelte, Typescript, Tailwind and P5.js
           </div>
         <div>
       </nav>
 
+
+
       <!-- list of experiments -->
       <div class="flex mt-4 flex-col mx-4 ">
         <Route path="/" component="{Routes}" />
-        <Route path="/demo/2d" component="{P2DTest}" />
-        <Route path="/demo/3d" component="{P3DTest}" />
+        <Route path="/demo/2D" component="{P2DTest}" />
+        <Route path="/demo/3D" component="{P3DTest}" />
       </div>
     </div>
   </div>

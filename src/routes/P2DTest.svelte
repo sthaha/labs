@@ -53,7 +53,7 @@
 
 <div class="flex flex-col">
 
-  <Canvas height=200 sketch={sketch} />
+  <Canvas height=400 sketch={sketch} />
 
   <div class="table w-full">
     <div class="table-row-group">
