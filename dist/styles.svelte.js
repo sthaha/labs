@@ -1,0 +1,1 @@
+import"./styles.svelte.css.proxy.js";import{SvelteComponent as s,init as t,safe_not_equal as l}from"../_snowpack/pkg/svelte/internal.js";class n extends s{constructor(e){super();t(this,e,null,null,l,{})}}export default n;

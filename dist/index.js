@@ -1,5 +1,1 @@
-import App from "./App.js";
-var app = new App({
-  target: document.body
-});
-export default app;
+import p from"./App.svelte.js";var e=new p({target:document.body});export default e;
