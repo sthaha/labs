@@ -7,11 +7,12 @@ processing.js
 
 What works
 - [x] include p5.js as an npm dependency
-- [x] Configure 3D / WebGL
+- [x] styling using tailwind
+- [x] Configure 3D / WebGL to fit properly into a parent div
+- [x] [publish to github.io](https://p5js.svelte.gh.thaha.xyz/)
 
 Todo
 - [ ] test typings
-- [ ] publish to github.io
 
 ## Available Scripts
 
