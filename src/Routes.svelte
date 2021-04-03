@@ -6,7 +6,7 @@
   let experiments = [
     {link: "demo/2D", summary: "2D Demo", description: "A simple 2D Demo to test svelte integration"},
     {link: "demo/3D", summary: "3D Demo", description: "Test 3D WebGL Rendering"},
-    {link: "beyond/spirograph", summary: "Spirograph", description: "Spirograph"},
+    {link: "beyond/spirograph", summary: "Spirograph", description: "Spirograph creates beautiful patterns"},
   ]
 </script>
 
@@ -27,23 +27,26 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           {#each experiments as demo}
-          <tr>
+          <tr class="hover:bg-blue-300 ease-in transition duration-300 bg-white">
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="ml-4">
-                  <div class="text-sm font-medium text-gray-900">
-                    <Link to="{demo.link}">{demo.summary}</Link>
+              <Link to={demo.link}>
+                <div class="flex items-center">
+                  <div class="ml-2">
+                    <div class="contents text-md font-medium text-blue-900">
+                      {demo.summary}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">{demo.description}</div>
+              <Link to={demo.link}>
+                <div class="text-sm text-gray-900">{demo.description}</div>
+              </Link>
             </td>
           </tr>
           {/each}
 
-          <!-- More items... -->
         </tbody>
       </table>
     </div>
