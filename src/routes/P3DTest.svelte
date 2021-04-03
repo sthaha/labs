@@ -1,36 +1,34 @@
 <script lang='typescript'>
+export let location;
 
-  export let location;
+import Canvas from '../p5/Canvas.svelte'
 
-  import Canvas from '../p5/Canvas.svelte'
+let speed = 0.01
 
-  let speed = 0.01
+const sketch = (p: p5, el) => {
 
-  const sketch = (p: p5, el) => {
-
-    let x = 100;
-    let y = 100;
-    let w = p.random(50, 100)
-    let h= p.random(50, 100)
+  let x = 100;
+  let y = 100;
+  let w = p.random(50, 100)
+  let h= p.random(50, 100)
 
 
-    const draw = () => {
-      p.background(0);
-      p.normalMaterial();
-      p.translate(0, 0, 0);
+  p.draw = () => {
+    p.background(0);
+    p.normalMaterial();
+    p.translate(0, 0, 0);
 
-      p.push();
-      p.rotateZ(p.frameCount * speed);
-      p.rotateX(p.frameCount * speed);
-      p.rotateY(p.frameCount * speed);
-      p.torus(70, 20);
-      p.pop();
-    };
-
-    return {draw}
-
+    p.push();
+    p.rotateZ(p.frameCount * speed);
+    p.rotateX(p.frameCount * speed);
+    p.rotateY(p.frameCount * speed);
+    p.torus(70, 20);
+    p.pop();
   };
 
+  return {}
+
+};
 </script>
 
 <div class="flex flex-col">
