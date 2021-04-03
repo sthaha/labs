@@ -4,9 +4,10 @@
   import { Link } from "svelte-routing";
 
   let experiments = [
+    {link: "beyond/spirograph", summary: "Spirograph", description: "Spirograph creates beautiful patterns"},
+    {link: "beyond/parametric-eq", summary: "Line Animation", description: "Line animations using parametric equations"},
     {link: "demo/2D", summary: "2D Demo", description: "A simple 2D Demo to test svelte integration"},
     {link: "demo/3D", summary: "3D Demo", description: "Test 3D WebGL Rendering"},
-    {link: "beyond/spirograph", summary: "Spirograph", description: "Spirograph creates beautiful patterns"},
   ]
 </script>
 

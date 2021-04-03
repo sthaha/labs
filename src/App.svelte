@@ -7,6 +7,7 @@
   import P2DTest from "./routes/P2DTest.svelte";
   import P3DTest from "./routes/P3DTest.svelte";
   import Spirograph from "./beyond/Spirograph.svelte";
+  import ParametricEqLines from "./beyond/ParametricEqLines.svelte";
 
 
   export let url = "";
@@ -52,6 +53,7 @@
         <Route path="demo/2D" component="{P2DTest}" />
         <Route path="demo/3D" component="{P3DTest}" />
         <Route path="beyond/spirograph" component="{Spirograph}" />
+        <Route path="beyond/parametric-eq" component="{ParametricEqLines}" />
         <Route path="/" component="{LinksTable}" />
       </div>
     </div>
