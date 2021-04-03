@@ -6,6 +6,7 @@
 
   import P2DTest from "./routes/P2DTest.svelte";
   import P3DTest from "./routes/P3DTest.svelte";
+  import Spirograph from "./beyond/Spirograph.svelte";
 
 
   export let url = "";
@@ -48,9 +49,10 @@
 
       <!-- list of experiments -->
       <div class="flex mt-4 flex-col mx-4 ">
+        <Route path="demo/2D" component="{P2DTest}" />
+        <Route path="demo/3D" component="{P3DTest}" />
+        <Route path="beyond/spirograph" component="{Spirograph}" />
         <Route path="/" component="{Routes}" />
-        <Route path="/demo/2D" component="{P2DTest}" />
-        <Route path="/demo/3D" component="{P3DTest}" />
       </div>
     </div>
   </div>
