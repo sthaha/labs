@@ -2,7 +2,7 @@
   import './styles.svelte';
 
   import { Router, Link, Route } from "svelte-routing";
-  import Routes from './Routes.svelte';
+  import LinksTable from './LinksTable.svelte';
 
   import P2DTest from "./routes/P2DTest.svelte";
   import P3DTest from "./routes/P3DTest.svelte";
@@ -52,7 +52,7 @@
         <Route path="demo/2D" component="{P2DTest}" />
         <Route path="demo/3D" component="{P3DTest}" />
         <Route path="beyond/spirograph" component="{Spirograph}" />
-        <Route path="/" component="{Routes}" />
+        <Route path="/" component="{LinksTable}" />
       </div>
     </div>
   </div>
