@@ -46,6 +46,7 @@ const sketch = (p: p5, el) => {
     innerRadius = outerRadius / 2.5
 
     p.angleMode(p.DEGREES)
+    toggleLoop()
   }
 
 
@@ -196,43 +197,88 @@ const sketch = (p: p5, el) => {
 
   <Canvas height=400 sketch={sketch} />
 
-  <div class="table w-full">
-    <div class="table-row-group">
-      <div class="table-row">
-        <p class="table-cell w-12 font-mono text-right">outer: </p>
-        <p class="table-cell w-24 truncate font-mono pl-2"> { Math.round(outerRadius)} </p>
-        <input class="table-cell align-left" type=range
-          min="1" max={maxSize} bind:value={outerRadius} />
+  <div class="sm:hidden">
+    <div class="table w-full">
+      <div class="table-row-group">
+        <div class="table-row">
+          <p class="table-cell w-12 font-mono text-right">outer: </p>
+          <p class="table-cell w-24 truncate font-mono pl-2"> { Math.round(outerRadius)} </p>
+          <input class="table-cell align-left" type=range
+            min="1" max={maxSize} bind:value={outerRadius} />
+        </div>
 
-        <p class="table-cell w-24 font-mono text-right">inner: </p>
-        <p class="table-cell w-24 truncate font-mono pl-2"> { Math.round(innerRadius)} </p>
-        <input class="table-cell align-left" type=range
-          min="1" max={maxSize} bind:value={innerRadius} />
+        <div class="table-row">
+          <p class="table-cell w-24 font-mono text-right">inner: </p>
+          <p class="table-cell w-24 truncate font-mono pl-2"> { Math.round(innerRadius)} </p>
+          <input class="table-cell align-left" type=range
+            min="1" max={maxSize} bind:value={innerRadius} />
+        </div>
 
-      </div>
+        <div class="table-row">
 
-      <div class="table-row">
+          <p class="flex-shirk-0 table-cell w-32 font-mono text-right">dot speed: </p>
+          <p class="table-cell w-24 truncate font-mono pl-2"> {dotSpeed} </p>
+          <input class="table-cell align-left" type=range
+            min="0.0" max="10" step="0.1" bind:value={dotSpeed} />
+        </div>
 
-        <p class="table-cell w-32 font-mono text-right">dot speed: </p>
-        <p class="table-cell w-24 truncate font-mono pl-2"> {dotSpeed} </p>
-        <input class="table-cell align-left" type=range
-          min="0.0" max="10" step="0.1" bind:value={dotSpeed} />
+        <div class="table-row">
+          <p class="table-cell w-12 font-mono text-right">rotation: </p>
+          <p class="table-cell w-24 truncate font-mono pl-2"> {rotateSpeed} </p>
+          <input class="table-cell align-left" type=range
+            min="0.0" max="30.0" step="0.1" bind:value={rotateSpeed} />
 
-        <p class="table-cell w-12 font-mono text-right">rotation: </p>
-        <p class="table-cell w-24 truncate font-mono pl-2"> {rotateSpeed} </p>
-        <input class="table-cell align-left" type=range
-          min="0.0" max="30.0" step="0.1" bind:value={rotateSpeed} />
+        </div>
 
-      </div>
-
-      <div class="table-row">
-
-        <p class="table-cell w-12 font-mono text-right">dot: </p>
-        <p class="table-cell w-24 truncate font-mono pl-2"> {dot} </p>
-        <input class="table-cell align-left" type=range
-          min="0" max="2.0" step="0.1" bind:value={dot} />
+        <div class="table-row">
+          <p class="table-cell w-12 font-mono text-right">dot: </p>
+          <p class="table-cell w-24 truncate font-mono pl-2"> {dot} </p>
+          <input class="table-cell align-left" type=range
+            min="0" max="2.0" step="0.1" bind:value={dot} />
+        </div>
       </div>
     </div>
-  </div>
+  </div >
+
+  <div class="hidden sm:block">
+    <div class="table w-full">
+      <div class="table-row-group">
+
+        <div class="table-row">
+          <p class="table-cell w-12 font-mono text-right">outer: </p>
+          <p class="table-cell w-24 truncate font-mono pl-2"> { Math.round(outerRadius)} </p>
+          <input class="table-cell align-left" type=range
+            min="1" max={maxSize} bind:value={outerRadius} />
+
+          <p class="table-cell w-24 font-mono text-right">inner: </p>
+          <p class="table-cell w-24 truncate font-mono pl-2"> { Math.round(innerRadius)} </p>
+          <input class="table-cell align-left" type=range
+            min="1" max={maxSize} bind:value={innerRadius} />
+
+        </div>
+
+        <div class="table-row">
+
+          <p class="flex-shirk-0 table-cell w-32 font-mono text-right">dot speed: </p>
+          <p class="table-cell w-24 truncate font-mono pl-2"> {dotSpeed} </p>
+          <input class="table-cell align-left" type=range
+            min="0.0" max="10" step="0.1" bind:value={dotSpeed} />
+
+          <p class="table-cell w-12 font-mono text-right">rotation: </p>
+          <p class="table-cell w-24 truncate font-mono pl-2"> {rotateSpeed} </p>
+          <input class="table-cell align-left" type=range
+            min="0.0" max="30.0" step="0.1" bind:value={rotateSpeed} />
+
+        </div>
+
+        <div class="table-row">
+          <p class="table-cell w-12 font-mono text-right">dot: </p>
+          <p class="table-cell w-24 truncate font-mono pl-2"> {dot} </p>
+          <input class="table-cell align-left" type=range
+            min="0" max="2.0" step="0.1" bind:value={dot} />
+        </div>
+      </div>
+    </div>
+  </div >
 
 </div>
