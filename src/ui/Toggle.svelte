@@ -20,7 +20,6 @@
   class:bg-green-600={!invert && active || invert && !active}
   class:bg-gray-600={!invert && !active || invert && active}
   on:click={toggle}>
-  {#if false}<slot></slot>{/if}
 
   {#if active}
     {#if $$slots.active}
