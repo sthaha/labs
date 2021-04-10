@@ -1,5 +1,6 @@
 <button
-  class="rounded-xl shadow bg-green-600 text-center text-gray-100"
+  class={ " rounded-xl shadow text-center text-gray-100 " + $$props.class || "" }
+  class:bg-green-600={ !$$props.class }
   class:min-w-full={ $$slots.contents }
   class:h-10={ $$slots.contents }
   class:px-2={ $$slots.contents }
