@@ -8,7 +8,7 @@
 
   const toggle = () => {
     active  = !active
-    dispatch('toggled', {active});
+    dispatch('toggle', {active});
   }
 </script>
 

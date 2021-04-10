@@ -234,7 +234,7 @@ const sketch = (p: p5, el) => {
           <p class="table-cell w-12 font-mono text-right">sketch: </p>
           <p class="table-cell w-24 truncate font-mono pl-2"> </p>
           <div class="table-cell p-2">
-            <Toggle invert="true" on:toggled={toggleLoop}>
+            <Toggle invert="true" on:toggle={toggleLoop}>
               <span slot="active"> Pause </span>
               <span slot="inactive"> Animate </span>
             </Toggle>
@@ -251,7 +251,7 @@ const sketch = (p: p5, el) => {
           <input class="table-cell align-left" type=range
             min="1" max={maxSize} bind:value={outerRadius} />
           <div class = "table-cell px-2">
-            <Toggle on:toggled={toggleOuter} ></Toggle>
+            <Toggle on:toggle={toggleOuter} ></Toggle>
           </div>
         </div>
 
@@ -263,7 +263,7 @@ const sketch = (p: p5, el) => {
             min="1" max={maxSize} bind:value={innerRadius} />
 
           <div class = "table-cell px-2">
-            <Toggle on:toggled={toggleInner} ></Toggle>
+            <Toggle on:toggle={toggleInner} ></Toggle>
           </div>
         </div>
 
