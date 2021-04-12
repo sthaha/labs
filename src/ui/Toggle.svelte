@@ -13,7 +13,7 @@
 </script>
 
 <button
-  class="rounded-xl shadow text-center text-gray-100"
+  class={ " rounded-xl shadow text-center text-gray-100 hover:shadow-lg transition " + $$props.class || "" }
   class:min-w-full={ $$slots.active || $$slots.inactive }
   class:h-10={ $$slots.active || $$slots.inactive }
   class:px-2={ $$slots.active || $$slots.inactive }
