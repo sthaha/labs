@@ -7,7 +7,12 @@ module.exports = {
     uniformColorPalette: true,
     extendedFontSizeScale: true,
   },
-  purge: ['./src/**/*.svelte', './public/*.html'],
+  purge: {
+    contents: ['./src/**/*.svelte', './public/*.html'],
+    options: {
+      safelist: [ /bg-green/, /bg-gray/ ],
+    }
+  },
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
