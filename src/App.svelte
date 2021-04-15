@@ -43,7 +43,7 @@
     </nav>
   </header>
 
-  <div class="bg-gray-300 mt-14 w-screen h-screen w-full flex flex-col">
+  <div class="bg-gray-300 mt-14 w-screen h-screen flex flex-col">
     <!-- list of experiments -->
     <div class="flex mt-6 flex-col mx-4">
       <Route path="demo/2D" component="{P2DTest}" />
