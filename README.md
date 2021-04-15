@@ -1,18 +1,22 @@
-# Svelte Template for P5.js
+# 🧪 Labs using Svelte and P5.js
 
 > ✨ Bootstrapped with Create Snowpack App (CSA).
 
-Here is a template I intent to use to publish projects that I tryout using
-processing.js
+### What works
+- [x] Integrate `p5.js` with `svelte` to create a [Canvas] component that
+      responds to resizing
+- [x] Configure 3D / WebGL
+- [x] Use tailwind for styling and responsive layout
+- [x] [Publish as a GH page][gh-pages]
 
-What works
-- [x] include p5.js as an npm dependency
-- [x] styling using tailwind
-- [x] Configure 3D / WebGL to fit properly into a parent div
-- [x] [publish to github.io](https://p5js.svelte.gh.thaha.xyz/)
 
-Todo
+### Todo
 - [ ] test typings
+- [ ] configure rollup bundle
+
+  > **For the best production performance:** Add a build bundler plugin like
+  [snowpack-plugin-rollup-bundle][plugin-rollup-bundle] to `snowpack.config.json` config file.
+
 
 ## Available Scripts
 
@@ -34,8 +38,9 @@ See the section about running tests for more information.
 Builds a static copy of your site to the `build/` folder.
 Your app is ready to be deployed!
 
-**For the best production performance:** Add a build bundler plugin like [@snowpack/plugin-webpack](https://github.com/snowpackjs/snowpack/tree/main/plugins/plugin-webpack) or [snowpack-plugin-rollup-bundle](https://github.com/ParamagicDev/snowpack-plugin-rollup-bundle) to your `snowpack.config.json` config file.
 
-### Q: What about Eject?
+---
 
-No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
+[gh-page]: https://labs.gh.thaha.xyz/
+[Canvas]: src/p5/Canvas.svelte
+[plugin-rollup-bundle]: https://github.com/ParamagicDev/snowpack-plugin-rollup-bundle
