@@ -2,6 +2,7 @@
 import { onDestroy } from "svelte"
 import Toggle from "../ui/Toggle.svelte"
 import Button from "../ui/Button.svelte"
+import TimePicker from "./TimePicker.svelte"
 
 export let location = ""
 
@@ -174,8 +175,8 @@ onDestroy(reset)
   </div>
 
  {:else}
-  <div> show input time </div>
-  <Button on:click={toggleRun}> <span slot="contents"> Start </span></Button >
+   <TimePicker />
+   <Button on:click={toggleRun}> <span slot="contents"> Start </span></Button >
  {/if}
 
 
