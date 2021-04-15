@@ -8,7 +8,7 @@ module.exports = {
     extendedFontSizeScale: true,
   },
   purge: {
-    contents: ['./src/**/*.svelte', './public/*.html'],
+    content: ['./src/**/*.svelte', './public/*.html'],
     options: {
       safelist: [ /bg-green/, /bg-gray/ ],
     }
