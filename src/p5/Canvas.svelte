@@ -17,7 +17,7 @@ export let mode = "2D"
 export let height = 0;
 export let width = 0; // automatically fill the parent (element.offsetWidth)
 
-let w;    // bound to clientWidth
+let clientWidth;    // bound to clientWidth
 let element;  // bound to this
 
 let child: P5;
@@ -42,14 +42,14 @@ const run = (p: p5) => {
 
   p.setup = () => {
     const renderer = mode == "2D" ? p.P2D : p.WEBGL
-    p.createCanvas(width || w, height || p.windowHeight *0.75, renderer);
+    p.createCanvas(width || clientWidth, height || p.windowHeight *0.75, renderer);
     child.setup &&  child.setup()
   };
 
   // handle resize only if the width isn't fixed
   if (width === 0 ) {
     p.windowResized = debounce(300, () => {
-      p.resizeCanvas(width || w, height || p.windowHeight * 0.75)
+      p.resizeCanvas(width || clientWidth, height || p.windowHeight * 0.75)
       child.onResize && child.onResize()
     })
   }
@@ -70,6 +70,6 @@ onMount(()  => { new p5(run, element) });
 
 <div
   class="m-0 p-0 object-contain h-full"
-  bind:clientWidth={w}
+  bind:clientWidth={clientWidth}
   bind:this={element}
 ></div>
