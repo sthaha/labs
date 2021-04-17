@@ -1,4 +1,17 @@
+const purge = {
+  content: ['./src/**/*.svelte', './public/*.html'],
+  enabled: !process.env.ROLLUP_WATCH,
+  mode: 'all',
+  options: {
+    whitelistPatterns: [/svelte-/],
+    defaultExtractor: (txt) => [
+      ...txt.matchAll(/(?:class:)*([\w\d-/:%.]+)/gm)
+    ].map(([_match, group, ..._rest]) => group),
+  },
+}
+
 module.exports = {
+  purge,
   future: {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
@@ -6,12 +19,6 @@ module.exports = {
   experimental: {
     uniformColorPalette: true,
     extendedFontSizeScale: true,
-  },
-  purge: {
-    content: ['./src/**/*.svelte', './public/*.html'],
-    options: {
-      safelist: [ /bg-green/, /bg-gray/ ],
-    }
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
