@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../build/reroute.js"],
+  "sourcesContent": ["// Single Page Apps for GitHub Pages\n// MIT License\n// CREDITS: https://github.com/rafgraph/spa-github-pages\n// This script checks to see if a redirect is present in the query string,\n// converts it back into the correct url and adds it to the\n// browser's history using window.history.replaceState(...),\n// which won't cause the browser to attempt to load the new url.\n// When the single page app is loaded further down in this file,\n// the correct url will be waiting in the browser's history for\n// the single page app to route accordingly.\n\n((l) => {\n  if (l.search[1] !== '/' ) {\n    return\n  }\n\n  const decoded = l.search.slice(1).split('&').\n    map((s) => s.replace(/~and~/g, '&')).\n    join('?');\n\n  window.history.replaceState(\n    null, null,\n    l.pathname.slice(0, -1) + decoded + l.hash\n  );\n})(window.location)\n"],
+  "mappings": ";AAWA,AAAC,EAAC,MAAM;AACN,MAAI,EAAE,OAAO,OAAO,KAAM;AACxB;AAAA;AAGF,QAAM,UAAU,EAAE,OAAO,MAAM,GAAG,MAAM,KACtC,IAAI,CAAC,MAAM,EAAE,QAAQ,UAAU,MAC/B,KAAK;AAEP,SAAO,QAAQ,aACb,MAAM,MACN,EAAE,SAAS,MAAM,GAAG,MAAM,UAAU,EAAE;AAAA,GAEvC,OAAO;",
+  "names": []
+}
