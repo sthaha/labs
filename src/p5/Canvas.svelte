@@ -56,11 +56,20 @@ const run = (p: p5) => {
 
 }
 
+const ignoreSpace =(e) => {
+  if (e.keyCode == 32) {
+    e.preventDefault()
+  }
+}
+
 onMount(()  => { new p5(run, element) });
 
 </script>
 
+<svelte:window on:keydown={ignoreSpace} />
+
 <div
   class="m-0 p-0 object-contain h-full"
   bind:clientWidth={w}
-  bind:this={element}></div>
+  bind:this={element}
+></div>
