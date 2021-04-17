@@ -1,1 +1,14 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><link rel="icon" href="/favicon.ico"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Experiments with Svelte, Tailwind and P5.js"><title>Graphics Lab</title><link rel="stylesheet" href="/dist/index.css"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><script type="module" src="/dist/index.js"></script><script type="module" src="/reroute.js"></script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><link rel="icon" href="/favicon.ico"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Experiments with Svelte, Tailwind and P5.js"><title>Graphics Lab</title><link rel="stylesheet" href="/dist/index.css"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><script>((l) => {
+       if (l.search[1] !== '/' ) {
+         return
+       }
+
+       const decoded = l.search.slice(1).split('&').
+         map((s) => s.replace(/~and~/g, '&')).
+         join('?');
+
+       window.history.replaceState(
+         null, null,
+         l.pathname.slice(0, -1) + decoded + l.hash
+       );
+     })(window.location)</script><script type="module" src="/dist/index.js"></script><script type="module" src="/reroute.js"></script></body></html>
