@@ -7,16 +7,14 @@
     },
     "/index.html": {
       "entry": [
-        "/dist/index.js",
-        "/reroute.js"
+        "/dist/index.js"
       ],
       "css": [
         "/dist/index.css",
         "/favicon.ico"
       ],
       "js": [
-        "/dist/index.js",
-        "/reroute.js"
+        "/dist/index.js"
       ]
     }
   },
