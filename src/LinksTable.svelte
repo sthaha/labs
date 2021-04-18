@@ -9,6 +9,8 @@
     {link: "beyond/parametric-eq", summary: "Line Animation", description: "Line animations using parametric equations"},
     {link: "demo/2D", summary: "2D Demo", description: "A simple 2D Demo to test svelte integration"},
     {link: "demo/3D", summary: "3D Demo", description: "Test 3D WebGL Rendering"},
+    {link: "demo/ui/buttons", summary: "Buttons UI", description: "Test ui/button component"},
+    {link: "demo/ui/toggles", summary: "Toggle UI", description: "Test ui/toggle component"},
   ]
 </script>
 

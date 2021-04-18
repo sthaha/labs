@@ -1,14 +1,30 @@
-<button
-  class={ " rounded-xl shadow text-center text-gray-100 hover:shadow-lg transition " + $$props.class || "" }
-  class:bg-green-600={ !$$props.class || !$$props.class.includes("bg-") }
-  class:min-w-full={ $$slots.contents }
-  class:h-10={ $$slots.contents }
-  class:px-2={ $$slots.contents }
+{#if $$slots.contents }
 
-  on:click
->
-  <slot name="contents">
-    <div class="w-4 h-4"> </div>
-  </slot>
-</button>
+  <button
+    class={
+      "inline-block px-4 py-2 rounded-2xl shadow " +
+      "text-center text-gray-200 " +
+      "hover:shadow-lg transition " +
+      ($$props.class || "")
+    }
 
+    class:bg-green-600={ !$$props.class || !$$props.class.includes("bg-") }
+    on:click
+  >
+    <slot name="contents">
+    </slot>
+  </button>
+
+{:else}
+
+  <button
+    class={
+      "inline-block shadow h-4 w-4 md:h-8 md:w-8 rounded-full " +
+      " hover:shadow-lg transition " + ($$props.class || "")
+    }
+    class:bg-green-600={ !$$props.class || !$$props.class.includes("bg-") }
+    on:click
+  >
+  </button>
+
+{/if}
