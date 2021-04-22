@@ -1,19 +1,29 @@
 import {writable, derived} from "svelte/store"
-import {formatTime} from "./utils"
+import {formatTime, toHMS} from "./utils"
 
 
-const newDuration = ()=> {
+const newTestDuration = ()=> {
 	const duration  = writable(0);
   const { subscribe, set, update } = duration
-  const formatted = derived(duration, $d => formatTime($d))
-
 	return {
 		subscribe,
-		setTime: (h: number, m: number, s: number, ms: number = 0) => set( (h*3600 + m*60 + s) * 1000 + ms),
+		setTime: (h: number, m: number, s: number, ms: number = 0) => set(((h*60 + m) * 60 + s) * 1000 + ms),
     reset: () => set(0),
-    formatted: () => formatted,
-    tick: () => {},
 	};
 }
 
-export const testTimer = newDuration()
+export const newCounter = ()=> {
+  const duration  = writable(0);
+  const { subscribe, set, update } = duration
+  const hms = derived(duration, $d => toHMS($d))
+
+  return {
+    subscribe,
+    pause: () => set(0),
+    resume: () => set(0),
+    elapsed: () => {}
+  };
+}
+
+
+export const testDuration = newTestDuration()

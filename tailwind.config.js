@@ -1,6 +1,6 @@
 const purge = {
   content: ['./src/**/*.svelte', './public/*.html'],
-  enabled: !process.env.ROLLUP_WATCH,
+  enabled: false, // process.env.ROLLUP_WATCH,
   mode: 'all',
   options: {
     whitelistPatterns: [/svelte-/],

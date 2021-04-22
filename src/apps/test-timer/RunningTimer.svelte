@@ -1,138 +1,30 @@
 <script>
 import { createEventDispatcher, onMount, onDestroy } from "svelte"
+import { testDuration } from "./store"
 
 import Toggle from "../../ui/Toggle.svelte"
 import Button from "../../ui/Button.svelte"
 
 
+const cleanup = () => {
+
+}
 
 const dispatch = createEventDispatcher()
-
-
-let paused = false
-const togglePaused = () => { paused ? resume() : pause() }
-
-let elapsed = { H: 0, M: 0, S: 0, ms: 0, };
-
-$: elapsedPretty = {
-  H: String(elapsed.H).padStart(2, '0'),
-  M: String(elapsed.M).padStart(2, '0'),
-  S: String(elapsed.S).padStart(2, '0'),
-  ms: String(elapsed.ms).padStart(3, '0'),
-}
-
-
-let startedAt
-let beforePaused = 0
-
-const toHMS = (t) => {
-
-  const H = Math.floor(t / (60 * 60 * 1000))
-  t -= H * 60 * 60 * 1000
-
-  const M = Math.floor(t / (60 * 1000))
-  t -= M * 60* 1000
-
-  const S = Math.floor(t / 1000)
-  t -= S * 1000
-
-  const ms = t
-  return {H, M, S, ms}
-}
-
-const computeElapsed = () => {
-  console.log(" ... compute elapsed")
-  let  diff = new Date()  - startedAt + beforePaused;
-  elapsed = toHMS(diff)
-}
-
-const prettyTime = (t) => {
-  const hms = toHMS(t)
-
-  const H = String(hms.H).padStart(2, '0'),
-  const M = String(hms.M).padStart(2, '0'),
-  const S = String(hms.S).padStart(2, '0'),
-  const ms = String(hms.ms).padStart(3, '0'),
-  return `${H}:${M}:${S}.${ms}`
-}
-
-let timer
-const resume = () => {
-  console.log("resuming ... ")
-  startedAt = new Date()
-  timer  = setInterval(computeElapsed, 100)
-  console.log("resumed ... ", timer)
-  paused = false
-}
-
-const pause = () => {
-  console.log("pausing ", timer)
-  clearInterval(timer)
-  beforePaused += new Date() - startedAt
-  paused = true
-}
-
-let stopped = false
-const stop =() => {
-  pause()
-  stopped = true
-}
-
-
-const clear = () => {
-  clearInterval(timer)
-  beforePaused = 0
-  startedAt = null
-  stopped = false
-  elapsedList = []
-  current = 0
-}
-
 const reset = () => {
+  cleanup()
   dispatch('reset', {});
 }
 
-  let elapsedList=[]
-  let current = 0
 
-const next = () => {
-  console.log(" ... next")
-
-  if (elapsedList.length == 0) {
-    elapsedList.push({startedAt: new Date()} )
-    resume()
-    return
-  }
-
-  const record = elapsedList[current]
-
-  elapsedList[current] = {
-    ...record,
-    paused: beforePaused,
-    elapsed: {...elapsedPretty},
-    endedAt: new Date()
-  }
-  pause()
-
-  elapsedList.push( {startedAt: new Date()} )
-  current++
-  console.log({elapsedList})
-  beforePaused = 0
-  resume()
-
-}
-
-
-  onMount(next)
-  onDestroy(clear)
 
 </script>
 
-<p class="h-32 bg-gray-700 text-4xl text-gray-100 pt-8 text-center font-mono">
+<p class="h-32 bg-gray-700 text-2xl text-gray-100 pt-8 text-center font-mono">
   <span class="text-bold rounded-xl px-6 p-4 bg-gray-800">{current+1}</span>:
- <span class="text-bold rounded-xl p-4 bg-gray-800">
-  {elapsedPretty.H}:{elapsedPretty.M}:{elapsedPretty.S}.<span class="text-md">{elapsedPretty.ms}</span>
- </span>
+  <span class="text-bold rounded-xl p-4 bg-gray-800">
+    {elapsedPretty.H}:{elapsedPretty.M}:{elapsedPretty.S}.<span class="text-md">{elapsedPretty.ms}</span>
+  </span>
 </p>
 <div class="flex flex-row py-4 justify-center space-x-4">
 
