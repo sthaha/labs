@@ -1,5 +1,5 @@
 import {writable, derived} from "svelte/store"
-import {formatTime, toHMS} from "./utils"
+import {toHMS} from "./utils"
 
 
 const newTestDuration = ()=> {

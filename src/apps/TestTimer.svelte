@@ -18,6 +18,8 @@ const stop = () => started = false;
 
 
 <div class="flex h-screen-0.75 p-8 white bg-gray-100 shadow-xl items-center flex-col">
+  <RunningTimer on:reset={stop} />
+  <!--
   {#if !started }
     <TimePicker />
     <Button enabled={ $testDuration > 0 } class="mt-4 w-32 " on:click={start}>
@@ -26,4 +28,5 @@ const stop = () => started = false;
   {:else}
     <RunningTimer on:reset={stop} />
   {/if}
+  -->
 </div>

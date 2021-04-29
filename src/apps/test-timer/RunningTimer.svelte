@@ -1,58 +1,125 @@
-<script>
-import { createEventDispatcher, onMount, onDestroy } from "svelte"
-import { testDuration } from "./store"
+<script lang="ts">
 
+import { createEventDispatcher, onMount, onDestroy } from "svelte"
+import {formatTime, formatHMS, toHMS} from "./utils"
+
+import StopWatch from "./StopWatch.svelte"
 import Toggle from "../../ui/Toggle.svelte"
 import Button from "../../ui/Button.svelte"
 
+let stopWatch
 
-const cleanup = () => {
 
+let current= 0
+const next = () => {
+  stopWatch.restart()
+  current++
+}
+const togglePaused = () => {
+  stopWatch.toggleRun()
 }
 
+const stop = () => {
+  stopWatch.stop()
+}
+
+let elapsedList= []
+
 const dispatch = createEventDispatcher()
+
+const cleanup = () => {
+  stopWatch.stop()
+  elapsedList = []
+  current = 0
+}
+
 const reset = () => {
   cleanup()
   dispatch('reset', {});
 }
 
+const nextOne = (e) => {
+  const {startedAt, endedAt, elapsed, paused} = e.detail
+  console.log(
+    "time:", startedAt.toLocaleTimeString(),
+    " -> ", endedAt.toLocaleTimeString(),
+    " elapsed: ", formatTime(elapsed),
+    " paused: ", formatHMS(paused),
+  )
 
+  elapsedList = [...elapsedList, {
+    startedAt,
+    endedAt,
+    elapsed,
+    paused,
+  }]
 
+}
+
+let state = "stopped"
+const setState = (x) => {
+  console.log({from: state, to: x})
+  state = x
+}
+
+const stateChanged = ({detail}) => {
+  console.log(State)
+  console.log({detail})
+  running = detail.state == State.Running
+}
+
+onMount(() => {
+  setTimeout(() => { next() })
+})
 </script>
 
-<p class="h-32 bg-gray-700 text-2xl text-gray-100 pt-8 text-center font-mono">
-  <span class="text-bold rounded-xl px-6 p-4 bg-gray-800">{current+1}</span>:
-  <span class="text-bold rounded-xl p-4 bg-gray-800">
-    {elapsedPretty.H}:{elapsedPretty.M}:{elapsedPretty.S}.<span class="text-md">{elapsedPretty.ms}</span>
-  </span>
-</p>
+
+<div class="bg-gray-700 p-2 flex">
+  <div class="font-mono text-xl text-gray-100 text-bold rounded-xl px-6 mr-2 py-4 bg-gray-800">{current}</div>
+  <StopWatch bind:this={stopWatch}
+    on:lap={nextOne}
+    on:pause={ () => setState("paused")  }
+    on:run={   () => setState("running") }
+    on:stop={  () => setState("stopped") }
+  />
+</div>
+
 <div class="flex flex-row py-4 justify-center space-x-4">
 
-{#if !stopped }
-   <div>
-     <Button class="w-48 font-bold" on:click={next}>
-       <span slot="contents"> Next </span>
-     </Button >
-   </div>
 
-   <div>
-     <Button class="bg-yellow-600 w-32" on:click={togglePaused}>
-       <span slot="contents"> Pause </span>
-     </Button >
-   </div>
+{#if state != "stopped" }
+  <div>
+    <Button enabled={state == "running"} class="w-48 font-bold" on:click={next}>
+      <span slot="contents"> Next </span>
+    </Button >
+  </div>
 
-   <div>
+  <div>
+    <Toggle class="bg-yellow-600 w-32" invert={true} on:toggle={togglePaused}>
+      <span slot="active" class="text-gray-200"> Pause </span>
+      <span slot="inactive" class="text-gray-200" > Resume </span>
+    </Toggle >
+  </div>
+
+  <div>
     <Button class="bg-red-800 w-24" on:click={stop}>
       <span slot="contents"> Stop </span>
     </Button >
   </div>
+{:else}
+  <div>
+    <Button class="w-48 font-bold" on:click={togglePaused}>
+      <span slot="contents"> Start </span>
+    </Button >
+  </div>
+
+  <div>
+    <Button class="bg-gray-600 w-24 " on:click={reset}>
+      <span slot="contents" class="text-sm"> Reset </span>
+    </Button >
+  </div>
 {/if}
 
- <div>
-   <Button class="bg-gray-600 w-24 " on:click={reset}>
-     <span slot="contents" class="text-sm"> Reset </span>
-   </Button >
- </div>
 
 </div>
 
@@ -84,10 +151,10 @@ const reset = () => {
             <tr class="hover:bg-blue-300 ease-in transition duration-300 bg-white">
               <td class="px-6 py-2 whitespace-nowrap"> {i+1} </td>
               <td class="px-6 py-2 font-mono whitespace-nowrap">
-                {x.elapsed.H}:{x.elapsed.M}:{x.elapsed.S}.<span class="text-md">{x.elapsed.ms}</span>
+                {formatHMS(x.elapsed)}<span class="text-sm text-gray-500">.{x.elapsed.ms}</span>
               </td>
               <td class="px-6 py-2 whitespace-nowrap"> {x.startedAt.toLocaleTimeString()} </td>
-              <td class="px-6 py-2 whitespace-nowrap"> {prettyTime(x.paused)} </td>
+              <td class="px-6 py-2 whitespace-nowrap"> {formatHMS(x.paused)}</td>
               <td class="px-6 py-2 whitespace-nowrap"> {x.endedAt.toLocaleTimeString()} </td>
             </tr>
           {/each}
