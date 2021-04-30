@@ -1,93 +1,96 @@
 <script lang="ts">
 
 import {onDestroy, createEventDispatcher} from "svelte"
-import {formatTime,, toHMS, prettyHMS} from "./utils"
+import {formatTime, toHMS, prettyHMS} from "./utils"
 
 export enum State {
   Running,
   Paused,
-  Stopped,
 }
 
-
+let state =  State.Paused
 
 let startedAt // start of the stopwatch
 let ranAt     // time at which the timer was restarted
 
 let previousElapsed = 0
 let elapsed = 0
-let state =  State.Stopped
 
 
 $: elapsedPretty = prettyHMS(elapsed)
 
-export const isRunning = () =>  state == State.Running
-
-// after you stop you can only restart and can't pause and resume
-export const stop = () => {
-  if (state == State.Stopped) {
-    return
-  }
-
+export const reset = () => {
   stopTimer()
   dispatchLap()
-  state = State.Stopped
 
+  state = State.Paused
   startedAt = null
   ranAt = null
   previousElapsed = 0
   elapsed = 0
-  dispatch('stop', {state})
-}
-
-export const restart = () => {
-  stop()
-  run()
-}
-
-export const toggleRun = () => {
-  if (state == State.Stopped) {
-    return
-  }
-  state == State.Running ? pause() : run()
 }
 
 const dispatch = createEventDispatcher()
-
-
-const computeElapsed = () => {
-  elapsed = new Date() - ranAt + previousElapsed
+export const pause = () => {
+  previousElapsed = elapsed
+  stopTimer()
+  state = State.Paused
+  dispatch('pause')
 }
 
-const dispatchLap = () : Date => {
-  // can't go to next lap when the timer itself isn't running
-  if (state != State.Running) {
-    return
-  }
-
-  const now = new Date()
-
-  elapsed = toHMS(now - ranAt + previousElapsed)
-  const paused =  toHMS(Math.floor((now - startedAt  - elapsed)/10) * 10)
-  dispatch("lap", {startedAt, endedAt: now,  elapsed, paused})
+export const restart = () => {
+  reset()
+  run()
 }
 
 let timer
 const run = () => {
   startedAt ||= new Date()
-  ranAt = ranAt ? new  Date() : startedAt
-  timer = setInterval(computeElapsed, 20)
   state = State.Running
+  ranAt = ranAt ? new  Date() : startedAt
+
+  timer = setInterval(() => {
+    elapsed = new Date() - ranAt + previousElapsed
+  }, 15)
+
+  console.log("run", {
+    startedAt: startedAt.toLocaleTimeString(),
+    ranAt: ranAt.toLocaleTimeString(),
+    elapsed: formatTime(elapsed),
+    prev: formatTime(previousElapsed)
+  })
   dispatch('run', {state})
 }
 
-
-const pause = () => {
-  previousElapsed += elapsed
-  stopTimer()
-  state = State.Paused
-  dispatch('pause', {state})
+export const toggleRun = () => {
+  state == State.Running ? pause() : run()
 }
+
+
+
+const dispatchLap = () : Date => {
+  if (!startedAt || !ranAt) {
+    return
+  }
+
+  const now = new Date()
+
+  const paused = Math.floor((now - startedAt - elapsed )/10) * 10
+
+  console.log(" >>> change", {
+    startedAt: startedAt.toLocaleTimeString(), endedAt: now.toLocaleTimeString(),
+    elapsed: toHMS(elapsed),
+    paused: toHMS(paused)},
+    paused)
+
+  dispatch("change", {
+      startedAt, endedAt: now,
+      elapsed: toHMS(elapsed),
+      paused: toHMS(paused)
+    })
+}
+
+
 
 const stopTimer = () => {
   clearInterval(timer)
@@ -107,9 +110,11 @@ onDestroy(() => {
     <div class="p-2 rounded-xl appearance-none outline-none"> {elapsedPretty.M} </div>
     <div class="text-gray-400">:</div>
 
-    <div class="p-2 rounded-xl appearance-none outline-none"> {elapsedPretty.S} </div>
-    <div class="text-gray-400">.</div>
+    <div class="pl-2 rounded-xl appearance-none outline-none"> {elapsedPretty.S} </div>
+    <div class="text-gray-400 text-sm">.</div>
 
-    <div class="p-2 rounded-xl appearance-none outline-none"> {elapsedPretty.ms} </div>
+    <div class="pr-2 rounded-xl appearance-none outline-none text-sm text-gray-300">
+      {elapsedPretty.ms}
+    </div>
   </div>
 </div>

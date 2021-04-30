@@ -4,6 +4,7 @@ import { createEventDispatcher, onMount, onDestroy } from "svelte"
 import {formatTime, formatHMS, toHMS} from "./utils"
 
 import StopWatch from "./StopWatch.svelte"
+import Counter from "./Counter.svelte"
 import Toggle from "../../ui/Toggle.svelte"
 import Button from "../../ui/Button.svelte"
 
@@ -15,12 +16,14 @@ const next = () => {
   stopWatch.restart()
   current++
 }
+
 const togglePaused = () => {
   stopWatch.toggleRun()
 }
 
 const stop = () => {
-  stopWatch.stop()
+  stopWatch.pause()
+  setState("stopped")
 }
 
 let elapsedList= []
@@ -28,14 +31,17 @@ let elapsedList= []
 const dispatch = createEventDispatcher()
 
 const cleanup = () => {
-  stopWatch.stop()
+  stopWatch.reset()
   elapsedList = []
-  current = 0
+  current = 1
 }
 
 const reset = () => {
   cleanup()
-  dispatch('reset', {});
+}
+
+const dispatchDone = () => {
+  dispatch('done', {});
 }
 
 const nextOne = (e) => {
@@ -63,8 +69,7 @@ const setState = (x) => {
 }
 
 const stateChanged = ({detail}) => {
-  console.log(State)
-  console.log({detail})
+  console.log("state changed: ", {detail})
   running = detail.state == State.Running
 }
 
@@ -75,12 +80,12 @@ onMount(() => {
 
 
 <div class="bg-gray-700 p-2 flex">
-  <div class="font-mono text-xl text-gray-100 text-bold rounded-xl px-6 mr-2 py-4 bg-gray-800">{current}</div>
+  <Counter value={current} />
+
   <StopWatch bind:this={stopWatch}
-    on:lap={nextOne}
+    on:change={nextOne}
     on:pause={ () => setState("paused")  }
     on:run={   () => setState("running") }
-    on:stop={  () => setState("stopped") }
   />
 </div>
 
@@ -108,14 +113,20 @@ onMount(() => {
   </div>
 {:else}
   <div>
-    <Button class="w-48 font-bold" on:click={togglePaused}>
-      <span slot="contents"> Start </span>
+    <Button class="bg-gray-600 w-24 " on:click={reset}>
+      <span slot="contents" class="text-sm"> Reset </span>
     </Button >
   </div>
 
   <div>
-    <Button class="bg-gray-600 w-24 " on:click={reset}>
-      <span slot="contents" class="text-sm"> Reset </span>
+    <Button class="w-48 font-bold" on:click={togglePaused}>
+      <span slot="contents"> Resume </span>
+    </Button >
+  </div>
+
+  <div>
+    <Button class="bg-red-400 w-32 " on:click={dispatchDone}>
+      <span slot="contents" class="text-md"> Set Time </span>
     </Button >
   </div>
 {/if}
