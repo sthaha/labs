@@ -70,6 +70,7 @@ export const toggleRun = () => {
 
 const dispatchLap = () : Date => {
   if (!startedAt || !ranAt) {
+    console.warn("sending lap when there is no start or end")
     return
   }
 
@@ -83,11 +84,7 @@ const dispatchLap = () : Date => {
     paused: toHMS(paused)},
     paused)
 
-  dispatch("change", {
-      startedAt, endedAt: now,
-      elapsed: toHMS(elapsed),
-      paused: toHMS(paused)
-    })
+  dispatch("change", { startedAt, endedAt: now, elapsed, pause })
 }
 
 

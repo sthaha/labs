@@ -137,33 +137,37 @@ onMount(() => {
 <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
   <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+      <table class="min-w-full divide-y divide-gray-400">
+        <thead class="bg-gray-700 text-gray-100">
           <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
               No
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
               Elapsed
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
               Started At
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
               Paused
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
               Ended At
             </th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200 ">
-          {#each elapsedList.slice(0, current) as x, i}
-            <tr class="hover:bg-blue-300 ease-in transition duration-300 bg-white">
-              <td class="px-6 py-2 whitespace-nowrap"> {i+1} </td>
-              <td class="px-6 py-2 font-mono whitespace-nowrap">
-                {formatHMS(x.elapsed)}<span class="text-sm text-gray-500">.{x.elapsed.ms}</span>
-              </td>
+        <tbody class="bg-white divide-y divide-gray-300 ">
+          {#each elapsedList.slice(0, current).reverse() as x, i}
+            <tr
+              class="hover:bg-blue-300 ease-in transition duration-300"
+              class:bg-white={i!=0}
+              class:bg-red-300={i==0}
+            >
+              <td class="px-6 py-2 whitespace-nowrap"> {current - i-1} </td>
+              <td class="px-6 py-2 whitespace-nowrap"> {formatHMS(x.elapsed)}</td>
+
+              <!-- {formatHMS(x.elapsed)}<span class="text-sm text-gray-500">.{x.elapsed.ms}</span>  </td> -->
               <td class="px-6 py-2 whitespace-nowrap"> {x.startedAt.toLocaleTimeString()} </td>
               <td class="px-6 py-2 whitespace-nowrap"> {formatHMS(x.paused)}</td>
               <td class="px-6 py-2 whitespace-nowrap"> {x.endedAt.toLocaleTimeString()} </td>
