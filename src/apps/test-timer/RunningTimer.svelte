@@ -2,6 +2,7 @@
 
 import { createEventDispatcher, onMount, onDestroy } from "svelte"
 import {formatTime, formatHMS, toHMS} from "./utils"
+import {exportCSV} from "./export-csv"
 
 import StopWatch from "./StopWatch.svelte"
 import Counter from "./Counter.svelte"
@@ -9,12 +10,20 @@ import Toggle from "../../ui/Toggle.svelte"
 import Button from "../../ui/Button.svelte"
 
 let stopWatch
-
-
+let elapsedList= []
 let current= 0
+
 const next = () => {
   stopWatch.restart()
-  current++
+}
+
+const mergePrevious = () => {
+  if (current == 0) {
+    return
+  }
+  current--
+  const {startedAt, elapsed } = elapsedList[current]
+  stopWatch.restartAt(startedAt, elapsed)
 }
 
 const togglePaused = () => {
@@ -22,18 +31,36 @@ const togglePaused = () => {
 }
 
 const stop = () => {
-  stopWatch.pause()
+  stopWatch.stop()
   setState("stopped")
 }
 
-let elapsedList= []
+
+
+const download = () => {
+
+  const headers = ["NO.", "Time Taken", "Started At", "Paused", "Ended At"].join(",")
+
+  const data = headers + "\n" + elapsedList.slice(0, current).map(
+      (x, i) => [
+          i+1,
+          formatHMS(x.elapsed),
+          x.startedAt.toLocaleTimeString(),
+          formatHMS(x.paused),
+          x.endedAt.toLocaleTimeString(),
+      ].join(",")
+    ).join("\n")
+
+  exportCSV("test-time.csv", data)
+}
+
 
 const dispatch = createEventDispatcher()
 
 const cleanup = () => {
   stopWatch.reset()
   elapsedList = []
-  current = 1
+  current = 0
 }
 
 const reset = () => {
@@ -44,7 +71,7 @@ const dispatchDone = () => {
   dispatch('done', {});
 }
 
-const nextOne = (e) => {
+const recordTime = (e) => {
   const {startedAt, endedAt, elapsed, paused} = e.detail
   console.log(
     "time:", startedAt.toLocaleTimeString(),
@@ -53,13 +80,13 @@ const nextOne = (e) => {
     " paused: ", formatHMS(paused),
   )
 
-  elapsedList = [...elapsedList, {
+  elapsedList[current] = {
     startedAt,
     endedAt,
     elapsed,
     paused,
-  }]
-
+  }
+  current++
 }
 
 let state = "stopped"
@@ -73,17 +100,17 @@ const stateChanged = ({detail}) => {
   running = detail.state == State.Running
 }
 
-onMount(() => {
-  setTimeout(() => { next() })
-})
+// onMount(() => { */
+//  setTimeout(() => { next() })
+// })
 </script>
 
 
 <div class="bg-gray-700 p-2 flex">
-  <Counter value={current} />
+  <Counter value={current+1} />
 
   <StopWatch bind:this={stopWatch}
-    on:change={nextOne}
+    on:change={recordTime}
     on:pause={ () => setState("paused")  }
     on:run={   () => setState("running") }
   />
@@ -94,8 +121,17 @@ onMount(() => {
 
 {#if state != "stopped" }
   <div>
-    <Button enabled={state == "running"} class="w-48 font-bold" on:click={next}>
+    <Button enabled={state == "running"} class="w-32 font-bold" on:click={next}>
       <span slot="contents"> Next </span>
+    </Button >
+  </div>
+
+  <div>
+    <Button enabled={state == "running" && current >= 1}
+      class="w-24" on:click={mergePrevious}
+      enabledClass="bg-red-300 text-gray-100"
+    >
+      <span slot="contents"> Go Back </span>
     </Button >
   </div>
 
@@ -107,30 +143,40 @@ onMount(() => {
   </div>
 
   <div>
-    <Button class="bg-red-800 w-24" on:click={stop}>
+    <Button enabledClass = "bg-red-500 text-gray-100" class="w-24" on:click={stop}>
       <span slot="contents"> Stop </span>
     </Button >
   </div>
 {:else}
+
   <div>
-    <Button class="bg-gray-600 w-24 " on:click={reset}>
-      <span slot="contents" class="text-sm"> Reset </span>
+    <Button class="w-36 font-bold" on:click={togglePaused}>
+      <span slot="contents" > Start </span>
     </Button >
   </div>
 
-  <div>
-    <Button class="w-48 font-bold" on:click={togglePaused}>
-      <span slot="contents"> Resume </span>
-    </Button >
-  </div>
-
+  <!--
   <div>
     <Button class="bg-red-400 w-32 " on:click={dispatchDone}>
       <span slot="contents" class="text-md"> Set Time </span>
     </Button >
   </div>
-{/if}
+  -->
 
+  {#if current >= 1 }
+    <div>
+      <Button enabledClass="bg-red-500 text-gray-100" class="w-24" on:click={reset}>
+        <span slot="contents" class="px-2"> Reset </span>
+      </Button >
+    </div>
+
+    <div>
+      <Button class="bg-blue-500" on:click={download}>
+        <span slot="contents"> Download </span>
+      </Button >
+    </div>
+  {/if}
+{/if}
 
 </div>
 
@@ -162,9 +208,9 @@ onMount(() => {
             <tr
               class="hover:bg-blue-300 ease-in transition duration-300"
               class:bg-white={i!=0}
-              class:bg-red-300={i==0}
+              class:bg-red-300={i==0 && current >= 2}
             >
-              <td class="px-6 py-2 whitespace-nowrap"> {current - i-1} </td>
+              <td class="px-6 py-2 whitespace-nowrap"> {current - i} </td>
               <td class="px-6 py-2 whitespace-nowrap"> {formatHMS(x.elapsed)}</td>
 
               <!-- {formatHMS(x.elapsed)}<span class="text-sm text-gray-500">.{x.elapsed.ms}</span>  </td> -->

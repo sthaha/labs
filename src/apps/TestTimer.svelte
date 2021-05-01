@@ -17,7 +17,10 @@ const done = () => started = false;
 </script>
 
 
-<div class="flex h-screen-0.75 p-8 white bg-gray-100 shadow-xl items-center flex-col">
+<div class="flex h-screen-0.80 p-8 white bg-gray-100 shadow-xl items-center flex-col">
+  <RunningTimer on:done={done} />
+  <!--
+
   {#if !started }
   <TimePicker />
   <Button enabled={ $testDuration > 0 } class="mt-4 w-32 " on:click={start}>
@@ -26,4 +29,5 @@ const done = () => started = false;
   {:else}
     <RunningTimer on:done={done} />
   {/if}
+  -->
 </div>

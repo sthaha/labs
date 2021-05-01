@@ -21,8 +21,6 @@ $: elapsedPretty = prettyHMS(elapsed)
 
 export const reset = () => {
   stopTimer()
-  dispatchLap()
-
   state = State.Paused
   startedAt = null
   ranAt = null
@@ -39,7 +37,23 @@ export const pause = () => {
 }
 
 export const restart = () => {
+  dispatchLap()
   reset()
+  run()
+}
+
+export const stop = () => {
+  pause()
+  dispatchLap()
+  reset()
+}
+
+export const restartAt = (start, alreadyElapsed) => {
+  stopTimer()
+  startedAt = start
+  ranAt = start
+  previousElapsed = alreadyElapsed + elapsed
+  elapsed = 0
   run()
 }
 
@@ -86,7 +100,6 @@ const dispatchLap = () : Date => {
 
   dispatch("change", { startedAt, endedAt: now, elapsed, pause })
 }
-
 
 
 const stopTimer = () => {
