@@ -95,10 +95,9 @@ const dispatchLap = () : Date => {
   console.log(" >>> change", {
     startedAt: startedAt.toLocaleTimeString(), endedAt: now.toLocaleTimeString(),
     elapsed: toHMS(elapsed),
-    paused: toHMS(paused)},
-    paused)
+    paused: toHMS(paused)}, paused)
 
-  dispatch("change", { startedAt, endedAt: now, elapsed, pause })
+  dispatch("change", { startedAt, endedAt: now, elapsed, paused })
 }
 
 

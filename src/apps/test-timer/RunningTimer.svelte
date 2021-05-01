@@ -77,7 +77,7 @@ const recordTime = (e) => {
     "time:", startedAt.toLocaleTimeString(),
     " -> ", endedAt.toLocaleTimeString(),
     " elapsed: ", formatTime(elapsed),
-    " paused: ", formatHMS(paused),
+    " paused: ", formatHMS(paused), paused
   )
 
   elapsedList[current] = {
