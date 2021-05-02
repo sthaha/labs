@@ -157,36 +157,36 @@ onMount(() => {
 
 {#if state != "stopped" }
   <div>
-    <Button enabled={state == "running"} class="w-32 font-bold" on:click={next}>
+    <Button enabled={state == "running"} class="md:w-32 font-bold" on:click={next}>
       <span slot="contents"> Next </span>
     </Button >
   </div>
 
   <div>
     <Button enabled={state == "running" && current >= 1}
-      class="w-24" on:click={mergePrevious}
+      class="md:w-24" on:click={mergePrevious}
       enabledClass="bg-red-300 text-gray-100"
     >
-      <span slot="contents"> Go Back </span>
+      <span slot="contents"> Back </span>
     </Button >
   </div>
 
   <div>
-    <Toggle class="bg-yellow-600 w-32"  isActive={() => state == "running"} invert={true} on:toggle={togglePaused}>
+    <Toggle class="bg-yellow-600 md:w-32"  isActive={() => state == "running"} invert={true} on:toggle={togglePaused}>
       <span slot="active" class="text-gray-200"> Pause </span>
       <span slot="inactive" class="text-gray-200" > Resume </span>
     </Toggle >
   </div>
 
   <div>
-    <Button enabledClass = "bg-red-500 text-gray-100" class="w-24" on:click={stop}>
+    <Button enabledClass = "bg-red-500 text-gray-100" class="md:w-24" on:click={stop}>
       <span slot="contents"> Stop </span>
     </Button >
   </div>
 {:else}
 
   <div>
-    <Button class="w-36 font-bold" on:click={togglePaused}>
+    <Button class="w-24 md:w-36 font-bold" on:click={togglePaused}>
       <span slot="contents" > Start </span>
     </Button >
   </div>
@@ -201,7 +201,7 @@ onMount(() => {
 
   {#if current >= 1 }
     <div>
-      <Button enabledClass="bg-red-500 text-gray-100" class="w-24" on:click={reset}>
+      <Button enabledClass="bg-red-500 text-gray-100" class="md:w-24" on:click={reset}>
         <span slot="contents" class="px-2"> Reset </span>
       </Button >
     </div>
@@ -222,20 +222,20 @@ onMount(() => {
       <table class="min-w-full divide-y divide-gray-400">
         <thead class="bg-gray-700 text-gray-100">
           <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+            <th scope="col" class="px-3 md:px-6 py-3 text-xs font-medium uppercase tracking-wider">
               No
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+            <th scope="col" class="px-3 md:px-6 py-3 text-xs font-medium uppercase tracking-wider">
               Elapsed
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-              Started At
+            <th scope="col" class="px-3  md:px-6 py-3 text-xs font-medium uppercase tracking-wider">
+              Start
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+            <th scope="col" class="hidden md:table-cell px-3 py-3 text-xs font-medium uppercase tracking-wider">
               Paused
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-              Ended At
+            <th scope="col" class="px-3 py-3 text-xs font-medium uppercase tracking-wider">
+              End
             </th>
           </tr>
         </thead>
@@ -246,13 +246,13 @@ onMount(() => {
               class:bg-white={i!=0}
               class:bg-red-300={i==0 && current >= 2}
             >
-              <td class="px-6 py-2 whitespace-nowrap"> {current - i} </td>
-              <td class="px-6 py-2 whitespace-nowrap"> {formatHMS(x.elapsed)}</td>
+              <td class="px-3 py-2 text-right whitespace-nowrap"> {current - i} </td>
+              <td class="px-3 py-2 whitespace-nowrap"> {formatHMS(x.elapsed)}</td>
 
               <!-- {formatHMS(x.elapsed)}<span class="text-sm text-gray-500">.{x.elapsed.ms}</span>  </td> -->
-              <td class="px-6 py-2 whitespace-nowrap"> {x.startedAt.toLocaleTimeString()} </td>
-              <td class="px-6 py-2 whitespace-nowrap"> {formatHMS(x.paused)}</td>
-              <td class="px-6 py-2 whitespace-nowrap"> {x.endedAt.toLocaleTimeString()} </td>
+              <td class="px-3 py-2 whitespace-nowrap"> {x.startedAt.toLocaleTimeString()} </td>
+              <td class="hidden md:table-cell px-3 py-2 whitespace-nowrap"> {formatHMS(x.paused)}</td>
+              <td class="px-3 py-2 whitespace-nowrap"> {x.endedAt.toLocaleTimeString()} </td>
             </tr>
           {/each}
 
