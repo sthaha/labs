@@ -1,29 +1,50 @@
 <script>
-  export let active = true
-  export let invert = false
+import {onMount} from "svelte"
 
-  import { createEventDispatcher } from 'svelte';
+export let enabled = true
+export let invert = false
 
-	const dispatch = createEventDispatcher();
+const toggleActive = () => !active
+export let isActive = toggleActive
 
-  const toggle = () => {
-    active  = !active
-    dispatch('toggle', {active});
+let active = true
+
+import { createEventDispatcher } from 'svelte';
+
+const dispatch = createEventDispatcher();
+
+const toggle = () => {
+  if (!enabled) {
+    return
   }
+
+  dispatch('toggle', {active});
+  active = isActive()
+}
+
+onMount(() => {
+  // if user has explicitly set isActive, then invoke that on mount
+  if (isActive != toggleActive) {
+    active = isActive()
+  }
+})
+
 </script>
 
 
 {#if $$slots.active  || $$slots.inactive }
   <button
-  class={
-    "inline-block px-4 py-2 rounded-2xl shadow " +
-    "text-center text-gray-200 " +
-    "hover:shadow-lg transition " +
-    ($$props.class || "")
-  }
-  class:bg-green-600={!invert && active || invert && !active}
-  class:bg-gray-600={!invert && !active || invert && active}
-  on:click={toggle}>
+    class={
+      "inline-block px-4 py-2 rounded-2xl shadow " +
+      "text-center " +
+      "hover:shadow-lg transition " +
+      ($$props.class || "")
+    }
+    class:text-gray-500={ !enabled }
+    class:bg-gray-700={ !enabled }
+    class:bg-green-600={!invert && active || invert && !active}
+    class:bg-gray-600={!invert && !active || invert && active}
+    on:click={toggle}>
 
   {#if active}
     <slot name="active"></slot>
