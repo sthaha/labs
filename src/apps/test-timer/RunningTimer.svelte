@@ -65,6 +65,8 @@ const cleanup = () => {
 
 const reset = () => {
   cleanup()
+  const store = window.localStorage
+  store.clear()
 }
 
 const dispatchDone = () => {
@@ -87,12 +89,14 @@ const recordTime = (e) => {
     paused,
   }
   current++
+  save()
 }
 
 let state = "stopped"
 const setState = (x) => {
   console.log({from: state, to: x})
   state = x
+  save()
 }
 
 const stateChanged = ({detail}) => {
@@ -100,9 +104,41 @@ const stateChanged = ({detail}) => {
   running = detail.state == State.Running
 }
 
-// onMount(() => { */
-//  setTimeout(() => { next() })
-// })
+const save = () => {
+  const store = window.localStorage
+  store.setItem("state", state)
+  store.setItem("elapsedList", JSON.stringify(elapsedList))
+  store.setItem("current", current)
+
+}
+
+const restore = () =>{
+  const store = window.localStorage
+  const s = store.getItem("state")
+  const list = JSON.parse(store.getItem("elapsedList"))
+  const c = parseInt(store.getItem("current"))
+  console.log({s, list, c})
+
+  if (!s || !list || !c ) {
+    console.log("no previous session found")
+    return
+  }
+  state = s
+  elapsedList = list.map(x => ({
+    ...x,
+    startedAt: new Date(x.startedAt),
+    endedAt: new Date(x.endedAt),
+  }))
+  current = c
+  console.log({state, elapsedList, current})
+}
+
+onMount(() => {
+  restore()
+  if (state == "running") {
+    next()
+  }
+})
 </script>
 
 
@@ -136,7 +172,7 @@ const stateChanged = ({detail}) => {
   </div>
 
   <div>
-    <Toggle class="bg-yellow-600 w-32" invert={true} on:toggle={togglePaused}>
+    <Toggle class="bg-yellow-600 w-32"  isActive={() => state == "running"} invert={true} on:toggle={togglePaused}>
       <span slot="active" class="text-gray-200"> Pause </span>
       <span slot="inactive" class="text-gray-200" > Resume </span>
     </Toggle >
