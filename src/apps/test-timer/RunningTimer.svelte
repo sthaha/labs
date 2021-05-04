@@ -12,6 +12,7 @@ import Button from "../../ui/Button.svelte"
 let stopWatch
 let elapsedList= []
 let current= 0
+let taskName = ""
 
 const next = () => {
   stopWatch.restart()
@@ -51,7 +52,7 @@ const download = () => {
       ].join(",")
     ).join("\n")
 
-  exportCSV("test-time.csv", data)
+  exportCSV(taskName || "test-time.csv", data)
 }
 
 
@@ -61,6 +62,7 @@ const cleanup = () => {
   stopWatch.reset()
   elapsedList = []
   current = 0
+  taskName=""
 }
 
 const reset = () => {
@@ -142,7 +144,7 @@ onMount(() => {
 </script>
 
 
-<div class="bg-gray-700 p-2 flex">
+<div class="bg-gray-700 md:px-7 px-2 py-2 flex">
   <Counter value={current+1} />
 
   <StopWatch bind:this={stopWatch}
@@ -152,7 +154,8 @@ onMount(() => {
   />
 </div>
 
-<div class="flex flex-row py-4 justify-center space-x-4">
+
+<div class="flex flex-row py-4 justify-center items-center space-x-4">
 
 
 {#if state != "stopped" }
@@ -185,6 +188,14 @@ onMount(() => {
   </div>
 {:else}
 
+  {#if current == 0 }
+    <div>
+      <input class="bg-gray-700 text-gray-200 text-md ring px-2 py-1 rounded"
+        placeholder="task-name" type="text"
+        bind:value={taskName}
+      />
+    </div>
+  {/if}
   <div>
     <Button class="w-24 md:w-36 font-bold" on:click={togglePaused}>
       <span slot="contents" > Start </span>
