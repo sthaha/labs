@@ -19,22 +19,22 @@
 <div class="-my-3 -mx-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
   <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-      <table class="min-w-full divide-y-2 divide-gray-300">
-        <thead class="bg-gray-50">
+      <table class="min-w-full divide-y divide-gray-300">
+        <thead class="bg-gray-700 text-gray-200">
           <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
               Demo
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
               Description
             </th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-300">
+        <tbody class="bg-gray-200 divide-y-2 divide-gray-300">
           {#each experiments as demo}
 
           <tr class="hover:bg-blue-300 ease-in transition duration-300 bg-white">
-            <td class="px-2 py-2 sm:px-6 sm:py-4 sm:whitespace-nowrap">
+            <td class="px-2 py-2 sm:px-6 sm:py-2 sm:whitespace-nowrap">
               <Link to={demo.link}>
                 <div class="flex items-center">
                   <div class="ml-2">
@@ -45,7 +45,7 @@
                 </div>
               </Link>
             </td>
-            <td class="px-6 py-4 sm:whitespace-nowrap">
+            <td class="px-6 py-3 sm:whitespace-nowrap">
               <Link to={demo.link}>
                 <div class="text-sm text-gray-900">{demo.description}</div>
               </Link>
