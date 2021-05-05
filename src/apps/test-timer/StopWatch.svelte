@@ -111,7 +111,7 @@ onDestroy(() => {
 })
 </script>
 
-<div class="inline-block p-2 min-w-min bg-gray-800 text-gray-200 rounded-lg text-2xl font-mono">
+<div class="inline-block p-2 min-w-min bg-gray-800 text-gray-200 rounded-lg text-md md:text-2xl font-mono">
   <div class="flex items-center">
     <div class="p-2 rounded-xl appearance-none outline-none"> {elapsedPretty.H} </div>
     <div class="text-gray-400">:</div>

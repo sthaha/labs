@@ -144,7 +144,7 @@ onMount(() => {
 </script>
 
 
-<div class="bg-gray-700 md:px-7 px-2 py-2 flex">
+<div class="bg-gray-700 md:px-7 px-3 py-2 flex">
   <Counter value={current+1} />
 
   <StopWatch bind:this={stopWatch}
@@ -155,8 +155,7 @@ onMount(() => {
 </div>
 
 
-<div class="flex flex-row py-4 justify-center items-center space-x-4">
-
+<div class="flex flex-row py-4 justify-center items-center space-x-2 md:space-x-4">
 
 {#if state != "stopped" }
   <div>
@@ -190,14 +189,14 @@ onMount(() => {
 
   {#if current == 0 }
     <div>
-      <input class="bg-gray-700 text-gray-200 text-md ring px-2 py-1 rounded"
-        placeholder="task-name" type="text"
+      <input class="bg-gray-700 text-gray-200  text-sm md:text-md ring px-2 py-1 rounded"
+        placeholder="task name" type="text"
         bind:value={taskName}
       />
     </div>
   {/if}
   <div>
-    <Button class="w-24 md:w-36 font-bold" on:click={togglePaused}>
+    <Button class="w-24 text-xs md:text-md md:w-36 font-bold" on:click={togglePaused}>
       <span slot="contents" > Start </span>
     </Button >
   </div>
@@ -227,10 +226,12 @@ onMount(() => {
 
 </div>
 
-<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+{#if current > 0 }
+
+<div class="text-xs md:text-md overflow-x-auto sm:-mx-6 lg:-mx-8">
   <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-      <table class="min-w-full divide-y divide-gray-400">
+      <table class="min-w-max divide-y divide-gray-400">
         <thead class="bg-gray-700 text-gray-100">
           <tr>
             <th scope="col" class="px-3 md:px-6 py-3 text-xs font-medium uppercase tracking-wider">
@@ -273,3 +274,4 @@ onMount(() => {
   </div>
 </div>
 
+{/if}
