@@ -36,8 +36,8 @@ onMount(() => {
   <button
     class={
       "inline-block px-4 py-2 rounded-2xl shadow " +
-      "text-center " +
-      "hover:shadow-lg transition " +
+      " text-center text-xs md:text-md" +
+      " hover:shadow-lg transition " +
       ($$props.class || "")
     }
     class:text-gray-500={ !enabled }

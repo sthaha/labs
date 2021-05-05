@@ -16,12 +16,10 @@ const handleClick = (e) => {
 </script>
 
 {#if $$slots.contents }
-
-
   <button
     class={
       "inline-block px-4 py-2 rounded-2xl shadow" +
-      " text-center " +
+      " text-center text-xs md:text-md" +
       " hover:shadow-lg transition " +
       ($$props.class || "") +
       " " + (enabled ? enabledClass : disabledClass)
