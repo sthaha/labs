@@ -4,6 +4,7 @@
   import { Link } from "svelte-routing";
 
   let experiments = [
+    {link: "apps/stopwatch", summary: "Stop Watch", description: "Stop watch for competetive test"},
     {link: "beyond/test-timer", summary: "Test Timer", description: "A work in progress Test Timer for competetive test"},
     {link: "beyond/spirograph", summary: "Spirograph", description: "Spirograph creates beautiful patterns"},
     {link: "beyond/parametric-eq", summary: "Line Animation", description: "Line animations using parametric equations"},

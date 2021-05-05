@@ -29,6 +29,7 @@
       <Route path="beyond/spirograph" component="{Spirograph}" />
       <Route path="beyond/parametric-eq" component="{ParametricEqLines}" />
       <Route path="beyond/test-timer" component="{TestTimer}" />
+      <Route path="apps/stopwatch" component="{TestTimer}" />
       <Route path="demo/ui/buttons" component="{Buttons}" />
       <Route path="demo/ui/toggles" component="{Toggles}" />
       <Route path="/" component="{LinksTable}" />
