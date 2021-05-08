@@ -31,7 +31,7 @@ export let url = "";
       <Route path="apps/stopwatch" component="{TestTimer}" />
       <Route path="demo/ui/buttons" component="{Buttons}" />
       <Route path="demo/ui/toggles" component="{Toggles}" />
-      <Route path="learn/store/timer" component="{Timer}" />
+      <Route path="learn/svelte/store/timer" component="{Timer}" />
       <Route path="/" component="{LinksTable}" />
     </div>
 
