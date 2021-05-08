@@ -6,15 +6,15 @@ const newTimer = () => {
   const {subscribe, set, update} = writable(0)
 
   let timer: ReturnType<typeof setTimeout>|null = null
-  let startedAt: Date|undefined
-  let lapStart: Date|undefined
+  let startedAt: Date|undefined|number
+  let lapStart: number
   let elapsed: number = 0
   let oldElapsed: number = 0
 
   const init = () => {
     timer = null
     startedAt = undefined
-    lapStart = undefined
+    lapStart = 0
     elapsed = 0
     oldElapsed = 0
     set(elapsed)
@@ -23,8 +23,7 @@ const newTimer = () => {
   const setElapsed =(x: number) => {
     oldElapsed = x
     elapsed = x
-    const now = new Date()
-    startedAt = now - x
+    startedAt = Date.now() - x
     set(x)
   }
 
@@ -37,17 +36,16 @@ const newTimer = () => {
     console.log("before start", {startedAt, lapStart, oldElapsed, elapsed})
 
     startedAt ||= new Date()
-    lapStart = new Date()
+    lapStart = Date.now()
     oldElapsed = elapsed
 
     console.log("start", {startedAt, lapStart, oldElapsed, elapsed})
 
     timer = setInterval(() => {
-      const now : Date = new Date()
-      elapsed =  now - lapStart + oldElapsed
+      elapsed =  Date.now() - lapStart + oldElapsed
       console.log(" ... setting elapsed", timer, elapsed)
       set(elapsed)
-    }, 200)
+    }, 40)
     console.log("started", {startedAt, lapStart, oldElapsed, elapsed, timer})
   }
 
