@@ -21,7 +21,6 @@ export let url = "";
 <Router url="{url}">
   <Nav/>
   <div class="bg-gray-200 mt-14 w-screen h-screen flex flex-col">
-
     <!-- list of experiments -->
     <div class="flex mt-6 flex-col mx-4">
       <Route path="demo/2D" component="{P2DTest}" />
@@ -34,7 +33,6 @@ export let url = "";
       <Route path="learn/svelte/store/timer" component="{Timer}" />
       <Route path="/" component="{LinksTable}" />
     </div>
-
   </div>
 </Router >
 
