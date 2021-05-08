@@ -12,6 +12,7 @@
     {link: "demo/3D", summary: "3D Demo", description: "Test 3D WebGL Rendering"},
     {link: "demo/ui/buttons", summary: "Buttons UI", description: "Test ui/button component"},
     {link: "demo/ui/toggles", summary: "Toggle UI", description: "Test ui/toggle component"},
+    {link: "learn/store/timer", summary: "Experiment with Svelte Stores", description: "Tryout setInterval on store"},
   ]
 </script>
 

@@ -1,21 +1,21 @@
 <script lang='typescript'>
-  import './styles.svelte';
+import './styles.svelte';
 
-  import { Router, Route } from "svelte-routing";
+import { Router, Route } from "svelte-routing";
 
-  import Nav from './Nav.svelte';
-  import LinksTable from './LinksTable.svelte';
+import Nav from './Nav.svelte';
+import LinksTable from './LinksTable.svelte';
 
-  import P2DTest from "./routes/P2DTest.svelte";
-  import P3DTest from "./routes/P3DTest.svelte";
-  import ParametricEqLines from "./beyond/ParametricEqLines.svelte";
-  import Spirograph from "./beyond/Spirograph.svelte";
-  import TestTimer from "./apps/TestTimer.svelte";
-  import Buttons from "./ui-demo/Buttons.svelte";
-  import Toggles from "./ui-demo/Toggles.svelte";
+import P2DTest from "./routes/P2DTest.svelte";
+import P3DTest from "./routes/P3DTest.svelte";
+import ParametricEqLines from "./beyond/ParametricEqLines.svelte";
+import Spirograph from "./beyond/Spirograph.svelte";
+import TestTimer from "./apps/TestTimer.svelte";
+import Buttons from "./ui-demo/Buttons.svelte";
+import Toggles from "./ui-demo/Toggles.svelte";
+import Timer from "./learn/svelte/store/timer/Timer.svelte";
 
-
-  export let url = "";
+export let url = "";
 </script>
 
 <Router url="{url}">
@@ -28,10 +28,10 @@
       <Route path="demo/3D" component="{P3DTest}" />
       <Route path="beyond/spirograph" component="{Spirograph}" />
       <Route path="beyond/parametric-eq" component="{ParametricEqLines}" />
-      <Route path="beyond/test-timer" component="{TestTimer}" />
       <Route path="apps/stopwatch" component="{TestTimer}" />
       <Route path="demo/ui/buttons" component="{Buttons}" />
       <Route path="demo/ui/toggles" component="{Toggles}" />
+      <Route path="learn/store/timer" component="{Timer}" />
       <Route path="/" component="{LinksTable}" />
     </div>
 
