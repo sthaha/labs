@@ -12,6 +12,7 @@ let experiments = [
   {link: "demo/ui/buttons", summary: "Buttons UI", description: "Test ui/button component"},
   {link: "demo/ui/toggles", summary: "Toggle UI", description: "Test ui/toggle component"},
   {link: "learn/svelte/store/timer", summary: "Custom Svelte Store for Timer", description: "Tryout setInterval on store"},
+  {link: "math/fs", summary: "Fourier Series using spinning disc", description: "fourier series"},
 ]
 let search: string = ""
 let filtered = experiments

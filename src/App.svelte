@@ -14,6 +14,7 @@ import TestTimer from "./apps/TestTimer.svelte";
 import Buttons from "./ui-demo/Buttons.svelte";
 import Toggles from "./ui-demo/Toggles.svelte";
 import Timer from "./learn/svelte/store/timer/Timer.svelte";
+import FS from "./math/FourierSeries.svelte";
 
 export let url = "";
 </script>
@@ -31,6 +32,7 @@ export let url = "";
       <Route path="demo/ui/buttons" component="{Buttons}" />
       <Route path="demo/ui/toggles" component="{Toggles}" />
       <Route path="learn/svelte/store/timer" component="{Timer}" />
+      <Route path="math/fs" component="{FS}" />
       <Route path="/" component="{LinksTable}" />
     </div>
   </div>
