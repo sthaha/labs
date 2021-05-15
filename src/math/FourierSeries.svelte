@@ -9,7 +9,7 @@ export let location;
 
 let dt = 0.025;
 let r = 60.0;
-let n = 4
+let numCircles = 4
 let t = 0.0;
 
 let p5js: p5
@@ -45,55 +45,53 @@ const sketch = (p: p5, el) => {
   const onResize = ()=> {
   }
 
-  const update = ()=> {
-    t += dt
-  }
-
-
-
-  const circle = (cx, cy, r, t, series) => {
+  const epicycle = (x, y, r, t, series) => {
 
     p.noFill()
-    p.strokeWeight(p.map(series, 1, n*2+1, 4, 1))
+    p.strokeWeight(p.map(series, 1, numCircles*2+1, 4, 1))
     p.stroke(22, 80 + series*15, 52 + series * 10, 180)
 
+    //  draw the circle
     const d = 2 * r
-    p.ellipse(cx, cy, d, d)
+    p.ellipse(x, y, d, d)
 
-    // point based on the rotation
-    const x = p.cos(t * series) * r +  cx
-    const y = p.sin(t * series) * r +  cy
+    // point based on the rotation (function of time) and the epicycle
+    const px = p.cos(t * series) * r +  x
+    const py = p.sin(t * series) * r +  y
 
 
     p.stroke(22, 120 + series*15, 82 + series * 10, 230)
     p.fill(22, 120 + series*15, 82 + series * 10, 230)
-    p.line(cx, cy, x, y)
-    p.ellipse(x, y, 2, 2)
 
-    return [x, y]
+    // a line from the center to the point tracking the rotation
+    p.line(x, y, px, py)
+    p.ellipse(px, py, 2, 2)
+
+    return [px, py]
   }
 
-  let graphX = r * n/2
+  let graphX = r * numCircles/2
 
   p.draw = () => {
     p.background(0);
-    update()
+    t += dt
 
-    p.noFill()
-    p.strokeWeight(2)
-
+    // initial centre of the base circle
     let cx = r * 3
     let cy = p.height/2
-    for(let i = 0; i < n; i++) {
-      const series = i * 2 + 1;
-      const cr = 4 / (series * p.PI) * r;
 
-      [cx, cy] = circle(cx, cy, cr, t, series)
+    for(let i = 0; i < numCircles; i++) {
+      const series = i * 2 + 1; // 1, 3, 5, 7 ..
+      const cr = 4 * r / (series * p.PI);
+      [cx, cy] = epicycle(cx, cy, cr, t, series)
 
-      graphX = p.max(cx, graphX)
+      graphX = p.max(cx+50, graphX)
     }
 
-    if (t <= p.TWO_PI * 1.2){
+
+    // trace the points around the circle
+
+    if (t < p.TWO_PI * 1.05){
       trace.push({x: cx, y: cy})
     }
 
@@ -107,6 +105,7 @@ const sketch = (p: p5, el) => {
     }
     p.endShape()
 
+    // plot the graph
     const lastY = graphX[0]
 
     if (lastY != p.round(cy)){
@@ -116,16 +115,17 @@ const sketch = (p: p5, el) => {
       }
     }
 
-    p.line(cx, cy, graphX+50, graph[0])
-    p.ellipse(graphX+50, graph[0], 2, 2)
+    p.line(cx, cy, graphX, graph[0])
+    p.stroke(22, 120 + numCircles*22, 82 + numCircles*12)
+    p.fill(22, 120 + numCircles*22, 82 + numCircles*12)
+    p.ellipse(graphX, graph[0], 4, 4)
 
-    p.strokeWeight(3)
-    p.stroke(22, 120 + n*15, 82 + n*10)
-
-
+    p.strokeWeight(2)
+    p.stroke(22, 120 + numCircles*13, 82 + numCircles*8)
+    p.noFill()
     p.beginShape()
     for (let i = 0; i <= graph.length; i++) {
-      p.vertex(graphX + 50 + i, graph[i])
+      p.vertex(graphX + i, graph[i])
     }
     p.endShape()
 
@@ -174,9 +174,9 @@ const sketch = (p: p5, el) => {
         <input class="table-cell align-left" type=range min="0.01" max="0.1" step="0.001" bind:value={dt} >
       </div>
       <div class="table-row">
-        <p class="table-cell w-12 font-mono text-right">iterations: </p>
-        <p class="table-cell w-24 truncate font-mono pl-2"> {n} </p>
-        <input class="table-cell align-left" type=range min="1" max="10" bind:value={n} >
+        <p class="table-cell w-12 font-mono text-right">circles: </p>
+        <p class="table-cell w-24 truncate font-mono pl-2"> {numCircles} </p>
+        <input class="table-cell align-left" type=range min="1" max="10" bind:value={numCircles} >
       </div>
     </div>
   </div>
