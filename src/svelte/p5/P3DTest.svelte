@@ -1,7 +1,7 @@
 <script lang='typescript'>
 export let location;
 
-import Canvas from '../p5/Canvas.svelte'
+import Canvas from "../../p5/Canvas.svelte";
 
 let speed = 0.01
 

@@ -3,7 +3,7 @@
 export let location;
 
 import p5 from "p5";
-import Canvas from "../p5/Canvas.svelte";
+import Canvas from "../../p5/Canvas.svelte";
 
 let width;
 let height;

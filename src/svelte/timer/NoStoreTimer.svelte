@@ -1,5 +1,6 @@
-<script>
-import Button from '../../../ui/Button.svelte'
+<script lang='typescript'>
+
+import Button from '../../ui/Button.svelte'
 import StatefulTimer from './StatefulTimer.svelte'
 
 export let location;

@@ -1,7 +1,7 @@
 <script>
 import {timer} from './store'
-import {formatTime} from '../../../../apps/test-timer/utils.ts'
-import Button from '../../../../ui/Button.svelte'
+import {formatTime} from '../../../apps/test-timer/utils.ts'
+import Button from '../../../ui/Button.svelte'
 
 export let location;
 

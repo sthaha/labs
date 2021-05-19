@@ -1,5 +1,5 @@
+<script lang='typescript'>
 
-<script>
 export let state = "paused"
 export let elapsed = 0
 
