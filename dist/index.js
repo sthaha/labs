@@ -1,4 +1,4 @@
-// build/_snowpack/pkg/common/index-fd9050d8.js
+// build/_snowpack/pkg/common/index-aa9609af.js
 function noop() {
 }
 function assign(tar, src) {
@@ -263,6 +263,9 @@ function schedule_update() {
 function add_render_callback(fn) {
   render_callbacks.push(fn);
 }
+function add_flush_callback(fn) {
+  flush_callbacks.push(fn);
+}
 var flushing = false;
 var seen_callbacks = new Set();
 function flush() {
@@ -377,6 +380,13 @@ function get_spread_update(levels, updates) {
 function get_spread_object(spread_props) {
   return typeof spread_props === "object" && spread_props !== null ? spread_props : {};
 }
+function bind(component, name, callback) {
+  const index = component.$$.props[name];
+  if (index !== void 0) {
+    component.$$.bound[index] = callback;
+    callback(component.$$.ctx[index]);
+  }
+}
 function create_component(block) {
   block && block.c();
 }
@@ -413,7 +423,7 @@ function make_dirty(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init(component, options, instance18, create_fragment20, not_equal2, props, dirty = [-1]) {
+function init(component, options, instance24, create_fragment26, not_equal2, props, dirty = [-1]) {
   const parent_component = current_component;
   set_current_component(component);
   const $$ = component.$$ = {
@@ -434,7 +444,7 @@ function init(component, options, instance18, create_fragment20, not_equal2, pro
     skip_bound: false
   };
   let ready = false;
-  $$.ctx = instance18 ? instance18(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance24 ? instance24(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal2($$.ctx[i], $$.ctx[i] = value)) {
       if (!$$.skip_bound && $$.bound[i])
@@ -447,7 +457,7 @@ function init(component, options, instance18, create_fragment20, not_equal2, pro
   $$.update();
   ready = true;
   run_all($$.before_update);
-  $$.fragment = create_fragment20 ? create_fragment20($$.ctx) : false;
+  $$.fragment = create_fragment26 ? create_fragment26($$.ctx) : false;
   if (options.target) {
     if (options.hydrate) {
       const nodes = children(options.target);
@@ -486,7 +496,7 @@ var SvelteComponent = class {
   }
 };
 
-// build/_snowpack/pkg/common/index-67d39c7b.js
+// build/_snowpack/pkg/common/index-3e984e31.js
 var subscriber_queue = [];
 function readable(value, start) {
   return {
@@ -1532,364 +1542,1882 @@ var Nav = class extends SvelteComponent {
 };
 var Nav_svelte_default = Nav;
 
-// build/dist/LinksTable.svelte.js
-function get_each_context(ctx, list, i) {
-  const child_ctx = ctx.slice();
-  child_ctx[6] = list[i];
-  return child_ctx;
-}
-function create_default_slot_1(ctx) {
-  let div2;
-  let div1;
-  let div0;
-  let t_value = ctx[6].summary + "";
-  let t;
+// build/dist/ui/Button.svelte.js
+var get_contents_slot_changes = (dirty) => ({});
+var get_contents_slot_context = (ctx) => ({});
+function create_else_block2(ctx) {
+  let button;
+  let button_class_value;
+  let mounted;
+  let dispose;
   return {
     c() {
-      div2 = element("div");
-      div1 = element("div");
-      div0 = element("div");
-      t = text(t_value);
-      attr(div0, "class", "contents text-md font-medium text-blue-900");
-      attr(div1, "class", "ml-2");
-      attr(div2, "class", "flex items-center");
+      button = element("button");
+      attr(button, "class", button_class_value = "inline-block shadow h-4 w-4 md:h-8 md:w-8 rounded-full  hover:shadow-lg transition " + (ctx[5].class || "") + " " + (ctx[0] ? ctx[1] : ctx[2]));
     },
     m(target, anchor) {
-      insert(target, div2, anchor);
-      append(div2, div1);
-      append(div1, div0);
-      append(div0, t);
+      insert(target, button, anchor);
+      if (!mounted) {
+        dispose = listen(button, "click", ctx[3]);
+        mounted = true;
+      }
     },
     p(ctx2, dirty) {
-      if (dirty & 2 && t_value !== (t_value = ctx2[6].summary + ""))
-        set_data(t, t_value);
+      if (dirty & 39 && button_class_value !== (button_class_value = "inline-block shadow h-4 w-4 md:h-8 md:w-8 rounded-full  hover:shadow-lg transition " + (ctx2[5].class || "") + " " + (ctx2[0] ? ctx2[1] : ctx2[2]))) {
+        attr(button, "class", button_class_value);
+      }
     },
+    i: noop,
+    o: noop,
     d(detaching) {
       if (detaching)
-        detach(div2);
+        detach(button);
+      mounted = false;
+      dispose();
     }
   };
 }
-function create_default_slot2(ctx) {
-  let div;
-  let t_value = ctx[6].description + "";
-  let t;
-  return {
-    c() {
-      div = element("div");
-      t = text(t_value);
-      attr(div, "class", "text-sm text-gray-900");
-    },
-    m(target, anchor) {
-      insert(target, div, anchor);
-      append(div, t);
-    },
-    p(ctx2, dirty) {
-      if (dirty & 2 && t_value !== (t_value = ctx2[6].description + ""))
-        set_data(t, t_value);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div);
-    }
-  };
-}
-function create_each_block(ctx) {
-  let tr;
-  let td0;
-  let link0;
-  let t0;
-  let td1;
-  let link1;
-  let t1;
+function create_if_block2(ctx) {
+  let button;
+  let button_class_value;
   let current;
-  link0 = new Link({
-    props: {
-      to: ctx[6].link,
-      $$slots: {default: [create_default_slot_1]},
-      $$scope: {ctx}
-    }
-  });
-  link1 = new Link({
-    props: {
-      to: ctx[6].link,
-      $$slots: {default: [create_default_slot2]},
-      $$scope: {ctx}
-    }
-  });
+  let mounted;
+  let dispose;
+  const contents_slot_template = ctx[7].contents;
+  const contents_slot = create_slot(contents_slot_template, ctx, ctx[6], get_contents_slot_context);
   return {
     c() {
-      tr = element("tr");
-      td0 = element("td");
-      create_component(link0.$$.fragment);
-      t0 = space();
-      td1 = element("td");
-      create_component(link1.$$.fragment);
-      t1 = space();
-      attr(td0, "class", "px-2 py-2 sm:px-6 sm:py-2 sm:whitespace-nowrap");
-      attr(td1, "class", "px-6 py-3 sm:whitespace-nowrap");
-      attr(tr, "class", "hover:bg-blue-300 ease-in transition duration-300 bg-white");
+      button = element("button");
+      if (contents_slot)
+        contents_slot.c();
+      attr(button, "class", button_class_value = "inline-block px-4 py-2 rounded-2xl shadow text-center text-xs md:text-md hover:shadow-lg transition " + (ctx[5].class || "") + " " + (ctx[0] ? ctx[1] : ctx[2]));
     },
     m(target, anchor) {
-      insert(target, tr, anchor);
-      append(tr, td0);
-      mount_component(link0, td0, null);
-      append(tr, t0);
-      append(tr, td1);
-      mount_component(link1, td1, null);
-      append(tr, t1);
+      insert(target, button, anchor);
+      if (contents_slot) {
+        contents_slot.m(button, null);
+      }
       current = true;
+      if (!mounted) {
+        dispose = listen(button, "click", ctx[3]);
+        mounted = true;
+      }
     },
     p(ctx2, dirty) {
-      const link0_changes = {};
-      if (dirty & 2)
-        link0_changes.to = ctx2[6].link;
-      if (dirty & 514) {
-        link0_changes.$$scope = {dirty, ctx: ctx2};
+      if (contents_slot) {
+        if (contents_slot.p && dirty & 64) {
+          update_slot(contents_slot, contents_slot_template, ctx2, ctx2[6], dirty, get_contents_slot_changes, get_contents_slot_context);
+        }
       }
-      link0.$set(link0_changes);
-      const link1_changes = {};
-      if (dirty & 2)
-        link1_changes.to = ctx2[6].link;
-      if (dirty & 514) {
-        link1_changes.$$scope = {dirty, ctx: ctx2};
+      if (!current || dirty & 39 && button_class_value !== (button_class_value = "inline-block px-4 py-2 rounded-2xl shadow text-center text-xs md:text-md hover:shadow-lg transition " + (ctx2[5].class || "") + " " + (ctx2[0] ? ctx2[1] : ctx2[2]))) {
+        attr(button, "class", button_class_value);
       }
-      link1.$set(link1_changes);
     },
     i(local) {
       if (current)
         return;
-      transition_in(link0.$$.fragment, local);
-      transition_in(link1.$$.fragment, local);
+      transition_in(contents_slot, local);
       current = true;
     },
     o(local) {
-      transition_out(link0.$$.fragment, local);
-      transition_out(link1.$$.fragment, local);
+      transition_out(contents_slot, local);
       current = false;
     },
     d(detaching) {
       if (detaching)
-        detach(tr);
-      destroy_component(link0);
-      destroy_component(link1);
+        detach(button);
+      if (contents_slot)
+        contents_slot.d(detaching);
+      mounted = false;
+      dispose();
     }
   };
 }
 function create_fragment3(ctx) {
-  let div2;
-  let div0;
-  let t0;
-  let div1;
-  let input;
-  let t1;
-  let div5;
-  let div4;
-  let div3;
-  let table;
-  let thead;
-  let t5;
-  let tbody;
+  let current_block_type_index;
+  let if_block;
+  let if_block_anchor;
   let current;
-  let mounted;
-  let dispose;
-  let each_value = ctx[1];
-  let each_blocks = [];
-  for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+  const if_block_creators = [create_if_block2, create_else_block2];
+  const if_blocks = [];
+  function select_block_type(ctx2, dirty) {
+    if (ctx2[4].contents)
+      return 0;
+    return 1;
   }
-  const out = (i) => transition_out(each_blocks[i], 1, 1, () => {
-    each_blocks[i] = null;
-  });
+  current_block_type_index = select_block_type(ctx, -1);
+  if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
   return {
     c() {
-      div2 = element("div");
-      div0 = element("div");
-      div0.innerHTML = `<span class="w-auto flex justify-end items-center text-gray-600 p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></span>`;
-      t0 = space();
-      div1 = element("div");
-      input = element("input");
-      t1 = space();
-      div5 = element("div");
-      div4 = element("div");
-      div3 = element("div");
-      table = element("table");
-      thead = element("thead");
-      thead.innerHTML = `<tr><th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Demo</th> 
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Description</th></tr>`;
-      t5 = space();
-      tbody = element("tbody");
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].c();
-      }
-      attr(input, "class", "min-w-full py-2 text-sm text-white bg-gray-600 rounded-md pl-10\n        focus:outline-none focus:bg-gray-100 focus:text-gray-800");
-      attr(input, "type", "text");
-      attr(div1, "class", "flex-grow");
-      attr(div2, "class", "bg-white shadow py-2 px-4 flex items-center");
-      attr(thead, "class", "bg-gray-700 text-gray-200");
-      attr(tbody, "class", "bg-gray-200 divide-y-2 divide-gray-300");
-      attr(table, "class", "min-w-full divide-y divide-gray-300");
-      attr(div3, "class", "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg");
-      attr(div4, "class", "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8");
-      attr(div5, "class", "mx-1 overflow-x-auto sm:-mx-6 lg:-mx-8");
+      if_block.c();
+      if_block_anchor = empty();
     },
     m(target, anchor) {
-      insert(target, div2, anchor);
-      append(div2, div0);
-      append(div2, t0);
-      append(div2, div1);
-      append(div1, input);
-      set_input_value(input, ctx[0]);
-      insert(target, t1, anchor);
-      insert(target, div5, anchor);
-      append(div5, div4);
-      append(div4, div3);
-      append(div3, table);
-      append(table, thead);
-      append(table, t5);
-      append(table, tbody);
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].m(tbody, null);
-      }
+      if_blocks[current_block_type_index].m(target, anchor);
+      insert(target, if_block_anchor, anchor);
       current = true;
+    },
+    p(ctx2, [dirty]) {
+      let previous_block_index = current_block_type_index;
+      current_block_type_index = select_block_type(ctx2, dirty);
+      if (current_block_type_index === previous_block_index) {
+        if_blocks[current_block_type_index].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks[previous_block_index], 1, 1, () => {
+          if_blocks[previous_block_index] = null;
+        });
+        check_outros();
+        if_block = if_blocks[current_block_type_index];
+        if (!if_block) {
+          if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
+          if_block.c();
+        } else {
+          if_block.p(ctx2, dirty);
+        }
+        transition_in(if_block, 1);
+        if_block.m(if_block_anchor.parentNode, if_block_anchor);
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(if_block);
+      current = true;
+    },
+    o(local) {
+      transition_out(if_block);
+      current = false;
+    },
+    d(detaching) {
+      if_blocks[current_block_type_index].d(detaching);
+      if (detaching)
+        detach(if_block_anchor);
+    }
+  };
+}
+function instance2($$self, $$props, $$invalidate) {
+  let {$$slots: slots = {}, $$scope} = $$props;
+  const $$slots = compute_slots(slots);
+  let {enabled = true} = $$props;
+  let {enabledClass = "text-gray-200 bg-green-600"} = $$props;
+  let {disabledClass = "text-gray-400 bg-gray-700"} = $$props;
+  const dispatch = createEventDispatcher();
+  const handleClick = (e) => {
+    if (!enabled) {
+      return;
+    }
+    dispatch("click", e);
+  };
+  $$self.$$set = ($$new_props) => {
+    $$invalidate(5, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+    if ("enabled" in $$new_props)
+      $$invalidate(0, enabled = $$new_props.enabled);
+    if ("enabledClass" in $$new_props)
+      $$invalidate(1, enabledClass = $$new_props.enabledClass);
+    if ("disabledClass" in $$new_props)
+      $$invalidate(2, disabledClass = $$new_props.disabledClass);
+    if ("$$scope" in $$new_props)
+      $$invalidate(6, $$scope = $$new_props.$$scope);
+  };
+  $$props = exclude_internal_props($$props);
+  return [
+    enabled,
+    enabledClass,
+    disabledClass,
+    handleClick,
+    $$slots,
+    $$props,
+    $$scope,
+    slots
+  ];
+}
+var Button = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance2, create_fragment3, safe_not_equal, {
+      enabled: 0,
+      enabledClass: 1,
+      disabledClass: 2
+    });
+  }
+};
+var Button_svelte_default = Button;
+
+// build/dist/apps/test-timer/utils.js
+var toHMS = (t) => {
+  if (!t) {
+    return {H: 0, M: 0, S: 0, ms: 0};
+  }
+  const H = Math.floor(t / (60 * 60 * 1e3));
+  t -= H * 60 * 60 * 1e3;
+  const M = Math.floor(t / (60 * 1e3));
+  t -= M * 60 * 1e3;
+  const S = Math.floor(t / 1e3);
+  t -= S * 1e3;
+  const ms = t;
+  return {H, M, S, ms};
+};
+var twoDigits = (x) => x < 10 ? `0${x}` : `${x}`;
+var toTime = (t) => typeof t === "number" ? toHMS(t) : t;
+var prettyHMS = (t) => {
+  if (!t) {
+    return {H: "00", M: "00", S: "00", ms: "000"};
+  }
+  const hms = toTime(t);
+  const H = twoDigits(hms.H);
+  const M = twoDigits(hms.M);
+  const S = twoDigits(hms.S);
+  const ms = String(hms.ms).padStart(3, "0");
+  return {H, M, S, ms};
+};
+var formatHMS = (t) => {
+  const {H, M, S} = prettyHMS(t);
+  return `${H}:${M}:${S}`;
+};
+var formatTime = (t) => {
+  const {H, M, S, ms} = prettyHMS(t);
+  return `${H}:${M}:${S}.${ms}`;
+};
+
+// build/dist/apps/test-timer/store.js
+var newTestDuration = () => {
+  const duration = writable(0);
+  const {subscribe: subscribe2, set, update: update2} = duration;
+  return {
+    subscribe: subscribe2,
+    setTime: (h, m, s, ms = 0) => set(((h * 60 + m) * 60 + s) * 1e3 + ms),
+    reset: () => set(0)
+  };
+};
+var testDuration = newTestDuration();
+
+// build/dist/apps/test-timer/export-csv.js
+var exportCSV = (filename, contents) => {
+  const blob = new Blob([contents], {type: "text/csv;charset=utf-8;"});
+  if (navigator.msSaveBlob) {
+    navigator.msSaveBlob(blob, filename);
+    return;
+  }
+  const link = document.createElement("a");
+  if (link.download !== void 0) {
+    var url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+};
+
+// build/dist/apps/test-timer/StopWatch.svelte.js
+function create_fragment4(ctx) {
+  let div8;
+  let div7;
+  let div0;
+  let t0_value = ctx[0].H + "";
+  let t0;
+  let t1;
+  let div1;
+  let t3;
+  let div2;
+  let t4_value = ctx[0].M + "";
+  let t4;
+  let t5;
+  let div3;
+  let t7;
+  let div4;
+  let t8_value = ctx[0].S + "";
+  let t8;
+  let t9;
+  let div5;
+  let t11;
+  let div6;
+  let t12_value = ctx[0].ms + "";
+  let t12;
+  return {
+    c() {
+      div8 = element("div");
+      div7 = element("div");
+      div0 = element("div");
+      t0 = text(t0_value);
+      t1 = space();
+      div1 = element("div");
+      div1.textContent = ":";
+      t3 = space();
+      div2 = element("div");
+      t4 = text(t4_value);
+      t5 = space();
+      div3 = element("div");
+      div3.textContent = ":";
+      t7 = space();
+      div4 = element("div");
+      t8 = text(t8_value);
+      t9 = space();
+      div5 = element("div");
+      div5.textContent = ".";
+      t11 = space();
+      div6 = element("div");
+      t12 = text(t12_value);
+      attr(div0, "class", "p-2 rounded-xl appearance-none outline-none");
+      attr(div1, "class", "text-gray-400");
+      attr(div2, "class", "p-2 rounded-xl appearance-none outline-none");
+      attr(div3, "class", "text-gray-400");
+      attr(div4, "class", "pl-2 rounded-xl appearance-none outline-none");
+      attr(div5, "class", "text-gray-400 text-sm");
+      attr(div6, "class", "pr-2 rounded-xl appearance-none outline-none text-sm text-gray-300");
+      attr(div7, "class", "flex items-center");
+      attr(div8, "class", "inline-block p-2 min-w-min bg-gray-800 text-gray-200 rounded-lg text-md md:text-2xl font-mono");
+    },
+    m(target, anchor) {
+      insert(target, div8, anchor);
+      append(div8, div7);
+      append(div7, div0);
+      append(div0, t0);
+      append(div7, t1);
+      append(div7, div1);
+      append(div7, t3);
+      append(div7, div2);
+      append(div2, t4);
+      append(div7, t5);
+      append(div7, div3);
+      append(div7, t7);
+      append(div7, div4);
+      append(div4, t8);
+      append(div7, t9);
+      append(div7, div5);
+      append(div7, t11);
+      append(div7, div6);
+      append(div6, t12);
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & 1 && t0_value !== (t0_value = ctx2[0].H + ""))
+        set_data(t0, t0_value);
+      if (dirty & 1 && t4_value !== (t4_value = ctx2[0].M + ""))
+        set_data(t4, t4_value);
+      if (dirty & 1 && t8_value !== (t8_value = ctx2[0].S + ""))
+        set_data(t8, t8_value);
+      if (dirty & 1 && t12_value !== (t12_value = ctx2[0].ms + ""))
+        set_data(t12, t12_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(div8);
+    }
+  };
+}
+function instance3($$self, $$props, $$invalidate) {
+  let elapsedPretty;
+  var {State: State2} = $$props;
+  (function(State3) {
+    State3[State3["Running"] = 0] = "Running";
+    State3[State3["Paused"] = 1] = "Paused";
+  })(State2 || (State2 = {}));
+  let state = State2.Paused;
+  let startedAt;
+  let ranAt;
+  let previousElapsed = 0;
+  let elapsed = 0;
+  const reset = () => {
+    stopTimer();
+    state = State2.Paused;
+    startedAt = null;
+    ranAt = null;
+    previousElapsed = 0;
+    $$invalidate(8, elapsed = 0);
+  };
+  const dispatch = createEventDispatcher();
+  const pause = () => {
+    previousElapsed = elapsed;
+    stopTimer();
+    state = State2.Paused;
+    dispatch("pause");
+  };
+  const restart = () => {
+    dispatchLap();
+    reset();
+    run2();
+  };
+  const stop = () => {
+    pause();
+    dispatchLap();
+    reset();
+  };
+  const restartAt = (start, alreadyElapsed) => {
+    stopTimer();
+    startedAt = start;
+    ranAt = start;
+    previousElapsed = alreadyElapsed + elapsed;
+    $$invalidate(8, elapsed = 0);
+    run2();
+  };
+  let timer2;
+  const run2 = () => {
+    startedAt || (startedAt = new Date());
+    state = State2.Running;
+    ranAt = ranAt ? new Date() : startedAt;
+    timer2 = setInterval(() => {
+      $$invalidate(8, elapsed = new Date() - ranAt + previousElapsed);
+    }, 15);
+    console.log("run", {
+      startedAt: startedAt.toLocaleTimeString(),
+      ranAt: ranAt.toLocaleTimeString(),
+      elapsed: formatTime(elapsed),
+      prev: formatTime(previousElapsed)
+    });
+    dispatch("run", {state});
+  };
+  const toggleRun = () => {
+    state == State2.Running ? pause() : run2();
+  };
+  const dispatchLap = () => {
+    if (!startedAt || !ranAt) {
+      console.warn("sending lap when there is no start or end");
+      return;
+    }
+    const now = new Date();
+    const paused = Math.floor((now - startedAt - elapsed) / 10) * 10;
+    console.log(" >>> change", {
+      startedAt: startedAt.toLocaleTimeString(),
+      endedAt: now.toLocaleTimeString(),
+      elapsed: toHMS(elapsed),
+      paused: toHMS(paused)
+    }, paused);
+    dispatch("change", {startedAt, endedAt: now, elapsed, paused});
+  };
+  const stopTimer = () => {
+    clearInterval(timer2);
+    timer2 = null;
+  };
+  onDestroy(() => {
+    stopTimer();
+  });
+  $$self.$$set = ($$props2) => {
+    if ("State" in $$props2)
+      $$invalidate(1, State2 = $$props2.State);
+  };
+  $$self.$$.update = () => {
+    if ($$self.$$.dirty & 256) {
+      $:
+        $$invalidate(0, elapsedPretty = prettyHMS(elapsed));
+    }
+  };
+  return [
+    elapsedPretty,
+    State2,
+    reset,
+    pause,
+    restart,
+    stop,
+    restartAt,
+    toggleRun,
+    elapsed
+  ];
+}
+var StopWatch = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance3, create_fragment4, safe_not_equal, {
+      State: 1,
+      reset: 2,
+      pause: 3,
+      restart: 4,
+      stop: 5,
+      restartAt: 6,
+      toggleRun: 7
+    });
+  }
+  get reset() {
+    return this.$$.ctx[2];
+  }
+  get pause() {
+    return this.$$.ctx[3];
+  }
+  get restart() {
+    return this.$$.ctx[4];
+  }
+  get stop() {
+    return this.$$.ctx[5];
+  }
+  get restartAt() {
+    return this.$$.ctx[6];
+  }
+  get toggleRun() {
+    return this.$$.ctx[7];
+  }
+};
+var StopWatch_svelte_default = StopWatch;
+
+// build/dist/apps/test-timer/Counter.svelte.js
+function create_fragment5(ctx) {
+  let div1;
+  let div0;
+  let t;
+  return {
+    c() {
+      div1 = element("div");
+      div0 = element("div");
+      t = text(ctx[0]);
+      attr(div1, "class", "font-mono w-16\n  text-md md:text-xl text-center text-gray-100 text-bold\n  rounded-xl mr-2 py-4 bg-gray-800");
+    },
+    m(target, anchor) {
+      insert(target, div1, anchor);
+      append(div1, div0);
+      append(div0, t);
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & 1)
+        set_data(t, ctx2[0]);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(div1);
+    }
+  };
+}
+function instance4($$self, $$props, $$invalidate) {
+  let {value = 0} = $$props;
+  $$self.$$set = ($$props2) => {
+    if ("value" in $$props2)
+      $$invalidate(0, value = $$props2.value);
+  };
+  return [value];
+}
+var Counter = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance4, create_fragment5, safe_not_equal, {value: 0});
+  }
+};
+var Counter_svelte_default = Counter;
+
+// build/dist/ui/Toggle.svelte.js
+var get_inactive_slot_changes = (dirty) => ({});
+var get_inactive_slot_context = (ctx) => ({});
+var get_active_slot_changes = (dirty) => ({});
+var get_active_slot_context = (ctx) => ({});
+function create_else_block_1(ctx) {
+  let button;
+  let button_class_value;
+  let mounted;
+  let dispose;
+  return {
+    c() {
+      button = element("button");
+      attr(button, "class", button_class_value = "inline-block shadow h-4 w-4 md:h-8 md:w-8 rounded-full  hover:shadow-lg transition " + (ctx[5].class || ""));
+      toggle_class(button, "bg-green-600", !ctx[1] && ctx[2] || ctx[1] && !ctx[2]);
+      toggle_class(button, "bg-gray-600", !ctx[1] && !ctx[2] || ctx[1] && ctx[2]);
+    },
+    m(target, anchor) {
+      insert(target, button, anchor);
       if (!mounted) {
-        dispose = [
-          listen(input, "input", ctx[4]),
-          listen(input, "input", ctx[2])
-        ];
+        dispose = listen(button, "click", ctx[3]);
         mounted = true;
       }
     },
-    p(ctx2, [dirty]) {
-      if (dirty & 1 && input.value !== ctx2[0]) {
-        set_input_value(input, ctx2[0]);
+    p(ctx2, dirty) {
+      if (dirty & 32 && button_class_value !== (button_class_value = "inline-block shadow h-4 w-4 md:h-8 md:w-8 rounded-full  hover:shadow-lg transition " + (ctx2[5].class || ""))) {
+        attr(button, "class", button_class_value);
       }
-      if (dirty & 2) {
-        each_value = ctx2[1];
-        let i;
-        for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context(ctx2, each_value, i);
-          if (each_blocks[i]) {
-            each_blocks[i].p(child_ctx, dirty);
-            transition_in(each_blocks[i], 1);
-          } else {
-            each_blocks[i] = create_each_block(child_ctx);
-            each_blocks[i].c();
-            transition_in(each_blocks[i], 1);
-            each_blocks[i].m(tbody, null);
-          }
-        }
+      if (dirty & 38) {
+        toggle_class(button, "bg-green-600", !ctx2[1] && ctx2[2] || ctx2[1] && !ctx2[2]);
+      }
+      if (dirty & 38) {
+        toggle_class(button, "bg-gray-600", !ctx2[1] && !ctx2[2] || ctx2[1] && ctx2[2]);
+      }
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(button);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_if_block3(ctx) {
+  let button;
+  let current_block_type_index;
+  let if_block;
+  let button_class_value;
+  let current;
+  let mounted;
+  let dispose;
+  const if_block_creators = [create_if_block_12, create_else_block3];
+  const if_blocks = [];
+  function select_block_type_1(ctx2, dirty) {
+    if (ctx2[2])
+      return 0;
+    return 1;
+  }
+  current_block_type_index = select_block_type_1(ctx, -1);
+  if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+  return {
+    c() {
+      button = element("button");
+      if_block.c();
+      attr(button, "class", button_class_value = "inline-block px-4 py-2 rounded-2xl shadow  text-center text-xs md:text-md hover:shadow-lg transition " + (ctx[5].class || ""));
+      toggle_class(button, "text-gray-500", !ctx[0]);
+      toggle_class(button, "bg-gray-700", !ctx[0]);
+      toggle_class(button, "bg-green-600", !ctx[1] && ctx[2] || ctx[1] && !ctx[2]);
+      toggle_class(button, "bg-gray-600", !ctx[1] && !ctx[2] || ctx[1] && ctx[2]);
+    },
+    m(target, anchor) {
+      insert(target, button, anchor);
+      if_blocks[current_block_type_index].m(button, null);
+      current = true;
+      if (!mounted) {
+        dispose = listen(button, "click", ctx[3]);
+        mounted = true;
+      }
+    },
+    p(ctx2, dirty) {
+      let previous_block_index = current_block_type_index;
+      current_block_type_index = select_block_type_1(ctx2, dirty);
+      if (current_block_type_index === previous_block_index) {
+        if_blocks[current_block_type_index].p(ctx2, dirty);
+      } else {
         group_outros();
-        for (i = each_value.length; i < each_blocks.length; i += 1) {
-          out(i);
+        transition_out(if_blocks[previous_block_index], 1, 1, () => {
+          if_blocks[previous_block_index] = null;
+        });
+        check_outros();
+        if_block = if_blocks[current_block_type_index];
+        if (!if_block) {
+          if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
+          if_block.c();
+        } else {
+          if_block.p(ctx2, dirty);
         }
+        transition_in(if_block, 1);
+        if_block.m(button, null);
+      }
+      if (!current || dirty & 32 && button_class_value !== (button_class_value = "inline-block px-4 py-2 rounded-2xl shadow  text-center text-xs md:text-md hover:shadow-lg transition " + (ctx2[5].class || ""))) {
+        attr(button, "class", button_class_value);
+      }
+      if (dirty & 33) {
+        toggle_class(button, "text-gray-500", !ctx2[0]);
+      }
+      if (dirty & 33) {
+        toggle_class(button, "bg-gray-700", !ctx2[0]);
+      }
+      if (dirty & 38) {
+        toggle_class(button, "bg-green-600", !ctx2[1] && ctx2[2] || ctx2[1] && !ctx2[2]);
+      }
+      if (dirty & 38) {
+        toggle_class(button, "bg-gray-600", !ctx2[1] && !ctx2[2] || ctx2[1] && ctx2[2]);
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(if_block);
+      current = true;
+    },
+    o(local) {
+      transition_out(if_block);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(button);
+      if_blocks[current_block_type_index].d();
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_else_block3(ctx) {
+  let current;
+  const inactive_slot_template = ctx[8].inactive;
+  const inactive_slot = create_slot(inactive_slot_template, ctx, ctx[7], get_inactive_slot_context);
+  return {
+    c() {
+      if (inactive_slot)
+        inactive_slot.c();
+    },
+    m(target, anchor) {
+      if (inactive_slot) {
+        inactive_slot.m(target, anchor);
+      }
+      current = true;
+    },
+    p(ctx2, dirty) {
+      if (inactive_slot) {
+        if (inactive_slot.p && dirty & 128) {
+          update_slot(inactive_slot, inactive_slot_template, ctx2, ctx2[7], dirty, get_inactive_slot_changes, get_inactive_slot_context);
+        }
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(inactive_slot, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(inactive_slot, local);
+      current = false;
+    },
+    d(detaching) {
+      if (inactive_slot)
+        inactive_slot.d(detaching);
+    }
+  };
+}
+function create_if_block_12(ctx) {
+  let current;
+  const active_slot_template = ctx[8].active;
+  const active_slot = create_slot(active_slot_template, ctx, ctx[7], get_active_slot_context);
+  return {
+    c() {
+      if (active_slot)
+        active_slot.c();
+    },
+    m(target, anchor) {
+      if (active_slot) {
+        active_slot.m(target, anchor);
+      }
+      current = true;
+    },
+    p(ctx2, dirty) {
+      if (active_slot) {
+        if (active_slot.p && dirty & 128) {
+          update_slot(active_slot, active_slot_template, ctx2, ctx2[7], dirty, get_active_slot_changes, get_active_slot_context);
+        }
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(active_slot, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(active_slot, local);
+      current = false;
+    },
+    d(detaching) {
+      if (active_slot)
+        active_slot.d(detaching);
+    }
+  };
+}
+function create_fragment6(ctx) {
+  let current_block_type_index;
+  let if_block;
+  let if_block_anchor;
+  let current;
+  const if_block_creators = [create_if_block3, create_else_block_1];
+  const if_blocks = [];
+  function select_block_type(ctx2, dirty) {
+    if (ctx2[4].active || ctx2[4].inactive)
+      return 0;
+    return 1;
+  }
+  current_block_type_index = select_block_type(ctx, -1);
+  if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+  return {
+    c() {
+      if_block.c();
+      if_block_anchor = empty();
+    },
+    m(target, anchor) {
+      if_blocks[current_block_type_index].m(target, anchor);
+      insert(target, if_block_anchor, anchor);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      let previous_block_index = current_block_type_index;
+      current_block_type_index = select_block_type(ctx2, dirty);
+      if (current_block_type_index === previous_block_index) {
+        if_blocks[current_block_type_index].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks[previous_block_index], 1, 1, () => {
+          if_blocks[previous_block_index] = null;
+        });
+        check_outros();
+        if_block = if_blocks[current_block_type_index];
+        if (!if_block) {
+          if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
+          if_block.c();
+        } else {
+          if_block.p(ctx2, dirty);
+        }
+        transition_in(if_block, 1);
+        if_block.m(if_block_anchor.parentNode, if_block_anchor);
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(if_block);
+      current = true;
+    },
+    o(local) {
+      transition_out(if_block);
+      current = false;
+    },
+    d(detaching) {
+      if_blocks[current_block_type_index].d(detaching);
+      if (detaching)
+        detach(if_block_anchor);
+    }
+  };
+}
+function instance5($$self, $$props, $$invalidate) {
+  let {$$slots: slots = {}, $$scope} = $$props;
+  const $$slots = compute_slots(slots);
+  let {enabled = true} = $$props;
+  let {invert = false} = $$props;
+  const toggleActive = () => !active;
+  let {isActive = toggleActive} = $$props;
+  let active = true;
+  const dispatch = createEventDispatcher();
+  const toggle = () => {
+    if (!enabled) {
+      return;
+    }
+    dispatch("toggle", {active});
+    $$invalidate(2, active = isActive());
+  };
+  onMount(() => {
+    if (isActive != toggleActive) {
+      $$invalidate(2, active = isActive());
+    }
+  });
+  $$self.$$set = ($$new_props) => {
+    $$invalidate(5, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+    if ("enabled" in $$new_props)
+      $$invalidate(0, enabled = $$new_props.enabled);
+    if ("invert" in $$new_props)
+      $$invalidate(1, invert = $$new_props.invert);
+    if ("isActive" in $$new_props)
+      $$invalidate(6, isActive = $$new_props.isActive);
+    if ("$$scope" in $$new_props)
+      $$invalidate(7, $$scope = $$new_props.$$scope);
+  };
+  $$props = exclude_internal_props($$props);
+  return [enabled, invert, active, toggle, $$slots, $$props, isActive, $$scope, slots];
+}
+var Toggle = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance5, create_fragment6, safe_not_equal, {enabled: 0, invert: 1, isActive: 6});
+  }
+};
+var Toggle_svelte_default = Toggle;
+
+// build/dist/apps/test-timer/RunningTimer.svelte.js
+function get_each_context(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[24] = list[i];
+  child_ctx[26] = i;
+  return child_ctx;
+}
+function create_else_block4(ctx) {
+  let t0;
+  let div;
+  let button;
+  let t1;
+  let if_block1_anchor;
+  let current;
+  let if_block0 = ctx[2] == 0 && create_if_block_3(ctx);
+  button = new Button_svelte_default({
+    props: {
+      class: "w-24 text-xs md:text-md md:w-36 font-bold",
+      $$slots: {contents: [create_contents_slot_5]},
+      $$scope: {ctx}
+    }
+  });
+  button.$on("click", ctx[7]);
+  let if_block1 = ctx[2] >= 1 && create_if_block_2(ctx);
+  return {
+    c() {
+      if (if_block0)
+        if_block0.c();
+      t0 = space();
+      div = element("div");
+      create_component(button.$$.fragment);
+      t1 = space();
+      if (if_block1)
+        if_block1.c();
+      if_block1_anchor = empty();
+    },
+    m(target, anchor) {
+      if (if_block0)
+        if_block0.m(target, anchor);
+      insert(target, t0, anchor);
+      insert(target, div, anchor);
+      mount_component(button, div, null);
+      insert(target, t1, anchor);
+      if (if_block1)
+        if_block1.m(target, anchor);
+      insert(target, if_block1_anchor, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      if (ctx2[2] == 0) {
+        if (if_block0) {
+          if_block0.p(ctx2, dirty);
+        } else {
+          if_block0 = create_if_block_3(ctx2);
+          if_block0.c();
+          if_block0.m(t0.parentNode, t0);
+        }
+      } else if (if_block0) {
+        if_block0.d(1);
+        if_block0 = null;
+      }
+      const button_changes = {};
+      if (dirty & 134217728) {
+        button_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button.$set(button_changes);
+      if (ctx2[2] >= 1) {
+        if (if_block1) {
+          if_block1.p(ctx2, dirty);
+          if (dirty & 4) {
+            transition_in(if_block1, 1);
+          }
+        } else {
+          if_block1 = create_if_block_2(ctx2);
+          if_block1.c();
+          transition_in(if_block1, 1);
+          if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+        }
+      } else if (if_block1) {
+        group_outros();
+        transition_out(if_block1, 1, 1, () => {
+          if_block1 = null;
+        });
         check_outros();
       }
     },
     i(local) {
       if (current)
         return;
-      for (let i = 0; i < each_value.length; i += 1) {
-        transition_in(each_blocks[i]);
-      }
+      transition_in(button.$$.fragment, local);
+      transition_in(if_block1);
       current = true;
     },
     o(local) {
-      each_blocks = each_blocks.filter(Boolean);
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        transition_out(each_blocks[i]);
+      transition_out(button.$$.fragment, local);
+      transition_out(if_block1);
+      current = false;
+    },
+    d(detaching) {
+      if (if_block0)
+        if_block0.d(detaching);
+      if (detaching)
+        detach(t0);
+      if (detaching)
+        detach(div);
+      destroy_component(button);
+      if (detaching)
+        detach(t1);
+      if (if_block1)
+        if_block1.d(detaching);
+      if (detaching)
+        detach(if_block1_anchor);
+    }
+  };
+}
+function create_if_block_13(ctx) {
+  let div0;
+  let button0;
+  let t0;
+  let div1;
+  let button1;
+  let t1;
+  let div2;
+  let toggle;
+  let t2;
+  let div3;
+  let button2;
+  let current;
+  button0 = new Button_svelte_default({
+    props: {
+      enabled: ctx[4] == "running",
+      class: "md:w-32 font-bold",
+      $$slots: {contents: [create_contents_slot_2]},
+      $$scope: {ctx}
+    }
+  });
+  button0.$on("click", ctx[5]);
+  button1 = new Button_svelte_default({
+    props: {
+      enabled: ctx[4] == "running" && ctx[2] >= 1,
+      class: "md:w-24",
+      enabledClass: "bg-red-300 text-gray-100",
+      $$slots: {contents: [create_contents_slot_1]},
+      $$scope: {ctx}
+    }
+  });
+  button1.$on("click", ctx[6]);
+  toggle = new Toggle_svelte_default({
+    props: {
+      class: "bg-yellow-600 md:w-32",
+      isActive: ctx[16],
+      invert: true,
+      $$slots: {
+        inactive: [create_inactive_slot],
+        active: [create_active_slot]
+      },
+      $$scope: {ctx}
+    }
+  });
+  toggle.$on("toggle", ctx[7]);
+  button2 = new Button_svelte_default({
+    props: {
+      enabledClass: "bg-red-500 text-gray-100",
+      class: "md:w-24",
+      $$slots: {contents: [create_contents_slot]},
+      $$scope: {ctx}
+    }
+  });
+  button2.$on("click", ctx[8]);
+  return {
+    c() {
+      div0 = element("div");
+      create_component(button0.$$.fragment);
+      t0 = space();
+      div1 = element("div");
+      create_component(button1.$$.fragment);
+      t1 = space();
+      div2 = element("div");
+      create_component(toggle.$$.fragment);
+      t2 = space();
+      div3 = element("div");
+      create_component(button2.$$.fragment);
+    },
+    m(target, anchor) {
+      insert(target, div0, anchor);
+      mount_component(button0, div0, null);
+      insert(target, t0, anchor);
+      insert(target, div1, anchor);
+      mount_component(button1, div1, null);
+      insert(target, t1, anchor);
+      insert(target, div2, anchor);
+      mount_component(toggle, div2, null);
+      insert(target, t2, anchor);
+      insert(target, div3, anchor);
+      mount_component(button2, div3, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const button0_changes = {};
+      if (dirty & 16)
+        button0_changes.enabled = ctx2[4] == "running";
+      if (dirty & 134217728) {
+        button0_changes.$$scope = {dirty, ctx: ctx2};
       }
+      button0.$set(button0_changes);
+      const button1_changes = {};
+      if (dirty & 20)
+        button1_changes.enabled = ctx2[4] == "running" && ctx2[2] >= 1;
+      if (dirty & 134217728) {
+        button1_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button1.$set(button1_changes);
+      const toggle_changes = {};
+      if (dirty & 16)
+        toggle_changes.isActive = ctx2[16];
+      if (dirty & 134217728) {
+        toggle_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      toggle.$set(toggle_changes);
+      const button2_changes = {};
+      if (dirty & 134217728) {
+        button2_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button2.$set(button2_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(button0.$$.fragment, local);
+      transition_in(button1.$$.fragment, local);
+      transition_in(toggle.$$.fragment, local);
+      transition_in(button2.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(button0.$$.fragment, local);
+      transition_out(button1.$$.fragment, local);
+      transition_out(toggle.$$.fragment, local);
+      transition_out(button2.$$.fragment, local);
       current = false;
     },
     d(detaching) {
       if (detaching)
-        detach(div2);
+        detach(div0);
+      destroy_component(button0);
+      if (detaching)
+        detach(t0);
+      if (detaching)
+        detach(div1);
+      destroy_component(button1);
       if (detaching)
         detach(t1);
       if (detaching)
-        detach(div5);
-      destroy_each(each_blocks, detaching);
-      mounted = false;
-      run_all(dispose);
+        detach(div2);
+      destroy_component(toggle);
+      if (detaching)
+        detach(t2);
+      if (detaching)
+        detach(div3);
+      destroy_component(button2);
     }
   };
 }
-function instance2($$self, $$props, $$invalidate) {
-  let {location: location2} = $$props;
-  let experiments = [
-    {
-      link: "apps/stopwatch",
-      summary: "Stop Watch",
-      description: "Work in progress Stop watch for competetive test"
+function create_if_block_3(ctx) {
+  let div;
+  let input;
+  let mounted;
+  let dispose;
+  return {
+    c() {
+      div = element("div");
+      input = element("input");
+      attr(input, "class", "bg-gray-700 text-gray-200  text-sm md:text-md ring px-2 py-1 rounded");
+      attr(input, "placeholder", "task name");
+      attr(input, "type", "text");
     },
-    {
-      link: "beyond/spirograph",
-      summary: "Spirograph",
-      description: "Spirograph creates beautiful patterns"
+    m(target, anchor) {
+      insert(target, div, anchor);
+      append(div, input);
+      set_input_value(input, ctx[3]);
+      if (!mounted) {
+        dispose = listen(input, "input", ctx[17]);
+        mounted = true;
+      }
     },
-    {
-      link: "beyond/parametric-eq",
-      summary: "Line Animation",
-      description: "Line animations using parametric equations"
+    p(ctx2, dirty) {
+      if (dirty & 8 && input.value !== ctx2[3]) {
+        set_input_value(input, ctx2[3]);
+      }
     },
-    {
-      link: "demo/2D",
-      summary: "2D Demo",
-      description: "A simple 2D Demo to test svelte integration"
-    },
-    {
-      link: "demo/3D",
-      summary: "3D Demo",
-      description: "Test 3D WebGL Rendering"
-    },
-    {
-      link: "demo/ui/buttons",
-      summary: "Buttons UI",
-      description: "Test ui/button component"
-    },
-    {
-      link: "demo/ui/toggles",
-      summary: "Toggle UI",
-      description: "Test ui/toggle component"
-    },
-    {
-      link: "learn/svelte/store/timer",
-      summary: "Custom Svelte Store for Timer",
-      description: "Tryout setInterval on store"
-    },
-    {
-      link: "math/fs",
-      summary: "Fourier Series ",
-      description: "Fourier series using spinning discs"
+    d(detaching) {
+      if (detaching)
+        detach(div);
+      mounted = false;
+      dispose();
     }
-  ];
-  let search = "";
-  let filtered = experiments;
-  const filter = () => {
-    const txt = search.trim().toLowerCase();
-    if (txt == "") {
-      $$invalidate(1, filtered = experiments);
+  };
+}
+function create_contents_slot_5(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Start";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_if_block_2(ctx) {
+  let div0;
+  let button0;
+  let t;
+  let div1;
+  let button1;
+  let current;
+  button0 = new Button_svelte_default({
+    props: {
+      enabledClass: "bg-red-500 text-gray-100",
+      class: "md:w-24",
+      $$slots: {contents: [create_contents_slot_4]},
+      $$scope: {ctx}
+    }
+  });
+  button0.$on("click", ctx[10]);
+  button1 = new Button_svelte_default({
+    props: {
+      class: "bg-blue-500",
+      $$slots: {contents: [create_contents_slot_3]},
+      $$scope: {ctx}
+    }
+  });
+  button1.$on("click", ctx[9]);
+  return {
+    c() {
+      div0 = element("div");
+      create_component(button0.$$.fragment);
+      t = space();
+      div1 = element("div");
+      create_component(button1.$$.fragment);
+    },
+    m(target, anchor) {
+      insert(target, div0, anchor);
+      mount_component(button0, div0, null);
+      insert(target, t, anchor);
+      insert(target, div1, anchor);
+      mount_component(button1, div1, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const button0_changes = {};
+      if (dirty & 134217728) {
+        button0_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button0.$set(button0_changes);
+      const button1_changes = {};
+      if (dirty & 134217728) {
+        button1_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button1.$set(button1_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(button0.$$.fragment, local);
+      transition_in(button1.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(button0.$$.fragment, local);
+      transition_out(button1.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div0);
+      destroy_component(button0);
+      if (detaching)
+        detach(t);
+      if (detaching)
+        detach(div1);
+      destroy_component(button1);
+    }
+  };
+}
+function create_contents_slot_4(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Reset";
+      attr(span, "slot", "contents");
+      attr(span, "class", "px-2");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_3(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Download";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_2(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Next";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_1(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Back";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_active_slot(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Pause";
+      attr(span, "slot", "active");
+      attr(span, "class", "text-gray-200");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_inactive_slot(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Resume";
+      attr(span, "slot", "inactive");
+      attr(span, "class", "text-gray-200");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Stop";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_if_block4(ctx) {
+  let div2;
+  let div1;
+  let div0;
+  let table;
+  let thead;
+  let t9;
+  let tbody;
+  let each_value = ctx[1].slice(0, ctx[2]).reverse();
+  let each_blocks = [];
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+  }
+  return {
+    c() {
+      div2 = element("div");
+      div1 = element("div");
+      div0 = element("div");
+      table = element("table");
+      thead = element("thead");
+      thead.innerHTML = `<tr><th scope="col" class="px-3 md:px-6 py-3 text-xs font-medium uppercase tracking-wider">No</th> 
+            <th scope="col" class="px-3 md:px-6 py-3 text-xs font-medium uppercase tracking-wider">Elapsed</th> 
+            <th scope="col" class="px-3  md:px-6 py-3 text-xs font-medium uppercase tracking-wider">Start</th> 
+            <th scope="col" class="hidden md:table-cell px-3 py-3 text-xs font-medium uppercase tracking-wider">Paused</th> 
+            <th scope="col" class="px-3 py-3 text-xs font-medium uppercase tracking-wider">End</th></tr>`;
+      t9 = space();
+      tbody = element("tbody");
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      attr(thead, "class", "bg-gray-700 text-gray-100");
+      attr(tbody, "class", "bg-white divide-y divide-gray-300 ");
+      attr(table, "class", "min-w-max divide-y divide-gray-400");
+      attr(div0, "class", "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg");
+      attr(div1, "class", "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8");
+      attr(div2, "class", "text-xs md:text-md overflow-x-auto sm:-mx-6 lg:-mx-8");
+    },
+    m(target, anchor) {
+      insert(target, div2, anchor);
+      append(div2, div1);
+      append(div1, div0);
+      append(div0, table);
+      append(table, thead);
+      append(table, t9);
+      append(table, tbody);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(tbody, null);
+      }
+    },
+    p(ctx2, dirty) {
+      if (dirty & 6) {
+        each_value = ctx2[1].slice(0, ctx2[2]).reverse();
+        let i;
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context(ctx2, each_value, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+          } else {
+            each_blocks[i] = create_each_block(child_ctx);
+            each_blocks[i].c();
+            each_blocks[i].m(tbody, null);
+          }
+        }
+        for (; i < each_blocks.length; i += 1) {
+          each_blocks[i].d(1);
+        }
+        each_blocks.length = each_value.length;
+      }
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div2);
+      destroy_each(each_blocks, detaching);
+    }
+  };
+}
+function create_each_block(ctx) {
+  let tr;
+  let td0;
+  let t0_value = ctx[2] - ctx[26] + "";
+  let t0;
+  let t1;
+  let td1;
+  let t2_value = formatHMS(ctx[24].elapsed) + "";
+  let t2;
+  let t3;
+  let td2;
+  let t4_value = ctx[24].startedAt.toLocaleTimeString() + "";
+  let t4;
+  let t5;
+  let td3;
+  let t6_value = formatHMS(ctx[24].paused) + "";
+  let t6;
+  let t7;
+  let td4;
+  let t8_value = ctx[24].endedAt.toLocaleTimeString() + "";
+  let t8;
+  let t9;
+  return {
+    c() {
+      tr = element("tr");
+      td0 = element("td");
+      t0 = text(t0_value);
+      t1 = space();
+      td1 = element("td");
+      t2 = text(t2_value);
+      t3 = space();
+      td2 = element("td");
+      t4 = text(t4_value);
+      t5 = space();
+      td3 = element("td");
+      t6 = text(t6_value);
+      t7 = space();
+      td4 = element("td");
+      t8 = text(t8_value);
+      t9 = space();
+      attr(td0, "class", "px-3 py-2 text-right whitespace-nowrap");
+      attr(td1, "class", "px-3 py-2 whitespace-nowrap");
+      attr(td2, "class", "px-3 py-2 whitespace-nowrap");
+      attr(td3, "class", "hidden md:table-cell px-3 py-2 whitespace-nowrap");
+      attr(td4, "class", "px-3 py-2 whitespace-nowrap");
+      attr(tr, "class", "hover:bg-blue-300 ease-in transition duration-300");
+      toggle_class(tr, "bg-white", ctx[26] != 0);
+      toggle_class(tr, "bg-red-300", ctx[26] == 0 && ctx[2] >= 2);
+    },
+    m(target, anchor) {
+      insert(target, tr, anchor);
+      append(tr, td0);
+      append(td0, t0);
+      append(tr, t1);
+      append(tr, td1);
+      append(td1, t2);
+      append(tr, t3);
+      append(tr, td2);
+      append(td2, t4);
+      append(tr, t5);
+      append(tr, td3);
+      append(td3, t6);
+      append(tr, t7);
+      append(tr, td4);
+      append(td4, t8);
+      append(tr, t9);
+    },
+    p(ctx2, dirty) {
+      if (dirty & 4 && t0_value !== (t0_value = ctx2[2] - ctx2[26] + ""))
+        set_data(t0, t0_value);
+      if (dirty & 6 && t2_value !== (t2_value = formatHMS(ctx2[24].elapsed) + ""))
+        set_data(t2, t2_value);
+      if (dirty & 6 && t4_value !== (t4_value = ctx2[24].startedAt.toLocaleTimeString() + ""))
+        set_data(t4, t4_value);
+      if (dirty & 6 && t6_value !== (t6_value = formatHMS(ctx2[24].paused) + ""))
+        set_data(t6, t6_value);
+      if (dirty & 6 && t8_value !== (t8_value = ctx2[24].endedAt.toLocaleTimeString() + ""))
+        set_data(t8, t8_value);
+      if (dirty & 4) {
+        toggle_class(tr, "bg-red-300", ctx2[26] == 0 && ctx2[2] >= 2);
+      }
+    },
+    d(detaching) {
+      if (detaching)
+        detach(tr);
+    }
+  };
+}
+function create_fragment7(ctx) {
+  let div0;
+  let counter;
+  let t0;
+  let stopwatch;
+  let t1;
+  let div1;
+  let current_block_type_index;
+  let if_block0;
+  let t2;
+  let if_block1_anchor;
+  let current;
+  counter = new Counter_svelte_default({props: {value: ctx[2] + 1}});
+  let stopwatch_props = {};
+  stopwatch = new StopWatch_svelte_default({props: stopwatch_props});
+  ctx[13](stopwatch);
+  stopwatch.$on("change", ctx[11]);
+  stopwatch.$on("pause", ctx[14]);
+  stopwatch.$on("run", ctx[15]);
+  const if_block_creators = [create_if_block_13, create_else_block4];
+  const if_blocks = [];
+  function select_block_type(ctx2, dirty) {
+    if (ctx2[4] != "stopped")
+      return 0;
+    return 1;
+  }
+  current_block_type_index = select_block_type(ctx, -1);
+  if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+  let if_block1 = ctx[2] > 0 && create_if_block4(ctx);
+  return {
+    c() {
+      div0 = element("div");
+      create_component(counter.$$.fragment);
+      t0 = space();
+      create_component(stopwatch.$$.fragment);
+      t1 = space();
+      div1 = element("div");
+      if_block0.c();
+      t2 = space();
+      if (if_block1)
+        if_block1.c();
+      if_block1_anchor = empty();
+      attr(div0, "class", "bg-gray-700 md:px-7 px-3 py-2 flex");
+      attr(div1, "class", "flex flex-row py-4 justify-center items-center space-x-2 md:space-x-4");
+    },
+    m(target, anchor) {
+      insert(target, div0, anchor);
+      mount_component(counter, div0, null);
+      append(div0, t0);
+      mount_component(stopwatch, div0, null);
+      insert(target, t1, anchor);
+      insert(target, div1, anchor);
+      if_blocks[current_block_type_index].m(div1, null);
+      insert(target, t2, anchor);
+      if (if_block1)
+        if_block1.m(target, anchor);
+      insert(target, if_block1_anchor, anchor);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      const counter_changes = {};
+      if (dirty & 4)
+        counter_changes.value = ctx2[2] + 1;
+      counter.$set(counter_changes);
+      const stopwatch_changes = {};
+      stopwatch.$set(stopwatch_changes);
+      let previous_block_index = current_block_type_index;
+      current_block_type_index = select_block_type(ctx2, dirty);
+      if (current_block_type_index === previous_block_index) {
+        if_blocks[current_block_type_index].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks[previous_block_index], 1, 1, () => {
+          if_blocks[previous_block_index] = null;
+        });
+        check_outros();
+        if_block0 = if_blocks[current_block_type_index];
+        if (!if_block0) {
+          if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
+          if_block0.c();
+        } else {
+          if_block0.p(ctx2, dirty);
+        }
+        transition_in(if_block0, 1);
+        if_block0.m(div1, null);
+      }
+      if (ctx2[2] > 0) {
+        if (if_block1) {
+          if_block1.p(ctx2, dirty);
+        } else {
+          if_block1 = create_if_block4(ctx2);
+          if_block1.c();
+          if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+        }
+      } else if (if_block1) {
+        if_block1.d(1);
+        if_block1 = null;
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(counter.$$.fragment, local);
+      transition_in(stopwatch.$$.fragment, local);
+      transition_in(if_block0);
+      current = true;
+    },
+    o(local) {
+      transition_out(counter.$$.fragment, local);
+      transition_out(stopwatch.$$.fragment, local);
+      transition_out(if_block0);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div0);
+      destroy_component(counter);
+      ctx[13](null);
+      destroy_component(stopwatch);
+      if (detaching)
+        detach(t1);
+      if (detaching)
+        detach(div1);
+      if_blocks[current_block_type_index].d();
+      if (detaching)
+        detach(t2);
+      if (if_block1)
+        if_block1.d(detaching);
+      if (detaching)
+        detach(if_block1_anchor);
+    }
+  };
+}
+function instance6($$self, $$props, $$invalidate) {
+  let stopWatch;
+  let elapsedList = [];
+  let current = 0;
+  let taskName = "";
+  const next = () => {
+    stopWatch.restart();
+  };
+  const mergePrevious = () => {
+    if (current == 0) {
       return;
     }
-    $$invalidate(1, filtered = experiments.filter((x) => x.summary.toLowerCase().includes(txt) || x.description.toLowerCase().includes(txt)));
+    $$invalidate(2, current--, current);
+    const {startedAt, elapsed} = elapsedList[current];
+    stopWatch.restartAt(startedAt, elapsed);
   };
-  function input_input_handler() {
-    search = this.value;
-    $$invalidate(0, search);
+  const togglePaused = () => {
+    stopWatch.toggleRun();
+  };
+  const stop = () => {
+    stopWatch.stop();
+    setState("stopped");
+  };
+  const download = () => {
+    const headers = ["NO.", "Time Taken", "Started At", "Paused", "Ended At"].join(",");
+    const data = headers + "\n" + elapsedList.slice(0, current).map((x, i) => [
+      i + 1,
+      formatHMS(x.elapsed),
+      x.startedAt.toLocaleTimeString(),
+      formatHMS(x.paused),
+      x.endedAt.toLocaleTimeString()
+    ].join(",")).join("\n");
+    exportCSV(taskName || "test-time.csv", data);
+  };
+  const dispatch = createEventDispatcher();
+  const cleanup = () => {
+    stopWatch.reset();
+    $$invalidate(1, elapsedList = []);
+    $$invalidate(2, current = 0);
+    $$invalidate(3, taskName = "");
+  };
+  const reset = () => {
+    cleanup();
+    const store = window.localStorage;
+    store.clear();
+  };
+  const dispatchDone = () => {
+    dispatch("done", {});
+  };
+  const recordTime = (e) => {
+    const {startedAt, endedAt, elapsed, paused} = e.detail;
+    console.log("time:", startedAt.toLocaleTimeString(), " -> ", endedAt.toLocaleTimeString(), " elapsed: ", formatTime(elapsed), " paused: ", formatHMS(paused), paused);
+    $$invalidate(1, elapsedList[current] = {startedAt, endedAt, elapsed, paused}, elapsedList);
+    $$invalidate(2, current++, current);
+    save();
+  };
+  let state = "stopped";
+  const setState = (x) => {
+    console.log({from: state, to: x});
+    $$invalidate(4, state = x);
+    save();
+  };
+  const stateChanged = ({detail}) => {
+    console.log("state changed: ", {detail});
+    running = detail.state == State.Running;
+  };
+  const save = () => {
+    const store = window.localStorage;
+    store.setItem("state", state);
+    store.setItem("elapsedList", JSON.stringify(elapsedList));
+    store.setItem("current", current);
+  };
+  const restore = () => {
+    const store = window.localStorage;
+    const s = store.getItem("state");
+    const list = JSON.parse(store.getItem("elapsedList"));
+    const c = parseInt(store.getItem("current"));
+    console.log({s, list, c});
+    if (!s || !list || !c) {
+      console.log("no previous session found");
+      return;
+    }
+    $$invalidate(4, state = s);
+    $$invalidate(1, elapsedList = list.map((x) => ({
+      ...x,
+      startedAt: new Date(x.startedAt),
+      endedAt: new Date(x.endedAt)
+    })));
+    $$invalidate(2, current = c);
+    console.log({state, elapsedList, current});
+  };
+  onMount(() => {
+    restore();
+    if (state == "running") {
+      next();
+    }
+  });
+  function stopwatch_binding($$value) {
+    binding_callbacks[$$value ? "unshift" : "push"](() => {
+      stopWatch = $$value;
+      $$invalidate(0, stopWatch);
+    });
   }
-  $$self.$$set = ($$props2) => {
-    if ("location" in $$props2)
-      $$invalidate(3, location2 = $$props2.location);
-  };
-  return [search, filtered, filter, location2, input_input_handler];
+  const pause_handler = () => setState("paused");
+  const run_handler = () => setState("running");
+  const func = () => state == "running";
+  function input_input_handler() {
+    taskName = this.value;
+    $$invalidate(3, taskName);
+  }
+  return [
+    stopWatch,
+    elapsedList,
+    current,
+    taskName,
+    state,
+    next,
+    mergePrevious,
+    togglePaused,
+    stop,
+    download,
+    reset,
+    recordTime,
+    setState,
+    stopwatch_binding,
+    pause_handler,
+    run_handler,
+    func,
+    input_input_handler
+  ];
 }
-var LinksTable = class extends SvelteComponent {
+var RunningTimer = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance2, create_fragment3, safe_not_equal, {location: 3});
+    init(this, options, instance6, create_fragment7, safe_not_equal, {});
   }
 };
-var LinksTable_svelte_default = LinksTable;
+var RunningTimer_svelte_default = RunningTimer;
+
+// build/dist/apps/TestTimer.svelte.js
+function create_fragment8(ctx) {
+  let div;
+  let runningtimer;
+  let current;
+  runningtimer = new RunningTimer_svelte_default({});
+  runningtimer.$on("done", ctx[0]);
+  return {
+    c() {
+      div = element("div");
+      create_component(runningtimer.$$.fragment);
+      attr(div, "class", "flex h-screen-0.80 p-8 white bg-gray-100 shadow-xl items-center flex-col");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      mount_component(runningtimer, div, null);
+      current = true;
+    },
+    p: noop,
+    i(local) {
+      if (current)
+        return;
+      transition_in(runningtimer.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(runningtimer.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div);
+      destroy_component(runningtimer);
+    }
+  };
+}
+function instance7($$self, $$props, $$invalidate) {
+  let {location: location2 = ""} = $$props;
+  let started = false;
+  const start = () => started = true;
+  const done = () => started = false;
+  $$self.$$set = ($$props2) => {
+    if ("location" in $$props2)
+      $$invalidate(1, location2 = $$props2.location);
+  };
+  return [done, location2];
+}
+var TestTimer = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance7, create_fragment8, safe_not_equal, {location: 1});
+  }
+};
+var TestTimer_svelte_default = TestTimer;
 
 // build/_snowpack/pkg/p5.js
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
@@ -15432,7 +16960,7 @@ var __pika_web_default_export_for_treeshaking__ = /* @__PURE__ */ getDefaultExpo
 var p5_default = __pika_web_default_export_for_treeshaking__;
 
 // build/dist/p5/Canvas.svelte.js
-function create_fragment4(ctx) {
+function create_fragment9(ctx) {
   let div;
   let div_resize_listener;
   let mounted;
@@ -15465,7 +16993,7 @@ function create_fragment4(ctx) {
     }
   };
 }
-function instance3($$self, $$props, $$invalidate) {
+function instance8($$self, $$props, $$invalidate) {
   let {sketch} = $$props;
   let {mode = "2D"} = $$props;
   let {height = 0} = $$props;
@@ -15541,359 +17069,13 @@ function instance3($$self, $$props, $$invalidate) {
 var Canvas = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance3, create_fragment4, safe_not_equal, {sketch: 3, mode: 4, height: 5, width: 6});
+    init(this, options, instance8, create_fragment9, safe_not_equal, {sketch: 3, mode: 4, height: 5, width: 6});
   }
 };
 var Canvas_svelte_default = Canvas;
 
-// build/dist/routes/P2DTest.svelte.js
-function create_fragment5(ctx) {
-  let div4;
-  let canvas;
-  let t0;
-  let div3;
-  let div2;
-  let div0;
-  let p0;
-  let t2;
-  let p1;
-  let t3_value = Math.round(ctx[2]) + "";
-  let t3;
-  let t4;
-  let input0;
-  let input0_max_value;
-  let t5;
-  let div1;
-  let p2;
-  let t7;
-  let p3;
-  let t8_value = Math.round(ctx[3]) + "";
-  let t8;
-  let t9;
-  let input1;
-  let input1_max_value;
-  let current;
-  let mounted;
-  let dispose;
-  canvas = new Canvas_svelte_default({
-    props: {height: "400", sketch: ctx[4]}
-  });
-  return {
-    c() {
-      div4 = element("div");
-      create_component(canvas.$$.fragment);
-      t0 = space();
-      div3 = element("div");
-      div2 = element("div");
-      div0 = element("div");
-      p0 = element("p");
-      p0.textContent = "x:";
-      t2 = space();
-      p1 = element("p");
-      t3 = text(t3_value);
-      t4 = space();
-      input0 = element("input");
-      t5 = space();
-      div1 = element("div");
-      p2 = element("p");
-      p2.textContent = "y:";
-      t7 = space();
-      p3 = element("p");
-      t8 = text(t8_value);
-      t9 = space();
-      input1 = element("input");
-      attr(p0, "class", "table-cell w-12 font-mono text-right");
-      attr(p1, "class", "table-cell w-24 truncate font-mono pl-2");
-      attr(input0, "class", "table-cell align-left");
-      attr(input0, "type", "range");
-      attr(input0, "min", "0");
-      attr(input0, "max", input0_max_value = Math.round(ctx[0]));
-      attr(div0, "class", "table-row");
-      attr(p2, "class", "table-cell w-12 font-mono text-right");
-      attr(p3, "class", "table-cell w-24 truncate font-mono pl-2");
-      attr(input1, "class", "table-cell align-left");
-      attr(input1, "type", "range");
-      attr(input1, "min", "0");
-      attr(input1, "max", input1_max_value = Math.round(ctx[1]));
-      attr(div1, "class", "table-row");
-      attr(div2, "class", "table-row-group");
-      attr(div3, "class", "table w-full");
-      attr(div4, "class", "flex flex-col");
-    },
-    m(target, anchor) {
-      insert(target, div4, anchor);
-      mount_component(canvas, div4, null);
-      append(div4, t0);
-      append(div4, div3);
-      append(div3, div2);
-      append(div2, div0);
-      append(div0, p0);
-      append(div0, t2);
-      append(div0, p1);
-      append(p1, t3);
-      append(div0, t4);
-      append(div0, input0);
-      set_input_value(input0, ctx[2]);
-      append(div2, t5);
-      append(div2, div1);
-      append(div1, p2);
-      append(div1, t7);
-      append(div1, p3);
-      append(p3, t8);
-      append(div1, t9);
-      append(div1, input1);
-      set_input_value(input1, ctx[3]);
-      current = true;
-      if (!mounted) {
-        dispose = [
-          listen(input0, "change", ctx[6]),
-          listen(input0, "input", ctx[6]),
-          listen(input1, "change", ctx[7]),
-          listen(input1, "input", ctx[7])
-        ];
-        mounted = true;
-      }
-    },
-    p(ctx2, [dirty]) {
-      if ((!current || dirty & 4) && t3_value !== (t3_value = Math.round(ctx2[2]) + ""))
-        set_data(t3, t3_value);
-      if (!current || dirty & 1 && input0_max_value !== (input0_max_value = Math.round(ctx2[0]))) {
-        attr(input0, "max", input0_max_value);
-      }
-      if (dirty & 4) {
-        set_input_value(input0, ctx2[2]);
-      }
-      if ((!current || dirty & 8) && t8_value !== (t8_value = Math.round(ctx2[3]) + ""))
-        set_data(t8, t8_value);
-      if (!current || dirty & 2 && input1_max_value !== (input1_max_value = Math.round(ctx2[1]))) {
-        attr(input1, "max", input1_max_value);
-      }
-      if (dirty & 8) {
-        set_input_value(input1, ctx2[3]);
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(canvas.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(canvas.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div4);
-      destroy_component(canvas);
-      mounted = false;
-      run_all(dispose);
-    }
-  };
-}
-var vx = 1;
-var vy = 1;
-var dt = 0;
-function instance4($$self, $$props, $$invalidate) {
-  let {location: location2} = $$props;
-  let width;
-  let height;
-  let x = 100;
-  let y = 100;
-  const sketch = (p, el) => {
-    let w = p.random(50, 100);
-    let h = p.random(50, 100);
-    const setup = () => {
-      $$invalidate(0, width = p.width - w);
-      $$invalidate(1, height = p.height - h);
-      $$invalidate(2, x = width / 2 - w / 2);
-      $$invalidate(3, y = height / 2 - h / 2);
-    };
-    const onResize = () => {
-      $$invalidate(0, width = p.width - w);
-      $$invalidate(1, height = p.height - h);
-    };
-    const update2 = () => {
-      $$invalidate(2, x += vx * dt);
-      $$invalidate(3, y += vy * dt);
-    };
-    p.draw = () => {
-      p.background(0);
-      update2();
-      p.fill(255);
-      p.rect(x, y, w, h);
-    };
-    return {setup, onResize};
-  };
-  function input0_change_input_handler() {
-    x = to_number(this.value);
-    $$invalidate(2, x);
-  }
-  function input1_change_input_handler() {
-    y = to_number(this.value);
-    $$invalidate(3, y);
-  }
-  $$self.$$set = ($$props2) => {
-    if ("location" in $$props2)
-      $$invalidate(5, location2 = $$props2.location);
-  };
-  return [
-    width,
-    height,
-    x,
-    y,
-    sketch,
-    location2,
-    input0_change_input_handler,
-    input1_change_input_handler
-  ];
-}
-var P2DTest = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance4, create_fragment5, safe_not_equal, {location: 5});
-  }
-};
-var P2DTest_svelte_default = P2DTest;
-
-// build/dist/routes/P3DTest.svelte.js
-function create_fragment6(ctx) {
-  let div3;
-  let canvas;
-  let t0;
-  let div2;
-  let div1;
-  let div0;
-  let p0;
-  let t2;
-  let p1;
-  let t3_value = ctx[0].toFixed(2) + "";
-  let t3;
-  let t4;
-  let input;
-  let current;
-  let mounted;
-  let dispose;
-  canvas = new Canvas_svelte_default({
-    props: {mode: "3D", sketch: ctx[1]}
-  });
-  return {
-    c() {
-      div3 = element("div");
-      create_component(canvas.$$.fragment);
-      t0 = space();
-      div2 = element("div");
-      div1 = element("div");
-      div0 = element("div");
-      p0 = element("p");
-      p0.textContent = "speed:";
-      t2 = space();
-      p1 = element("p");
-      t3 = text(t3_value);
-      t4 = space();
-      input = element("input");
-      attr(p0, "class", "table-cell w-12 font-mono text-right");
-      attr(p1, "class", "table-cell w-24 truncate font-mono pl-2");
-      attr(input, "class", "table-cell align-left");
-      attr(input, "type", "range");
-      attr(input, "step", "0.01");
-      attr(input, "min", "0.0");
-      attr(input, "max", "0.1");
-      attr(div0, "class", "table-row");
-      attr(div1, "class", "table-row-group");
-      attr(div2, "class", "table w-full");
-      attr(div3, "class", "flex flex-col");
-    },
-    m(target, anchor) {
-      insert(target, div3, anchor);
-      mount_component(canvas, div3, null);
-      append(div3, t0);
-      append(div3, div2);
-      append(div2, div1);
-      append(div1, div0);
-      append(div0, p0);
-      append(div0, t2);
-      append(div0, p1);
-      append(p1, t3);
-      append(div0, t4);
-      append(div0, input);
-      set_input_value(input, ctx[0]);
-      current = true;
-      if (!mounted) {
-        dispose = [
-          listen(input, "change", ctx[3]),
-          listen(input, "input", ctx[3])
-        ];
-        mounted = true;
-      }
-    },
-    p(ctx2, [dirty]) {
-      if ((!current || dirty & 1) && t3_value !== (t3_value = ctx2[0].toFixed(2) + ""))
-        set_data(t3, t3_value);
-      if (dirty & 1) {
-        set_input_value(input, ctx2[0]);
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(canvas.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(canvas.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div3);
-      destroy_component(canvas);
-      mounted = false;
-      run_all(dispose);
-    }
-  };
-}
-function instance5($$self, $$props, $$invalidate) {
-  let {location: location2} = $$props;
-  let speed = 0.01;
-  const sketch = (p, el) => {
-    let x = 100;
-    let y = 100;
-    let w = p.random(50, 100);
-    let h = p.random(50, 100);
-    p.draw = () => {
-      p.background(0);
-      p.normalMaterial();
-      p.translate(0, 0, 0);
-      p.push();
-      p.rotateZ(p.frameCount * speed);
-      p.rotateX(p.frameCount * speed);
-      p.rotateY(p.frameCount * speed);
-      p.torus(70, 20);
-      p.pop();
-    };
-    return {};
-  };
-  function input_change_input_handler() {
-    speed = to_number(this.value);
-    $$invalidate(0, speed);
-  }
-  $$self.$$set = ($$props2) => {
-    if ("location" in $$props2)
-      $$invalidate(2, location2 = $$props2.location);
-  };
-  return [speed, sketch, location2, input_change_input_handler];
-}
-var P3DTest = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance5, create_fragment6, safe_not_equal, {location: 2});
-  }
-};
-var P3DTest_svelte_default = P3DTest;
-
 // build/dist/beyond/ParametricEqLines.svelte.js
-function create_fragment7(ctx) {
+function create_fragment10(ctx) {
   let div4;
   let canvas;
   let t0;
@@ -16027,7 +17209,7 @@ function create_fragment7(ctx) {
     }
   };
 }
-function instance6($$self, $$props, $$invalidate) {
+function instance9($$self, $$props, $$invalidate) {
   let {location: location2} = $$props;
   let dt2 = 0.215;
   let lines = 12;
@@ -16096,534 +17278,13 @@ function instance6($$self, $$props, $$invalidate) {
 var ParametricEqLines = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance6, create_fragment7, safe_not_equal, {location: 3});
+    init(this, options, instance9, create_fragment10, safe_not_equal, {location: 3});
   }
 };
 var ParametricEqLines_svelte_default = ParametricEqLines;
 
-// build/dist/ui/Button.svelte.js
-var get_contents_slot_changes = (dirty) => ({});
-var get_contents_slot_context = (ctx) => ({});
-function create_else_block2(ctx) {
-  let button;
-  let button_class_value;
-  let mounted;
-  let dispose;
-  return {
-    c() {
-      button = element("button");
-      attr(button, "class", button_class_value = "inline-block shadow h-4 w-4 md:h-8 md:w-8 rounded-full  hover:shadow-lg transition " + (ctx[5].class || "") + " " + (ctx[0] ? ctx[1] : ctx[2]));
-    },
-    m(target, anchor) {
-      insert(target, button, anchor);
-      if (!mounted) {
-        dispose = listen(button, "click", ctx[3]);
-        mounted = true;
-      }
-    },
-    p(ctx2, dirty) {
-      if (dirty & 39 && button_class_value !== (button_class_value = "inline-block shadow h-4 w-4 md:h-8 md:w-8 rounded-full  hover:shadow-lg transition " + (ctx2[5].class || "") + " " + (ctx2[0] ? ctx2[1] : ctx2[2]))) {
-        attr(button, "class", button_class_value);
-      }
-    },
-    i: noop,
-    o: noop,
-    d(detaching) {
-      if (detaching)
-        detach(button);
-      mounted = false;
-      dispose();
-    }
-  };
-}
-function create_if_block2(ctx) {
-  let button;
-  let button_class_value;
-  let current;
-  let mounted;
-  let dispose;
-  const contents_slot_template = ctx[7].contents;
-  const contents_slot = create_slot(contents_slot_template, ctx, ctx[6], get_contents_slot_context);
-  return {
-    c() {
-      button = element("button");
-      if (contents_slot)
-        contents_slot.c();
-      attr(button, "class", button_class_value = "inline-block px-4 py-2 rounded-2xl shadow text-center text-xs md:text-md hover:shadow-lg transition " + (ctx[5].class || "") + " " + (ctx[0] ? ctx[1] : ctx[2]));
-    },
-    m(target, anchor) {
-      insert(target, button, anchor);
-      if (contents_slot) {
-        contents_slot.m(button, null);
-      }
-      current = true;
-      if (!mounted) {
-        dispose = listen(button, "click", ctx[3]);
-        mounted = true;
-      }
-    },
-    p(ctx2, dirty) {
-      if (contents_slot) {
-        if (contents_slot.p && dirty & 64) {
-          update_slot(contents_slot, contents_slot_template, ctx2, ctx2[6], dirty, get_contents_slot_changes, get_contents_slot_context);
-        }
-      }
-      if (!current || dirty & 39 && button_class_value !== (button_class_value = "inline-block px-4 py-2 rounded-2xl shadow text-center text-xs md:text-md hover:shadow-lg transition " + (ctx2[5].class || "") + " " + (ctx2[0] ? ctx2[1] : ctx2[2]))) {
-        attr(button, "class", button_class_value);
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(contents_slot, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(contents_slot, local);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching)
-        detach(button);
-      if (contents_slot)
-        contents_slot.d(detaching);
-      mounted = false;
-      dispose();
-    }
-  };
-}
-function create_fragment8(ctx) {
-  let current_block_type_index;
-  let if_block;
-  let if_block_anchor;
-  let current;
-  const if_block_creators = [create_if_block2, create_else_block2];
-  const if_blocks = [];
-  function select_block_type(ctx2, dirty) {
-    if (ctx2[4].contents)
-      return 0;
-    return 1;
-  }
-  current_block_type_index = select_block_type(ctx, -1);
-  if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-  return {
-    c() {
-      if_block.c();
-      if_block_anchor = empty();
-    },
-    m(target, anchor) {
-      if_blocks[current_block_type_index].m(target, anchor);
-      insert(target, if_block_anchor, anchor);
-      current = true;
-    },
-    p(ctx2, [dirty]) {
-      let previous_block_index = current_block_type_index;
-      current_block_type_index = select_block_type(ctx2, dirty);
-      if (current_block_type_index === previous_block_index) {
-        if_blocks[current_block_type_index].p(ctx2, dirty);
-      } else {
-        group_outros();
-        transition_out(if_blocks[previous_block_index], 1, 1, () => {
-          if_blocks[previous_block_index] = null;
-        });
-        check_outros();
-        if_block = if_blocks[current_block_type_index];
-        if (!if_block) {
-          if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
-          if_block.c();
-        } else {
-          if_block.p(ctx2, dirty);
-        }
-        transition_in(if_block, 1);
-        if_block.m(if_block_anchor.parentNode, if_block_anchor);
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(if_block);
-      current = true;
-    },
-    o(local) {
-      transition_out(if_block);
-      current = false;
-    },
-    d(detaching) {
-      if_blocks[current_block_type_index].d(detaching);
-      if (detaching)
-        detach(if_block_anchor);
-    }
-  };
-}
-function instance7($$self, $$props, $$invalidate) {
-  let {$$slots: slots = {}, $$scope} = $$props;
-  const $$slots = compute_slots(slots);
-  let {enabled = true} = $$props;
-  let {enabledClass = "text-gray-200 bg-green-600"} = $$props;
-  let {disabledClass = "text-gray-400 bg-gray-700"} = $$props;
-  const dispatch = createEventDispatcher();
-  const handleClick = (e) => {
-    if (!enabled) {
-      return;
-    }
-    dispatch("click", e);
-  };
-  $$self.$$set = ($$new_props) => {
-    $$invalidate(5, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
-    if ("enabled" in $$new_props)
-      $$invalidate(0, enabled = $$new_props.enabled);
-    if ("enabledClass" in $$new_props)
-      $$invalidate(1, enabledClass = $$new_props.enabledClass);
-    if ("disabledClass" in $$new_props)
-      $$invalidate(2, disabledClass = $$new_props.disabledClass);
-    if ("$$scope" in $$new_props)
-      $$invalidate(6, $$scope = $$new_props.$$scope);
-  };
-  $$props = exclude_internal_props($$props);
-  return [
-    enabled,
-    enabledClass,
-    disabledClass,
-    handleClick,
-    $$slots,
-    $$props,
-    $$scope,
-    slots
-  ];
-}
-var Button = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance7, create_fragment8, safe_not_equal, {
-      enabled: 0,
-      enabledClass: 1,
-      disabledClass: 2
-    });
-  }
-};
-var Button_svelte_default = Button;
-
-// build/dist/ui/Toggle.svelte.js
-var get_inactive_slot_changes = (dirty) => ({});
-var get_inactive_slot_context = (ctx) => ({});
-var get_active_slot_changes = (dirty) => ({});
-var get_active_slot_context = (ctx) => ({});
-function create_else_block_1(ctx) {
-  let button;
-  let button_class_value;
-  let mounted;
-  let dispose;
-  return {
-    c() {
-      button = element("button");
-      attr(button, "class", button_class_value = "inline-block shadow h-4 w-4 md:h-8 md:w-8 rounded-full  hover:shadow-lg transition " + (ctx[5].class || ""));
-      toggle_class(button, "bg-green-600", !ctx[1] && ctx[2] || ctx[1] && !ctx[2]);
-      toggle_class(button, "bg-gray-600", !ctx[1] && !ctx[2] || ctx[1] && ctx[2]);
-    },
-    m(target, anchor) {
-      insert(target, button, anchor);
-      if (!mounted) {
-        dispose = listen(button, "click", ctx[3]);
-        mounted = true;
-      }
-    },
-    p(ctx2, dirty) {
-      if (dirty & 32 && button_class_value !== (button_class_value = "inline-block shadow h-4 w-4 md:h-8 md:w-8 rounded-full  hover:shadow-lg transition " + (ctx2[5].class || ""))) {
-        attr(button, "class", button_class_value);
-      }
-      if (dirty & 38) {
-        toggle_class(button, "bg-green-600", !ctx2[1] && ctx2[2] || ctx2[1] && !ctx2[2]);
-      }
-      if (dirty & 38) {
-        toggle_class(button, "bg-gray-600", !ctx2[1] && !ctx2[2] || ctx2[1] && ctx2[2]);
-      }
-    },
-    i: noop,
-    o: noop,
-    d(detaching) {
-      if (detaching)
-        detach(button);
-      mounted = false;
-      dispose();
-    }
-  };
-}
-function create_if_block3(ctx) {
-  let button;
-  let current_block_type_index;
-  let if_block;
-  let button_class_value;
-  let current;
-  let mounted;
-  let dispose;
-  const if_block_creators = [create_if_block_12, create_else_block3];
-  const if_blocks = [];
-  function select_block_type_1(ctx2, dirty) {
-    if (ctx2[2])
-      return 0;
-    return 1;
-  }
-  current_block_type_index = select_block_type_1(ctx, -1);
-  if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-  return {
-    c() {
-      button = element("button");
-      if_block.c();
-      attr(button, "class", button_class_value = "inline-block px-4 py-2 rounded-2xl shadow  text-center text-xs md:text-md hover:shadow-lg transition " + (ctx[5].class || ""));
-      toggle_class(button, "text-gray-500", !ctx[0]);
-      toggle_class(button, "bg-gray-700", !ctx[0]);
-      toggle_class(button, "bg-green-600", !ctx[1] && ctx[2] || ctx[1] && !ctx[2]);
-      toggle_class(button, "bg-gray-600", !ctx[1] && !ctx[2] || ctx[1] && ctx[2]);
-    },
-    m(target, anchor) {
-      insert(target, button, anchor);
-      if_blocks[current_block_type_index].m(button, null);
-      current = true;
-      if (!mounted) {
-        dispose = listen(button, "click", ctx[3]);
-        mounted = true;
-      }
-    },
-    p(ctx2, dirty) {
-      let previous_block_index = current_block_type_index;
-      current_block_type_index = select_block_type_1(ctx2, dirty);
-      if (current_block_type_index === previous_block_index) {
-        if_blocks[current_block_type_index].p(ctx2, dirty);
-      } else {
-        group_outros();
-        transition_out(if_blocks[previous_block_index], 1, 1, () => {
-          if_blocks[previous_block_index] = null;
-        });
-        check_outros();
-        if_block = if_blocks[current_block_type_index];
-        if (!if_block) {
-          if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
-          if_block.c();
-        } else {
-          if_block.p(ctx2, dirty);
-        }
-        transition_in(if_block, 1);
-        if_block.m(button, null);
-      }
-      if (!current || dirty & 32 && button_class_value !== (button_class_value = "inline-block px-4 py-2 rounded-2xl shadow  text-center text-xs md:text-md hover:shadow-lg transition " + (ctx2[5].class || ""))) {
-        attr(button, "class", button_class_value);
-      }
-      if (dirty & 33) {
-        toggle_class(button, "text-gray-500", !ctx2[0]);
-      }
-      if (dirty & 33) {
-        toggle_class(button, "bg-gray-700", !ctx2[0]);
-      }
-      if (dirty & 38) {
-        toggle_class(button, "bg-green-600", !ctx2[1] && ctx2[2] || ctx2[1] && !ctx2[2]);
-      }
-      if (dirty & 38) {
-        toggle_class(button, "bg-gray-600", !ctx2[1] && !ctx2[2] || ctx2[1] && ctx2[2]);
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(if_block);
-      current = true;
-    },
-    o(local) {
-      transition_out(if_block);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching)
-        detach(button);
-      if_blocks[current_block_type_index].d();
-      mounted = false;
-      dispose();
-    }
-  };
-}
-function create_else_block3(ctx) {
-  let current;
-  const inactive_slot_template = ctx[8].inactive;
-  const inactive_slot = create_slot(inactive_slot_template, ctx, ctx[7], get_inactive_slot_context);
-  return {
-    c() {
-      if (inactive_slot)
-        inactive_slot.c();
-    },
-    m(target, anchor) {
-      if (inactive_slot) {
-        inactive_slot.m(target, anchor);
-      }
-      current = true;
-    },
-    p(ctx2, dirty) {
-      if (inactive_slot) {
-        if (inactive_slot.p && dirty & 128) {
-          update_slot(inactive_slot, inactive_slot_template, ctx2, ctx2[7], dirty, get_inactive_slot_changes, get_inactive_slot_context);
-        }
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(inactive_slot, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(inactive_slot, local);
-      current = false;
-    },
-    d(detaching) {
-      if (inactive_slot)
-        inactive_slot.d(detaching);
-    }
-  };
-}
-function create_if_block_12(ctx) {
-  let current;
-  const active_slot_template = ctx[8].active;
-  const active_slot = create_slot(active_slot_template, ctx, ctx[7], get_active_slot_context);
-  return {
-    c() {
-      if (active_slot)
-        active_slot.c();
-    },
-    m(target, anchor) {
-      if (active_slot) {
-        active_slot.m(target, anchor);
-      }
-      current = true;
-    },
-    p(ctx2, dirty) {
-      if (active_slot) {
-        if (active_slot.p && dirty & 128) {
-          update_slot(active_slot, active_slot_template, ctx2, ctx2[7], dirty, get_active_slot_changes, get_active_slot_context);
-        }
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(active_slot, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(active_slot, local);
-      current = false;
-    },
-    d(detaching) {
-      if (active_slot)
-        active_slot.d(detaching);
-    }
-  };
-}
-function create_fragment9(ctx) {
-  let current_block_type_index;
-  let if_block;
-  let if_block_anchor;
-  let current;
-  const if_block_creators = [create_if_block3, create_else_block_1];
-  const if_blocks = [];
-  function select_block_type(ctx2, dirty) {
-    if (ctx2[4].active || ctx2[4].inactive)
-      return 0;
-    return 1;
-  }
-  current_block_type_index = select_block_type(ctx, -1);
-  if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-  return {
-    c() {
-      if_block.c();
-      if_block_anchor = empty();
-    },
-    m(target, anchor) {
-      if_blocks[current_block_type_index].m(target, anchor);
-      insert(target, if_block_anchor, anchor);
-      current = true;
-    },
-    p(ctx2, [dirty]) {
-      let previous_block_index = current_block_type_index;
-      current_block_type_index = select_block_type(ctx2, dirty);
-      if (current_block_type_index === previous_block_index) {
-        if_blocks[current_block_type_index].p(ctx2, dirty);
-      } else {
-        group_outros();
-        transition_out(if_blocks[previous_block_index], 1, 1, () => {
-          if_blocks[previous_block_index] = null;
-        });
-        check_outros();
-        if_block = if_blocks[current_block_type_index];
-        if (!if_block) {
-          if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
-          if_block.c();
-        } else {
-          if_block.p(ctx2, dirty);
-        }
-        transition_in(if_block, 1);
-        if_block.m(if_block_anchor.parentNode, if_block_anchor);
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(if_block);
-      current = true;
-    },
-    o(local) {
-      transition_out(if_block);
-      current = false;
-    },
-    d(detaching) {
-      if_blocks[current_block_type_index].d(detaching);
-      if (detaching)
-        detach(if_block_anchor);
-    }
-  };
-}
-function instance8($$self, $$props, $$invalidate) {
-  let {$$slots: slots = {}, $$scope} = $$props;
-  const $$slots = compute_slots(slots);
-  let {enabled = true} = $$props;
-  let {invert = false} = $$props;
-  const toggleActive = () => !active;
-  let {isActive = toggleActive} = $$props;
-  let active = true;
-  const dispatch = createEventDispatcher();
-  const toggle = () => {
-    if (!enabled) {
-      return;
-    }
-    dispatch("toggle", {active});
-    $$invalidate(2, active = isActive());
-  };
-  onMount(() => {
-    if (isActive != toggleActive) {
-      $$invalidate(2, active = isActive());
-    }
-  });
-  $$self.$$set = ($$new_props) => {
-    $$invalidate(5, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
-    if ("enabled" in $$new_props)
-      $$invalidate(0, enabled = $$new_props.enabled);
-    if ("invert" in $$new_props)
-      $$invalidate(1, invert = $$new_props.invert);
-    if ("isActive" in $$new_props)
-      $$invalidate(6, isActive = $$new_props.isActive);
-    if ("$$scope" in $$new_props)
-      $$invalidate(7, $$scope = $$new_props.$$scope);
-  };
-  $$props = exclude_internal_props($$props);
-  return [enabled, invert, active, toggle, $$slots, $$props, isActive, $$scope, slots];
-}
-var Toggle = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance8, create_fragment9, safe_not_equal, {enabled: 0, invert: 1, isActive: 6});
-  }
-};
-var Toggle_svelte_default = Toggle;
-
 // build/dist/beyond/Spirograph.svelte.js
-function create_active_slot(ctx) {
+function create_active_slot2(ctx) {
   let span;
   return {
     c() {
@@ -16640,7 +17301,7 @@ function create_active_slot(ctx) {
     }
   };
 }
-function create_inactive_slot(ctx) {
+function create_inactive_slot2(ctx) {
   let span;
   return {
     c() {
@@ -16657,7 +17318,7 @@ function create_inactive_slot(ctx) {
     }
   };
 }
-function create_contents_slot(ctx) {
+function create_contents_slot2(ctx) {
   let span;
   return {
     c() {
@@ -16674,7 +17335,7 @@ function create_contents_slot(ctx) {
     }
   };
 }
-function create_fragment10(ctx) {
+function create_fragment11(ctx) {
   let div17;
   let canvas;
   let t0;
@@ -16793,8 +17454,8 @@ function create_fragment10(ctx) {
     props: {
       invert: "true",
       $$slots: {
-        inactive: [create_inactive_slot],
-        active: [create_active_slot]
+        inactive: [create_inactive_slot2],
+        active: [create_active_slot2]
       },
       $$scope: {ctx}
     }
@@ -16802,7 +17463,7 @@ function create_fragment10(ctx) {
   toggle0.$on("toggle", ctx[8]);
   button = new Button_svelte_default({
     props: {
-      $$slots: {contents: [create_contents_slot]},
+      $$slots: {contents: [create_contents_slot2]},
       $$scope: {ctx}
     }
   });
@@ -17256,7 +17917,7 @@ function create_fragment10(ctx) {
     }
   };
 }
-function instance9($$self, $$props, $$invalidate) {
+function instance10($$self, $$props, $$invalidate) {
   let maxSize;
   let {location: location2} = $$props;
   let innerRadius;
@@ -17485,1885 +18146,18 @@ function instance9($$self, $$props, $$invalidate) {
 var Spirograph = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance9, create_fragment10, safe_not_equal, {location: 11}, [-1, -1]);
+    init(this, options, instance10, create_fragment11, safe_not_equal, {location: 11}, [-1, -1]);
   }
 };
 var Spirograph_svelte_default = Spirograph;
 
-// build/dist/apps/test-timer/utils.js
-var toHMS = (t) => {
-  if (!t) {
-    return {H: 0, M: 0, S: 0, ms: 0};
-  }
-  const H = Math.floor(t / (60 * 60 * 1e3));
-  t -= H * 60 * 60 * 1e3;
-  const M = Math.floor(t / (60 * 1e3));
-  t -= M * 60 * 1e3;
-  const S = Math.floor(t / 1e3);
-  t -= S * 1e3;
-  const ms = t;
-  return {H, M, S, ms};
-};
-var twoDigits = (x) => x < 10 ? `0${x}` : `${x}`;
-var toTime = (t) => typeof t === "number" ? toHMS(t) : t;
-var prettyHMS = (t) => {
-  if (!t) {
-    return {H: "00", M: "00", S: "00", ms: "000"};
-  }
-  const hms = toTime(t);
-  const H = twoDigits(hms.H);
-  const M = twoDigits(hms.M);
-  const S = twoDigits(hms.S);
-  const ms = String(hms.ms).padStart(3, "0");
-  return {H, M, S, ms};
-};
-var formatHMS = (t) => {
-  const {H, M, S} = prettyHMS(t);
-  return `${H}:${M}:${S}`;
-};
-var formatTime = (t) => {
-  const {H, M, S, ms} = prettyHMS(t);
-  return `${H}:${M}:${S}.${ms}`;
-};
-
-// build/dist/apps/test-timer/store.js
-var newTestDuration = () => {
-  const duration = writable(0);
-  const {subscribe: subscribe2, set, update: update2} = duration;
-  return {
-    subscribe: subscribe2,
-    setTime: (h, m, s, ms = 0) => set(((h * 60 + m) * 60 + s) * 1e3 + ms),
-    reset: () => set(0)
-  };
-};
-var testDuration = newTestDuration();
-
-// build/dist/apps/test-timer/export-csv.js
-var exportCSV = (filename, contents) => {
-  const blob = new Blob([contents], {type: "text/csv;charset=utf-8;"});
-  if (navigator.msSaveBlob) {
-    navigator.msSaveBlob(blob, filename);
-    return;
-  }
-  const link = document.createElement("a");
-  if (link.download !== void 0) {
-    var url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", filename);
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-};
-
-// build/dist/apps/test-timer/StopWatch.svelte.js
-function create_fragment11(ctx) {
-  let div8;
-  let div7;
-  let div0;
-  let t0_value = ctx[0].H + "";
-  let t0;
-  let t1;
-  let div1;
-  let t3;
-  let div2;
-  let t4_value = ctx[0].M + "";
-  let t4;
-  let t5;
-  let div3;
-  let t7;
-  let div4;
-  let t8_value = ctx[0].S + "";
-  let t8;
-  let t9;
-  let div5;
-  let t11;
-  let div6;
-  let t12_value = ctx[0].ms + "";
-  let t12;
-  return {
-    c() {
-      div8 = element("div");
-      div7 = element("div");
-      div0 = element("div");
-      t0 = text(t0_value);
-      t1 = space();
-      div1 = element("div");
-      div1.textContent = ":";
-      t3 = space();
-      div2 = element("div");
-      t4 = text(t4_value);
-      t5 = space();
-      div3 = element("div");
-      div3.textContent = ":";
-      t7 = space();
-      div4 = element("div");
-      t8 = text(t8_value);
-      t9 = space();
-      div5 = element("div");
-      div5.textContent = ".";
-      t11 = space();
-      div6 = element("div");
-      t12 = text(t12_value);
-      attr(div0, "class", "p-2 rounded-xl appearance-none outline-none");
-      attr(div1, "class", "text-gray-400");
-      attr(div2, "class", "p-2 rounded-xl appearance-none outline-none");
-      attr(div3, "class", "text-gray-400");
-      attr(div4, "class", "pl-2 rounded-xl appearance-none outline-none");
-      attr(div5, "class", "text-gray-400 text-sm");
-      attr(div6, "class", "pr-2 rounded-xl appearance-none outline-none text-sm text-gray-300");
-      attr(div7, "class", "flex items-center");
-      attr(div8, "class", "inline-block p-2 min-w-min bg-gray-800 text-gray-200 rounded-lg text-md md:text-2xl font-mono");
-    },
-    m(target, anchor) {
-      insert(target, div8, anchor);
-      append(div8, div7);
-      append(div7, div0);
-      append(div0, t0);
-      append(div7, t1);
-      append(div7, div1);
-      append(div7, t3);
-      append(div7, div2);
-      append(div2, t4);
-      append(div7, t5);
-      append(div7, div3);
-      append(div7, t7);
-      append(div7, div4);
-      append(div4, t8);
-      append(div7, t9);
-      append(div7, div5);
-      append(div7, t11);
-      append(div7, div6);
-      append(div6, t12);
-    },
-    p(ctx2, [dirty]) {
-      if (dirty & 1 && t0_value !== (t0_value = ctx2[0].H + ""))
-        set_data(t0, t0_value);
-      if (dirty & 1 && t4_value !== (t4_value = ctx2[0].M + ""))
-        set_data(t4, t4_value);
-      if (dirty & 1 && t8_value !== (t8_value = ctx2[0].S + ""))
-        set_data(t8, t8_value);
-      if (dirty & 1 && t12_value !== (t12_value = ctx2[0].ms + ""))
-        set_data(t12, t12_value);
-    },
-    i: noop,
-    o: noop,
-    d(detaching) {
-      if (detaching)
-        detach(div8);
-    }
-  };
-}
-function instance10($$self, $$props, $$invalidate) {
-  let elapsedPretty;
-  var {State: State2} = $$props;
-  (function(State3) {
-    State3[State3["Running"] = 0] = "Running";
-    State3[State3["Paused"] = 1] = "Paused";
-  })(State2 || (State2 = {}));
-  let state = State2.Paused;
-  let startedAt;
-  let ranAt;
-  let previousElapsed = 0;
-  let elapsed = 0;
-  const reset = () => {
-    stopTimer();
-    state = State2.Paused;
-    startedAt = null;
-    ranAt = null;
-    previousElapsed = 0;
-    $$invalidate(8, elapsed = 0);
-  };
-  const dispatch = createEventDispatcher();
-  const pause = () => {
-    previousElapsed = elapsed;
-    stopTimer();
-    state = State2.Paused;
-    dispatch("pause");
-  };
-  const restart = () => {
-    dispatchLap();
-    reset();
-    run2();
-  };
-  const stop = () => {
-    pause();
-    dispatchLap();
-    reset();
-  };
-  const restartAt = (start, alreadyElapsed) => {
-    stopTimer();
-    startedAt = start;
-    ranAt = start;
-    previousElapsed = alreadyElapsed + elapsed;
-    $$invalidate(8, elapsed = 0);
-    run2();
-  };
-  let timer2;
-  const run2 = () => {
-    startedAt || (startedAt = new Date());
-    state = State2.Running;
-    ranAt = ranAt ? new Date() : startedAt;
-    timer2 = setInterval(() => {
-      $$invalidate(8, elapsed = new Date() - ranAt + previousElapsed);
-    }, 15);
-    console.log("run", {
-      startedAt: startedAt.toLocaleTimeString(),
-      ranAt: ranAt.toLocaleTimeString(),
-      elapsed: formatTime(elapsed),
-      prev: formatTime(previousElapsed)
-    });
-    dispatch("run", {state});
-  };
-  const toggleRun = () => {
-    state == State2.Running ? pause() : run2();
-  };
-  const dispatchLap = () => {
-    if (!startedAt || !ranAt) {
-      console.warn("sending lap when there is no start or end");
-      return;
-    }
-    const now = new Date();
-    const paused = Math.floor((now - startedAt - elapsed) / 10) * 10;
-    console.log(" >>> change", {
-      startedAt: startedAt.toLocaleTimeString(),
-      endedAt: now.toLocaleTimeString(),
-      elapsed: toHMS(elapsed),
-      paused: toHMS(paused)
-    }, paused);
-    dispatch("change", {startedAt, endedAt: now, elapsed, paused});
-  };
-  const stopTimer = () => {
-    clearInterval(timer2);
-    timer2 = null;
-  };
-  onDestroy(() => {
-    stopTimer();
-  });
-  $$self.$$set = ($$props2) => {
-    if ("State" in $$props2)
-      $$invalidate(1, State2 = $$props2.State);
-  };
-  $$self.$$.update = () => {
-    if ($$self.$$.dirty & 256) {
-      $:
-        $$invalidate(0, elapsedPretty = prettyHMS(elapsed));
-    }
-  };
-  return [
-    elapsedPretty,
-    State2,
-    reset,
-    pause,
-    restart,
-    stop,
-    restartAt,
-    toggleRun,
-    elapsed
-  ];
-}
-var StopWatch = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance10, create_fragment11, safe_not_equal, {
-      State: 1,
-      reset: 2,
-      pause: 3,
-      restart: 4,
-      stop: 5,
-      restartAt: 6,
-      toggleRun: 7
-    });
-  }
-  get reset() {
-    return this.$$.ctx[2];
-  }
-  get pause() {
-    return this.$$.ctx[3];
-  }
-  get restart() {
-    return this.$$.ctx[4];
-  }
-  get stop() {
-    return this.$$.ctx[5];
-  }
-  get restartAt() {
-    return this.$$.ctx[6];
-  }
-  get toggleRun() {
-    return this.$$.ctx[7];
-  }
-};
-var StopWatch_svelte_default = StopWatch;
-
-// build/dist/apps/test-timer/Counter.svelte.js
-function create_fragment12(ctx) {
-  let div1;
-  let div0;
-  let t;
-  return {
-    c() {
-      div1 = element("div");
-      div0 = element("div");
-      t = text(ctx[0]);
-      attr(div1, "class", "font-mono w-16\n  text-md md:text-xl text-center text-gray-100 text-bold\n  rounded-xl mr-2 py-4 bg-gray-800");
-    },
-    m(target, anchor) {
-      insert(target, div1, anchor);
-      append(div1, div0);
-      append(div0, t);
-    },
-    p(ctx2, [dirty]) {
-      if (dirty & 1)
-        set_data(t, ctx2[0]);
-    },
-    i: noop,
-    o: noop,
-    d(detaching) {
-      if (detaching)
-        detach(div1);
-    }
-  };
-}
-function instance11($$self, $$props, $$invalidate) {
-  let {value = 0} = $$props;
-  $$self.$$set = ($$props2) => {
-    if ("value" in $$props2)
-      $$invalidate(0, value = $$props2.value);
-  };
-  return [value];
-}
-var Counter = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance11, create_fragment12, safe_not_equal, {value: 0});
-  }
-};
-var Counter_svelte_default = Counter;
-
-// build/dist/apps/test-timer/RunningTimer.svelte.js
-function get_each_context2(ctx, list, i) {
-  const child_ctx = ctx.slice();
-  child_ctx[24] = list[i];
-  child_ctx[26] = i;
-  return child_ctx;
-}
-function create_else_block4(ctx) {
-  let t0;
-  let div;
-  let button;
-  let t1;
-  let if_block1_anchor;
-  let current;
-  let if_block0 = ctx[2] == 0 && create_if_block_3(ctx);
-  button = new Button_svelte_default({
-    props: {
-      class: "w-24 text-xs md:text-md md:w-36 font-bold",
-      $$slots: {contents: [create_contents_slot_5]},
-      $$scope: {ctx}
-    }
-  });
-  button.$on("click", ctx[7]);
-  let if_block1 = ctx[2] >= 1 && create_if_block_2(ctx);
-  return {
-    c() {
-      if (if_block0)
-        if_block0.c();
-      t0 = space();
-      div = element("div");
-      create_component(button.$$.fragment);
-      t1 = space();
-      if (if_block1)
-        if_block1.c();
-      if_block1_anchor = empty();
-    },
-    m(target, anchor) {
-      if (if_block0)
-        if_block0.m(target, anchor);
-      insert(target, t0, anchor);
-      insert(target, div, anchor);
-      mount_component(button, div, null);
-      insert(target, t1, anchor);
-      if (if_block1)
-        if_block1.m(target, anchor);
-      insert(target, if_block1_anchor, anchor);
-      current = true;
-    },
-    p(ctx2, dirty) {
-      if (ctx2[2] == 0) {
-        if (if_block0) {
-          if_block0.p(ctx2, dirty);
-        } else {
-          if_block0 = create_if_block_3(ctx2);
-          if_block0.c();
-          if_block0.m(t0.parentNode, t0);
-        }
-      } else if (if_block0) {
-        if_block0.d(1);
-        if_block0 = null;
-      }
-      const button_changes = {};
-      if (dirty & 134217728) {
-        button_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button.$set(button_changes);
-      if (ctx2[2] >= 1) {
-        if (if_block1) {
-          if_block1.p(ctx2, dirty);
-          if (dirty & 4) {
-            transition_in(if_block1, 1);
-          }
-        } else {
-          if_block1 = create_if_block_2(ctx2);
-          if_block1.c();
-          transition_in(if_block1, 1);
-          if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
-        }
-      } else if (if_block1) {
-        group_outros();
-        transition_out(if_block1, 1, 1, () => {
-          if_block1 = null;
-        });
-        check_outros();
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(button.$$.fragment, local);
-      transition_in(if_block1);
-      current = true;
-    },
-    o(local) {
-      transition_out(button.$$.fragment, local);
-      transition_out(if_block1);
-      current = false;
-    },
-    d(detaching) {
-      if (if_block0)
-        if_block0.d(detaching);
-      if (detaching)
-        detach(t0);
-      if (detaching)
-        detach(div);
-      destroy_component(button);
-      if (detaching)
-        detach(t1);
-      if (if_block1)
-        if_block1.d(detaching);
-      if (detaching)
-        detach(if_block1_anchor);
-    }
-  };
-}
-function create_if_block_13(ctx) {
-  let div0;
-  let button0;
-  let t0;
-  let div1;
-  let button1;
-  let t1;
-  let div2;
-  let toggle;
-  let t2;
-  let div3;
-  let button2;
-  let current;
-  button0 = new Button_svelte_default({
-    props: {
-      enabled: ctx[4] == "running",
-      class: "md:w-32 font-bold",
-      $$slots: {contents: [create_contents_slot_2]},
-      $$scope: {ctx}
-    }
-  });
-  button0.$on("click", ctx[5]);
-  button1 = new Button_svelte_default({
-    props: {
-      enabled: ctx[4] == "running" && ctx[2] >= 1,
-      class: "md:w-24",
-      enabledClass: "bg-red-300 text-gray-100",
-      $$slots: {contents: [create_contents_slot_1]},
-      $$scope: {ctx}
-    }
-  });
-  button1.$on("click", ctx[6]);
-  toggle = new Toggle_svelte_default({
-    props: {
-      class: "bg-yellow-600 md:w-32",
-      isActive: ctx[16],
-      invert: true,
-      $$slots: {
-        inactive: [create_inactive_slot2],
-        active: [create_active_slot2]
-      },
-      $$scope: {ctx}
-    }
-  });
-  toggle.$on("toggle", ctx[7]);
-  button2 = new Button_svelte_default({
-    props: {
-      enabledClass: "bg-red-500 text-gray-100",
-      class: "md:w-24",
-      $$slots: {contents: [create_contents_slot2]},
-      $$scope: {ctx}
-    }
-  });
-  button2.$on("click", ctx[8]);
-  return {
-    c() {
-      div0 = element("div");
-      create_component(button0.$$.fragment);
-      t0 = space();
-      div1 = element("div");
-      create_component(button1.$$.fragment);
-      t1 = space();
-      div2 = element("div");
-      create_component(toggle.$$.fragment);
-      t2 = space();
-      div3 = element("div");
-      create_component(button2.$$.fragment);
-    },
-    m(target, anchor) {
-      insert(target, div0, anchor);
-      mount_component(button0, div0, null);
-      insert(target, t0, anchor);
-      insert(target, div1, anchor);
-      mount_component(button1, div1, null);
-      insert(target, t1, anchor);
-      insert(target, div2, anchor);
-      mount_component(toggle, div2, null);
-      insert(target, t2, anchor);
-      insert(target, div3, anchor);
-      mount_component(button2, div3, null);
-      current = true;
-    },
-    p(ctx2, dirty) {
-      const button0_changes = {};
-      if (dirty & 16)
-        button0_changes.enabled = ctx2[4] == "running";
-      if (dirty & 134217728) {
-        button0_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button0.$set(button0_changes);
-      const button1_changes = {};
-      if (dirty & 20)
-        button1_changes.enabled = ctx2[4] == "running" && ctx2[2] >= 1;
-      if (dirty & 134217728) {
-        button1_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button1.$set(button1_changes);
-      const toggle_changes = {};
-      if (dirty & 16)
-        toggle_changes.isActive = ctx2[16];
-      if (dirty & 134217728) {
-        toggle_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      toggle.$set(toggle_changes);
-      const button2_changes = {};
-      if (dirty & 134217728) {
-        button2_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button2.$set(button2_changes);
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(button0.$$.fragment, local);
-      transition_in(button1.$$.fragment, local);
-      transition_in(toggle.$$.fragment, local);
-      transition_in(button2.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(button0.$$.fragment, local);
-      transition_out(button1.$$.fragment, local);
-      transition_out(toggle.$$.fragment, local);
-      transition_out(button2.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div0);
-      destroy_component(button0);
-      if (detaching)
-        detach(t0);
-      if (detaching)
-        detach(div1);
-      destroy_component(button1);
-      if (detaching)
-        detach(t1);
-      if (detaching)
-        detach(div2);
-      destroy_component(toggle);
-      if (detaching)
-        detach(t2);
-      if (detaching)
-        detach(div3);
-      destroy_component(button2);
-    }
-  };
-}
-function create_if_block_3(ctx) {
-  let div;
-  let input;
-  let mounted;
-  let dispose;
-  return {
-    c() {
-      div = element("div");
-      input = element("input");
-      attr(input, "class", "bg-gray-700 text-gray-200  text-sm md:text-md ring px-2 py-1 rounded");
-      attr(input, "placeholder", "task name");
-      attr(input, "type", "text");
-    },
-    m(target, anchor) {
-      insert(target, div, anchor);
-      append(div, input);
-      set_input_value(input, ctx[3]);
-      if (!mounted) {
-        dispose = listen(input, "input", ctx[17]);
-        mounted = true;
-      }
-    },
-    p(ctx2, dirty) {
-      if (dirty & 8 && input.value !== ctx2[3]) {
-        set_input_value(input, ctx2[3]);
-      }
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div);
-      mounted = false;
-      dispose();
-    }
-  };
-}
-function create_contents_slot_5(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Start";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_if_block_2(ctx) {
-  let div0;
-  let button0;
-  let t;
-  let div1;
-  let button1;
-  let current;
-  button0 = new Button_svelte_default({
-    props: {
-      enabledClass: "bg-red-500 text-gray-100",
-      class: "md:w-24",
-      $$slots: {contents: [create_contents_slot_4]},
-      $$scope: {ctx}
-    }
-  });
-  button0.$on("click", ctx[10]);
-  button1 = new Button_svelte_default({
-    props: {
-      class: "bg-blue-500",
-      $$slots: {contents: [create_contents_slot_3]},
-      $$scope: {ctx}
-    }
-  });
-  button1.$on("click", ctx[9]);
-  return {
-    c() {
-      div0 = element("div");
-      create_component(button0.$$.fragment);
-      t = space();
-      div1 = element("div");
-      create_component(button1.$$.fragment);
-    },
-    m(target, anchor) {
-      insert(target, div0, anchor);
-      mount_component(button0, div0, null);
-      insert(target, t, anchor);
-      insert(target, div1, anchor);
-      mount_component(button1, div1, null);
-      current = true;
-    },
-    p(ctx2, dirty) {
-      const button0_changes = {};
-      if (dirty & 134217728) {
-        button0_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button0.$set(button0_changes);
-      const button1_changes = {};
-      if (dirty & 134217728) {
-        button1_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button1.$set(button1_changes);
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(button0.$$.fragment, local);
-      transition_in(button1.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(button0.$$.fragment, local);
-      transition_out(button1.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div0);
-      destroy_component(button0);
-      if (detaching)
-        detach(t);
-      if (detaching)
-        detach(div1);
-      destroy_component(button1);
-    }
-  };
-}
-function create_contents_slot_4(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Reset";
-      attr(span, "slot", "contents");
-      attr(span, "class", "px-2");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_3(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Download";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_2(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Next";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_1(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Back";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_active_slot2(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Pause";
-      attr(span, "slot", "active");
-      attr(span, "class", "text-gray-200");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_inactive_slot2(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Resume";
-      attr(span, "slot", "inactive");
-      attr(span, "class", "text-gray-200");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot2(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Stop";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_if_block4(ctx) {
-  let div2;
-  let div1;
-  let div0;
-  let table;
-  let thead;
-  let t9;
-  let tbody;
-  let each_value = ctx[1].slice(0, ctx[2]).reverse();
-  let each_blocks = [];
-  for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block2(get_each_context2(ctx, each_value, i));
-  }
-  return {
-    c() {
-      div2 = element("div");
-      div1 = element("div");
-      div0 = element("div");
-      table = element("table");
-      thead = element("thead");
-      thead.innerHTML = `<tr><th scope="col" class="px-3 md:px-6 py-3 text-xs font-medium uppercase tracking-wider">No</th> 
-            <th scope="col" class="px-3 md:px-6 py-3 text-xs font-medium uppercase tracking-wider">Elapsed</th> 
-            <th scope="col" class="px-3  md:px-6 py-3 text-xs font-medium uppercase tracking-wider">Start</th> 
-            <th scope="col" class="hidden md:table-cell px-3 py-3 text-xs font-medium uppercase tracking-wider">Paused</th> 
-            <th scope="col" class="px-3 py-3 text-xs font-medium uppercase tracking-wider">End</th></tr>`;
-      t9 = space();
-      tbody = element("tbody");
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].c();
-      }
-      attr(thead, "class", "bg-gray-700 text-gray-100");
-      attr(tbody, "class", "bg-white divide-y divide-gray-300 ");
-      attr(table, "class", "min-w-max divide-y divide-gray-400");
-      attr(div0, "class", "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg");
-      attr(div1, "class", "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8");
-      attr(div2, "class", "text-xs md:text-md overflow-x-auto sm:-mx-6 lg:-mx-8");
-    },
-    m(target, anchor) {
-      insert(target, div2, anchor);
-      append(div2, div1);
-      append(div1, div0);
-      append(div0, table);
-      append(table, thead);
-      append(table, t9);
-      append(table, tbody);
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].m(tbody, null);
-      }
-    },
-    p(ctx2, dirty) {
-      if (dirty & 6) {
-        each_value = ctx2[1].slice(0, ctx2[2]).reverse();
-        let i;
-        for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context2(ctx2, each_value, i);
-          if (each_blocks[i]) {
-            each_blocks[i].p(child_ctx, dirty);
-          } else {
-            each_blocks[i] = create_each_block2(child_ctx);
-            each_blocks[i].c();
-            each_blocks[i].m(tbody, null);
-          }
-        }
-        for (; i < each_blocks.length; i += 1) {
-          each_blocks[i].d(1);
-        }
-        each_blocks.length = each_value.length;
-      }
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div2);
-      destroy_each(each_blocks, detaching);
-    }
-  };
-}
-function create_each_block2(ctx) {
-  let tr;
-  let td0;
-  let t0_value = ctx[2] - ctx[26] + "";
-  let t0;
-  let t1;
-  let td1;
-  let t2_value = formatHMS(ctx[24].elapsed) + "";
-  let t2;
-  let t3;
-  let td2;
-  let t4_value = ctx[24].startedAt.toLocaleTimeString() + "";
-  let t4;
-  let t5;
-  let td3;
-  let t6_value = formatHMS(ctx[24].paused) + "";
-  let t6;
-  let t7;
-  let td4;
-  let t8_value = ctx[24].endedAt.toLocaleTimeString() + "";
-  let t8;
-  let t9;
-  return {
-    c() {
-      tr = element("tr");
-      td0 = element("td");
-      t0 = text(t0_value);
-      t1 = space();
-      td1 = element("td");
-      t2 = text(t2_value);
-      t3 = space();
-      td2 = element("td");
-      t4 = text(t4_value);
-      t5 = space();
-      td3 = element("td");
-      t6 = text(t6_value);
-      t7 = space();
-      td4 = element("td");
-      t8 = text(t8_value);
-      t9 = space();
-      attr(td0, "class", "px-3 py-2 text-right whitespace-nowrap");
-      attr(td1, "class", "px-3 py-2 whitespace-nowrap");
-      attr(td2, "class", "px-3 py-2 whitespace-nowrap");
-      attr(td3, "class", "hidden md:table-cell px-3 py-2 whitespace-nowrap");
-      attr(td4, "class", "px-3 py-2 whitespace-nowrap");
-      attr(tr, "class", "hover:bg-blue-300 ease-in transition duration-300");
-      toggle_class(tr, "bg-white", ctx[26] != 0);
-      toggle_class(tr, "bg-red-300", ctx[26] == 0 && ctx[2] >= 2);
-    },
-    m(target, anchor) {
-      insert(target, tr, anchor);
-      append(tr, td0);
-      append(td0, t0);
-      append(tr, t1);
-      append(tr, td1);
-      append(td1, t2);
-      append(tr, t3);
-      append(tr, td2);
-      append(td2, t4);
-      append(tr, t5);
-      append(tr, td3);
-      append(td3, t6);
-      append(tr, t7);
-      append(tr, td4);
-      append(td4, t8);
-      append(tr, t9);
-    },
-    p(ctx2, dirty) {
-      if (dirty & 4 && t0_value !== (t0_value = ctx2[2] - ctx2[26] + ""))
-        set_data(t0, t0_value);
-      if (dirty & 6 && t2_value !== (t2_value = formatHMS(ctx2[24].elapsed) + ""))
-        set_data(t2, t2_value);
-      if (dirty & 6 && t4_value !== (t4_value = ctx2[24].startedAt.toLocaleTimeString() + ""))
-        set_data(t4, t4_value);
-      if (dirty & 6 && t6_value !== (t6_value = formatHMS(ctx2[24].paused) + ""))
-        set_data(t6, t6_value);
-      if (dirty & 6 && t8_value !== (t8_value = ctx2[24].endedAt.toLocaleTimeString() + ""))
-        set_data(t8, t8_value);
-      if (dirty & 4) {
-        toggle_class(tr, "bg-red-300", ctx2[26] == 0 && ctx2[2] >= 2);
-      }
-    },
-    d(detaching) {
-      if (detaching)
-        detach(tr);
-    }
-  };
-}
-function create_fragment13(ctx) {
-  let div0;
-  let counter;
-  let t0;
-  let stopwatch;
-  let t1;
-  let div1;
-  let current_block_type_index;
-  let if_block0;
-  let t2;
-  let if_block1_anchor;
-  let current;
-  counter = new Counter_svelte_default({props: {value: ctx[2] + 1}});
-  let stopwatch_props = {};
-  stopwatch = new StopWatch_svelte_default({props: stopwatch_props});
-  ctx[13](stopwatch);
-  stopwatch.$on("change", ctx[11]);
-  stopwatch.$on("pause", ctx[14]);
-  stopwatch.$on("run", ctx[15]);
-  const if_block_creators = [create_if_block_13, create_else_block4];
-  const if_blocks = [];
-  function select_block_type(ctx2, dirty) {
-    if (ctx2[4] != "stopped")
-      return 0;
-    return 1;
-  }
-  current_block_type_index = select_block_type(ctx, -1);
-  if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-  let if_block1 = ctx[2] > 0 && create_if_block4(ctx);
-  return {
-    c() {
-      div0 = element("div");
-      create_component(counter.$$.fragment);
-      t0 = space();
-      create_component(stopwatch.$$.fragment);
-      t1 = space();
-      div1 = element("div");
-      if_block0.c();
-      t2 = space();
-      if (if_block1)
-        if_block1.c();
-      if_block1_anchor = empty();
-      attr(div0, "class", "bg-gray-700 md:px-7 px-3 py-2 flex");
-      attr(div1, "class", "flex flex-row py-4 justify-center items-center space-x-2 md:space-x-4");
-    },
-    m(target, anchor) {
-      insert(target, div0, anchor);
-      mount_component(counter, div0, null);
-      append(div0, t0);
-      mount_component(stopwatch, div0, null);
-      insert(target, t1, anchor);
-      insert(target, div1, anchor);
-      if_blocks[current_block_type_index].m(div1, null);
-      insert(target, t2, anchor);
-      if (if_block1)
-        if_block1.m(target, anchor);
-      insert(target, if_block1_anchor, anchor);
-      current = true;
-    },
-    p(ctx2, [dirty]) {
-      const counter_changes = {};
-      if (dirty & 4)
-        counter_changes.value = ctx2[2] + 1;
-      counter.$set(counter_changes);
-      const stopwatch_changes = {};
-      stopwatch.$set(stopwatch_changes);
-      let previous_block_index = current_block_type_index;
-      current_block_type_index = select_block_type(ctx2, dirty);
-      if (current_block_type_index === previous_block_index) {
-        if_blocks[current_block_type_index].p(ctx2, dirty);
-      } else {
-        group_outros();
-        transition_out(if_blocks[previous_block_index], 1, 1, () => {
-          if_blocks[previous_block_index] = null;
-        });
-        check_outros();
-        if_block0 = if_blocks[current_block_type_index];
-        if (!if_block0) {
-          if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
-          if_block0.c();
-        } else {
-          if_block0.p(ctx2, dirty);
-        }
-        transition_in(if_block0, 1);
-        if_block0.m(div1, null);
-      }
-      if (ctx2[2] > 0) {
-        if (if_block1) {
-          if_block1.p(ctx2, dirty);
-        } else {
-          if_block1 = create_if_block4(ctx2);
-          if_block1.c();
-          if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
-        }
-      } else if (if_block1) {
-        if_block1.d(1);
-        if_block1 = null;
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(counter.$$.fragment, local);
-      transition_in(stopwatch.$$.fragment, local);
-      transition_in(if_block0);
-      current = true;
-    },
-    o(local) {
-      transition_out(counter.$$.fragment, local);
-      transition_out(stopwatch.$$.fragment, local);
-      transition_out(if_block0);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div0);
-      destroy_component(counter);
-      ctx[13](null);
-      destroy_component(stopwatch);
-      if (detaching)
-        detach(t1);
-      if (detaching)
-        detach(div1);
-      if_blocks[current_block_type_index].d();
-      if (detaching)
-        detach(t2);
-      if (if_block1)
-        if_block1.d(detaching);
-      if (detaching)
-        detach(if_block1_anchor);
-    }
-  };
-}
-function instance12($$self, $$props, $$invalidate) {
-  let stopWatch;
-  let elapsedList = [];
-  let current = 0;
-  let taskName = "";
-  const next = () => {
-    stopWatch.restart();
-  };
-  const mergePrevious = () => {
-    if (current == 0) {
-      return;
-    }
-    $$invalidate(2, current--, current);
-    const {startedAt, elapsed} = elapsedList[current];
-    stopWatch.restartAt(startedAt, elapsed);
-  };
-  const togglePaused = () => {
-    stopWatch.toggleRun();
-  };
-  const stop = () => {
-    stopWatch.stop();
-    setState("stopped");
-  };
-  const download = () => {
-    const headers = ["NO.", "Time Taken", "Started At", "Paused", "Ended At"].join(",");
-    const data = headers + "\n" + elapsedList.slice(0, current).map((x, i) => [
-      i + 1,
-      formatHMS(x.elapsed),
-      x.startedAt.toLocaleTimeString(),
-      formatHMS(x.paused),
-      x.endedAt.toLocaleTimeString()
-    ].join(",")).join("\n");
-    exportCSV(taskName || "test-time.csv", data);
-  };
-  const dispatch = createEventDispatcher();
-  const cleanup = () => {
-    stopWatch.reset();
-    $$invalidate(1, elapsedList = []);
-    $$invalidate(2, current = 0);
-    $$invalidate(3, taskName = "");
-  };
-  const reset = () => {
-    cleanup();
-    const store = window.localStorage;
-    store.clear();
-  };
-  const dispatchDone = () => {
-    dispatch("done", {});
-  };
-  const recordTime = (e) => {
-    const {startedAt, endedAt, elapsed, paused} = e.detail;
-    console.log("time:", startedAt.toLocaleTimeString(), " -> ", endedAt.toLocaleTimeString(), " elapsed: ", formatTime(elapsed), " paused: ", formatHMS(paused), paused);
-    $$invalidate(1, elapsedList[current] = {startedAt, endedAt, elapsed, paused}, elapsedList);
-    $$invalidate(2, current++, current);
-    save();
-  };
-  let state = "stopped";
-  const setState = (x) => {
-    console.log({from: state, to: x});
-    $$invalidate(4, state = x);
-    save();
-  };
-  const stateChanged = ({detail}) => {
-    console.log("state changed: ", {detail});
-    running = detail.state == State.Running;
-  };
-  const save = () => {
-    const store = window.localStorage;
-    store.setItem("state", state);
-    store.setItem("elapsedList", JSON.stringify(elapsedList));
-    store.setItem("current", current);
-  };
-  const restore = () => {
-    const store = window.localStorage;
-    const s = store.getItem("state");
-    const list = JSON.parse(store.getItem("elapsedList"));
-    const c = parseInt(store.getItem("current"));
-    console.log({s, list, c});
-    if (!s || !list || !c) {
-      console.log("no previous session found");
-      return;
-    }
-    $$invalidate(4, state = s);
-    $$invalidate(1, elapsedList = list.map((x) => ({
-      ...x,
-      startedAt: new Date(x.startedAt),
-      endedAt: new Date(x.endedAt)
-    })));
-    $$invalidate(2, current = c);
-    console.log({state, elapsedList, current});
-  };
-  onMount(() => {
-    restore();
-    if (state == "running") {
-      next();
-    }
-  });
-  function stopwatch_binding($$value) {
-    binding_callbacks[$$value ? "unshift" : "push"](() => {
-      stopWatch = $$value;
-      $$invalidate(0, stopWatch);
-    });
-  }
-  const pause_handler = () => setState("paused");
-  const run_handler = () => setState("running");
-  const func = () => state == "running";
-  function input_input_handler() {
-    taskName = this.value;
-    $$invalidate(3, taskName);
-  }
-  return [
-    stopWatch,
-    elapsedList,
-    current,
-    taskName,
-    state,
-    next,
-    mergePrevious,
-    togglePaused,
-    stop,
-    download,
-    reset,
-    recordTime,
-    setState,
-    stopwatch_binding,
-    pause_handler,
-    run_handler,
-    func,
-    input_input_handler
-  ];
-}
-var RunningTimer = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance12, create_fragment13, safe_not_equal, {});
-  }
-};
-var RunningTimer_svelte_default = RunningTimer;
-
-// build/dist/apps/TestTimer.svelte.js
-function create_fragment14(ctx) {
-  let div;
-  let runningtimer;
-  let current;
-  runningtimer = new RunningTimer_svelte_default({});
-  runningtimer.$on("done", ctx[0]);
-  return {
-    c() {
-      div = element("div");
-      create_component(runningtimer.$$.fragment);
-      attr(div, "class", "flex h-screen-0.80 p-8 white bg-gray-100 shadow-xl items-center flex-col");
-    },
-    m(target, anchor) {
-      insert(target, div, anchor);
-      mount_component(runningtimer, div, null);
-      current = true;
-    },
-    p: noop,
-    i(local) {
-      if (current)
-        return;
-      transition_in(runningtimer.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(runningtimer.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div);
-      destroy_component(runningtimer);
-    }
-  };
-}
-function instance13($$self, $$props, $$invalidate) {
-  let {location: location2 = ""} = $$props;
-  let started = false;
-  const start = () => started = true;
-  const done = () => started = false;
-  $$self.$$set = ($$props2) => {
-    if ("location" in $$props2)
-      $$invalidate(1, location2 = $$props2.location);
-  };
-  return [done, location2];
-}
-var TestTimer = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance13, create_fragment14, safe_not_equal, {location: 1});
-  }
-};
-var TestTimer_svelte_default = TestTimer;
-
-// build/dist/ui-demo/Buttons.svelte.js
-function create_contents_slot_7(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Button";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_6(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Button expands to size of Text";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_52(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Text";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_42(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Text";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_32(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "A large Button";
-      attr(span, "slot", "contents");
-      attr(span, "class", "font-bold text-4xl");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_22(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "small";
-      attr(span, "slot", "contents");
-      attr(span, "class", "text-sm");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_12(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Button with Text";
-      attr(span, "slot", "contents");
-      attr(span, "class", "text-white font-bold");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot3(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "small";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_fragment15(ctx) {
-  let div4;
-  let div0;
-  let button0;
-  let t0;
-  let button1;
-  let t1;
-  let button2;
-  let t2;
-  let div1;
-  let button3;
-  let t3;
-  let button4;
-  let t4;
-  let button5;
-  let t5;
-  let button6;
-  let t6;
-  let div2;
-  let button7;
-  let t7;
-  let button8;
-  let t8;
-  let button9;
-  let t9;
-  let div3;
-  let button10;
-  let t10;
-  let button11;
-  let t11;
-  let button12;
-  let current;
-  button0 = new Button_svelte_default({
-    props: {
-      $$slots: {contents: [create_contents_slot_7]},
-      $$scope: {ctx}
-    }
-  });
-  button1 = new Button_svelte_default({});
-  button2 = new Button_svelte_default({
-    props: {
-      $$slots: {contents: [create_contents_slot_6]},
-      $$scope: {ctx}
-    }
-  });
-  button3 = new Button_svelte_default({props: {enabled: false}});
-  button4 = new Button_svelte_default({});
-  button5 = new Button_svelte_default({
-    props: {
-      enabled: false,
-      $$slots: {contents: [create_contents_slot_52]},
-      $$scope: {ctx}
-    }
-  });
-  button6 = new Button_svelte_default({
-    props: {
-      $$slots: {contents: [create_contents_slot_42]},
-      $$scope: {ctx}
-    }
-  });
-  button7 = new Button_svelte_default({});
-  button8 = new Button_svelte_default({
-    props: {
-      $$slots: {contents: [create_contents_slot_32]},
-      $$scope: {ctx}
-    }
-  });
-  button9 = new Button_svelte_default({
-    props: {
-      $$slots: {contents: [create_contents_slot_22]},
-      $$scope: {ctx}
-    }
-  });
-  button10 = new Button_svelte_default({props: {enabledClass: "bg-red-700"}});
-  button11 = new Button_svelte_default({
-    props: {
-      enabledClass: "bg-yellow-600",
-      $$slots: {contents: [create_contents_slot_12]},
-      $$scope: {ctx}
-    }
-  });
-  button12 = new Button_svelte_default({
-    props: {
-      $$slots: {contents: [create_contents_slot3]},
-      $$scope: {ctx}
-    }
-  });
-  return {
-    c() {
-      div4 = element("div");
-      div0 = element("div");
-      create_component(button0.$$.fragment);
-      t0 = space();
-      create_component(button1.$$.fragment);
-      t1 = space();
-      create_component(button2.$$.fragment);
-      t2 = space();
-      div1 = element("div");
-      create_component(button3.$$.fragment);
-      t3 = space();
-      create_component(button4.$$.fragment);
-      t4 = space();
-      create_component(button5.$$.fragment);
-      t5 = space();
-      create_component(button6.$$.fragment);
-      t6 = space();
-      div2 = element("div");
-      create_component(button7.$$.fragment);
-      t7 = space();
-      create_component(button8.$$.fragment);
-      t8 = space();
-      create_component(button9.$$.fragment);
-      t9 = space();
-      div3 = element("div");
-      create_component(button10.$$.fragment);
-      t10 = space();
-      create_component(button11.$$.fragment);
-      t11 = space();
-      create_component(button12.$$.fragment);
-      attr(div0, "class", "flex gap-4 bg-yellow-200 items-center space-x-2");
-      attr(div1, "class", "flex gap-4 bg-gray-200 items-center space-x-2");
-      attr(div2, "class", "flex flex-row items-center gap-2 bg-red-200 p-2 space-x-2");
-      attr(div3, "class", "flex flex-row gap-2 bg-blue-400 p-2 space-x-2");
-      attr(div4, "class", "flex flex-col");
-    },
-    m(target, anchor) {
-      insert(target, div4, anchor);
-      append(div4, div0);
-      mount_component(button0, div0, null);
-      append(div0, t0);
-      mount_component(button1, div0, null);
-      append(div0, t1);
-      mount_component(button2, div0, null);
-      append(div4, t2);
-      append(div4, div1);
-      mount_component(button3, div1, null);
-      append(div1, t3);
-      mount_component(button4, div1, null);
-      append(div1, t4);
-      mount_component(button5, div1, null);
-      append(div1, t5);
-      mount_component(button6, div1, null);
-      append(div4, t6);
-      append(div4, div2);
-      mount_component(button7, div2, null);
-      append(div2, t7);
-      mount_component(button8, div2, null);
-      append(div2, t8);
-      mount_component(button9, div2, null);
-      append(div4, t9);
-      append(div4, div3);
-      mount_component(button10, div3, null);
-      append(div3, t10);
-      mount_component(button11, div3, null);
-      append(div3, t11);
-      mount_component(button12, div3, null);
-      current = true;
-    },
-    p(ctx2, [dirty]) {
-      const button0_changes = {};
-      if (dirty & 2) {
-        button0_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button0.$set(button0_changes);
-      const button2_changes = {};
-      if (dirty & 2) {
-        button2_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button2.$set(button2_changes);
-      const button5_changes = {};
-      if (dirty & 2) {
-        button5_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button5.$set(button5_changes);
-      const button6_changes = {};
-      if (dirty & 2) {
-        button6_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button6.$set(button6_changes);
-      const button8_changes = {};
-      if (dirty & 2) {
-        button8_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button8.$set(button8_changes);
-      const button9_changes = {};
-      if (dirty & 2) {
-        button9_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button9.$set(button9_changes);
-      const button11_changes = {};
-      if (dirty & 2) {
-        button11_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button11.$set(button11_changes);
-      const button12_changes = {};
-      if (dirty & 2) {
-        button12_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button12.$set(button12_changes);
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(button0.$$.fragment, local);
-      transition_in(button1.$$.fragment, local);
-      transition_in(button2.$$.fragment, local);
-      transition_in(button3.$$.fragment, local);
-      transition_in(button4.$$.fragment, local);
-      transition_in(button5.$$.fragment, local);
-      transition_in(button6.$$.fragment, local);
-      transition_in(button7.$$.fragment, local);
-      transition_in(button8.$$.fragment, local);
-      transition_in(button9.$$.fragment, local);
-      transition_in(button10.$$.fragment, local);
-      transition_in(button11.$$.fragment, local);
-      transition_in(button12.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(button0.$$.fragment, local);
-      transition_out(button1.$$.fragment, local);
-      transition_out(button2.$$.fragment, local);
-      transition_out(button3.$$.fragment, local);
-      transition_out(button4.$$.fragment, local);
-      transition_out(button5.$$.fragment, local);
-      transition_out(button6.$$.fragment, local);
-      transition_out(button7.$$.fragment, local);
-      transition_out(button8.$$.fragment, local);
-      transition_out(button9.$$.fragment, local);
-      transition_out(button10.$$.fragment, local);
-      transition_out(button11.$$.fragment, local);
-      transition_out(button12.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div4);
-      destroy_component(button0);
-      destroy_component(button1);
-      destroy_component(button2);
-      destroy_component(button3);
-      destroy_component(button4);
-      destroy_component(button5);
-      destroy_component(button6);
-      destroy_component(button7);
-      destroy_component(button8);
-      destroy_component(button9);
-      destroy_component(button10);
-      destroy_component(button11);
-      destroy_component(button12);
-    }
-  };
-}
-function instance14($$self, $$props, $$invalidate) {
-  let {location: location2} = $$props;
-  $$self.$$set = ($$props2) => {
-    if ("location" in $$props2)
-      $$invalidate(0, location2 = $$props2.location);
-  };
-  return [location2];
-}
-var Buttons = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance14, create_fragment15, safe_not_equal, {location: 0});
-  }
-};
-var Buttons_svelte_default = Buttons;
-
-// build/dist/ui-demo/Toggles.svelte.js
-function create_active_slot_3(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Active";
-      attr(span, "slot", "active");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_inactive_slot_3(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Inactive";
-      attr(span, "slot", "inactive");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_active_slot_2(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Active";
-      attr(span, "slot", "active");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_inactive_slot_2(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Inactive";
-      attr(span, "slot", "inactive");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_active_slot_1(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Active";
-      attr(span, "slot", "active");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_inactive_slot_1(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Inactive";
-      attr(span, "slot", "inactive");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
+// build/dist/math/FourierSeries.svelte.js
 function create_active_slot3(ctx) {
   let span;
   return {
     c() {
       span = element("span");
-      span.textContent = "Active";
+      span.textContent = "Resume";
       attr(span, "slot", "active");
     },
     m(target, anchor) {
@@ -19380,7 +18174,7 @@ function create_inactive_slot3(ctx) {
   return {
     c() {
       span = element("span");
-      span.textContent = "Inactive";
+      span.textContent = "Pause";
       attr(span, "slot", "inactive");
     },
     m(target, anchor) {
@@ -19392,262 +18186,7 @@ function create_inactive_slot3(ctx) {
     }
   };
 }
-function create_fragment16(ctx) {
-  let div2;
-  let div0;
-  let toggle0;
-  let t0;
-  let toggle1;
-  let t1;
-  let toggle2;
-  let t2;
-  let div1;
-  let toggle3;
-  let t3;
-  let toggle4;
-  let t4;
-  let toggle5;
-  let current;
-  toggle0 = new Toggle_svelte_default({
-    props: {
-      $$slots: {
-        inactive: [create_inactive_slot_3],
-        active: [create_active_slot_3]
-      },
-      $$scope: {ctx}
-    }
-  });
-  toggle1 = new Toggle_svelte_default({});
-  toggle2 = new Toggle_svelte_default({
-    props: {
-      class: "w-32",
-      $$slots: {
-        inactive: [create_inactive_slot_2],
-        active: [create_active_slot_2]
-      },
-      $$scope: {ctx}
-    }
-  });
-  toggle3 = new Toggle_svelte_default({
-    props: {
-      invert: "true",
-      $$slots: {
-        inactive: [create_inactive_slot_1],
-        active: [create_active_slot_1]
-      },
-      $$scope: {ctx}
-    }
-  });
-  toggle4 = new Toggle_svelte_default({props: {invert: "true"}});
-  toggle5 = new Toggle_svelte_default({
-    props: {
-      class: "w-32",
-      invert: "true",
-      $$slots: {
-        inactive: [create_inactive_slot3],
-        active: [create_active_slot3]
-      },
-      $$scope: {ctx}
-    }
-  });
-  return {
-    c() {
-      div2 = element("div");
-      div0 = element("div");
-      create_component(toggle0.$$.fragment);
-      t0 = space();
-      create_component(toggle1.$$.fragment);
-      t1 = space();
-      create_component(toggle2.$$.fragment);
-      t2 = space();
-      div1 = element("div");
-      create_component(toggle3.$$.fragment);
-      t3 = space();
-      create_component(toggle4.$$.fragment);
-      t4 = space();
-      create_component(toggle5.$$.fragment);
-      attr(div0, "class", "flex gap-4 bg-yellow-200 items-center");
-      attr(div1, "class", "flex p-2  gap-4 bg-green-400 items-center");
-      attr(div2, "class", "flex flex-col");
-    },
-    m(target, anchor) {
-      insert(target, div2, anchor);
-      append(div2, div0);
-      mount_component(toggle0, div0, null);
-      append(div0, t0);
-      mount_component(toggle1, div0, null);
-      append(div0, t1);
-      mount_component(toggle2, div0, null);
-      append(div2, t2);
-      append(div2, div1);
-      mount_component(toggle3, div1, null);
-      append(div1, t3);
-      mount_component(toggle4, div1, null);
-      append(div1, t4);
-      mount_component(toggle5, div1, null);
-      current = true;
-    },
-    p(ctx2, [dirty]) {
-      const toggle0_changes = {};
-      if (dirty & 1) {
-        toggle0_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      toggle0.$set(toggle0_changes);
-      const toggle2_changes = {};
-      if (dirty & 1) {
-        toggle2_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      toggle2.$set(toggle2_changes);
-      const toggle3_changes = {};
-      if (dirty & 1) {
-        toggle3_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      toggle3.$set(toggle3_changes);
-      const toggle5_changes = {};
-      if (dirty & 1) {
-        toggle5_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      toggle5.$set(toggle5_changes);
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(toggle0.$$.fragment, local);
-      transition_in(toggle1.$$.fragment, local);
-      transition_in(toggle2.$$.fragment, local);
-      transition_in(toggle3.$$.fragment, local);
-      transition_in(toggle4.$$.fragment, local);
-      transition_in(toggle5.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(toggle0.$$.fragment, local);
-      transition_out(toggle1.$$.fragment, local);
-      transition_out(toggle2.$$.fragment, local);
-      transition_out(toggle3.$$.fragment, local);
-      transition_out(toggle4.$$.fragment, local);
-      transition_out(toggle5.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching)
-        detach(div2);
-      destroy_component(toggle0);
-      destroy_component(toggle1);
-      destroy_component(toggle2);
-      destroy_component(toggle3);
-      destroy_component(toggle4);
-      destroy_component(toggle5);
-    }
-  };
-}
-var Toggles = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, null, create_fragment16, safe_not_equal, {});
-  }
-};
-var Toggles_svelte_default = Toggles;
-
-// build/dist/learn/svelte/store/timer/store.js
-var time = writable(0);
-var newTimer = () => {
-  const {subscribe: subscribe2, set, update: update2} = writable(0);
-  let timer2 = null;
-  let startedAt;
-  let lapStart;
-  let elapsed = 0;
-  let oldElapsed = 0;
-  const init2 = () => {
-    timer2 = null;
-    startedAt = void 0;
-    lapStart = 0;
-    elapsed = 0;
-    oldElapsed = 0;
-    set(elapsed);
-  };
-  const setElapsed = (x) => {
-    oldElapsed = x;
-    elapsed = x;
-    startedAt = Date.now() - x;
-    set(x);
-  };
-  const start = () => {
-    if (timer2) {
-      console.warn("calling start on already started timer");
-      return;
-    }
-    console.log("before start", {startedAt, lapStart, oldElapsed, elapsed});
-    startedAt || (startedAt = new Date());
-    lapStart = Date.now();
-    oldElapsed = elapsed;
-    console.log("start", {startedAt, lapStart, oldElapsed, elapsed});
-    timer2 = setInterval(() => {
-      elapsed = Date.now() - lapStart + oldElapsed;
-      console.log(" ... setting elapsed", timer2, elapsed);
-      set(elapsed);
-    }, 40);
-    console.log("started", {startedAt, lapStart, oldElapsed, elapsed, timer: timer2});
-  };
-  const stop = () => {
-    if (!timer2) {
-      console.warn("trying to pause when timer isn't running");
-      return;
-    }
-    clearInterval(timer2);
-    timer2 = null;
-  };
-  const reset = () => {
-    stop();
-    init2();
-    console.log("reset", {startedAt, lapStart, oldElapsed, elapsed, timer: timer2});
-  };
-  return {
-    subscribe: subscribe2,
-    start,
-    stop,
-    reset,
-    setElapsed
-  };
-};
-var timer = newTimer();
-
-// build/dist/learn/svelte/store/timer/Timer.svelte.js
-function create_contents_slot_33(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Start";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_23(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "Pause";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_contents_slot_13(ctx) {
+function create_contents_slot3(ctx) {
   let span;
   return {
     c() {
@@ -19664,224 +18203,383 @@ function create_contents_slot_13(ctx) {
     }
   };
 }
-function create_contents_slot4(ctx) {
-  let span;
-  return {
-    c() {
-      span = element("span");
-      span.textContent = "set";
-      attr(span, "slot", "contents");
-    },
-    m(target, anchor) {
-      insert(target, span, anchor);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(span);
-    }
-  };
-}
-function create_fragment17(ctx) {
-  let div3;
-  let p;
-  let t1;
+function create_fragment12(ctx) {
+  let div7;
   let div0;
-  let t2_value = formatTime(ctx[1]) + "";
+  let canvas;
+  let t0;
+  let div1;
+  let toggle;
+  let t1;
+  let button;
   let t2;
-  let t3;
+  let div6;
+  let div5;
+  let div2;
+  let p0;
   let t4;
+  let p1;
   let t5;
   let t6;
-  let div1;
-  let button0;
+  let input0;
   let t7;
-  let button1;
-  let t8;
-  let button2;
+  let div3;
+  let p2;
   let t9;
-  let div2;
-  let input;
+  let p3;
   let t10;
-  let button3;
+  let t11;
+  let input1;
+  let t12;
+  let div4;
+  let p4;
+  let t14;
+  let p5_1;
+  let t15;
+  let t16;
+  let input2;
+  let t17;
+  let p6;
   let current;
   let mounted;
   let dispose;
-  button0 = new Button_svelte_default({
+  canvas = new Canvas_svelte_default({
+    props: {height: "500", sketch: ctx[5]}
+  });
+  toggle = new Toggle_svelte_default({
     props: {
       class: "w-24",
-      $$slots: {contents: [create_contents_slot_33]},
+      $$slots: {
+        inactive: [create_inactive_slot3],
+        active: [create_active_slot3]
+      },
       $$scope: {ctx}
     }
   });
-  button0.$on("click", timer.start);
-  button1 = new Button_svelte_default({
+  toggle.$on("toggle", ctx[3]);
+  button = new Button_svelte_default({
     props: {
-      enabledClass: "bg-yellow-400",
-      $$slots: {contents: [create_contents_slot_23]},
+      $$slots: {contents: [create_contents_slot3]},
       $$scope: {ctx}
     }
   });
-  button1.$on("click", timer.stop);
-  button2 = new Button_svelte_default({
-    props: {
-      enabledClass: "bg-red-400",
-      $$slots: {contents: [create_contents_slot_13]},
-      $$scope: {ctx}
-    }
-  });
-  button2.$on("click", timer.reset);
-  button3 = new Button_svelte_default({
-    props: {
-      enabledClass: "bg-yellow-800",
-      $$slots: {contents: [create_contents_slot4]},
-      $$scope: {ctx}
-    }
-  });
-  button3.$on("click", ctx[2]);
+  button.$on("click", ctx[4]);
   return {
     c() {
-      div3 = element("div");
-      p = element("p");
-      p.textContent = "A test for using store to set and reset a timer.\n    store.ts contains all the logic and this ui is only a representation of\n    the store";
-      t1 = space();
+      div7 = element("div");
       div0 = element("div");
-      t2 = text(t2_value);
-      t3 = text(" | ");
-      t4 = text(ctx[1]);
-      t5 = text(" |");
-      t6 = space();
+      create_component(canvas.$$.fragment);
+      t0 = space();
       div1 = element("div");
-      create_component(button0.$$.fragment);
-      t7 = space();
-      create_component(button1.$$.fragment);
-      t8 = space();
-      create_component(button2.$$.fragment);
-      t9 = space();
+      create_component(toggle.$$.fragment);
+      t1 = space();
+      create_component(button.$$.fragment);
+      t2 = space();
+      div6 = element("div");
+      div5 = element("div");
       div2 = element("div");
-      input = element("input");
-      t10 = space();
-      create_component(button3.$$.fragment);
-      attr(p, "class", "bg-gray-600 text-gray-300 rounded p-2 justify-left");
-      attr(div0, "class", "border-t border-gray-400 mt-4 py-2\n    flex flex-row gap-4 justify-center font-mono ");
-      attr(div1, "class", "flex flex-row gap-4 mt-4 justify-center");
-      attr(input, "type", "number");
-      attr(input, "class", "w-24 px-2");
-      attr(div2, "class", "flex flex-row gap-4 mt-4 justify-center");
-      attr(div3, "class", "flex flex-col");
+      p0 = element("p");
+      p0.textContent = "radius:";
+      t4 = space();
+      p1 = element("p");
+      t5 = text(ctx[1]);
+      t6 = space();
+      input0 = element("input");
+      t7 = space();
+      div3 = element("div");
+      p2 = element("p");
+      p2.textContent = "speed:";
+      t9 = space();
+      p3 = element("p");
+      t10 = text(ctx[0]);
+      t11 = space();
+      input1 = element("input");
+      t12 = space();
+      div4 = element("div");
+      p4 = element("p");
+      p4.textContent = "circles:";
+      t14 = space();
+      p5_1 = element("p");
+      t15 = text(ctx[2]);
+      t16 = space();
+      input2 = element("input");
+      t17 = space();
+      p6 = element("p");
+      p6.innerHTML = `<em>Credits:</em> Used
+    <a target="_blank" href="https://www.youtube.com/watch?v=Mm2eYfj0SgA" class="text-yellow-400">Coding Train Fourier Series</a> Tutorial as a
+    reference for the Fourier Series Equations`;
+      attr(div0, "class", "min-w-full");
+      attr(div1, "class", "flex flex-row m-4 gap-2");
+      attr(p0, "class", "table-cell w-12 font-mono text-right");
+      attr(p1, "class", "table-cell w-24 truncate font-mono pl-2");
+      attr(input0, "class", "table-cell align-left");
+      attr(input0, "type", "range");
+      attr(input0, "min", "10");
+      attr(input0, "max", "80");
+      attr(div2, "class", "table-row");
+      attr(p2, "class", "table-cell w-12 font-mono text-right");
+      attr(p3, "class", "table-cell w-24 truncate font-mono pl-2");
+      attr(input1, "class", "table-cell align-left");
+      attr(input1, "type", "range");
+      attr(input1, "min", "0.01");
+      attr(input1, "max", "0.1");
+      attr(input1, "step", "0.001");
+      attr(div3, "class", "table-row");
+      attr(p4, "class", "table-cell w-12 font-mono text-right");
+      attr(p5_1, "class", "table-cell w-24 truncate font-mono pl-2");
+      attr(input2, "class", "table-cell align-left");
+      attr(input2, "type", "range");
+      attr(input2, "min", "1");
+      attr(input2, "max", "50");
+      attr(div4, "class", "table-row");
+      attr(div5, "class", "table-row-group");
+      attr(div6, "class", "table w-full");
+      attr(p6, "class", "bg-gray-600 text-gray-300 rounded p-2 justify-left my-2");
+      attr(div7, "class", "flex flex-col");
     },
     m(target, anchor) {
-      insert(target, div3, anchor);
-      append(div3, p);
-      append(div3, t1);
-      append(div3, div0);
-      append(div0, t2);
-      append(div0, t3);
-      append(div0, t4);
-      append(div0, t5);
-      append(div3, t6);
-      append(div3, div1);
-      mount_component(button0, div1, null);
-      append(div1, t7);
-      mount_component(button1, div1, null);
-      append(div1, t8);
-      mount_component(button2, div1, null);
+      insert(target, div7, anchor);
+      append(div7, div0);
+      mount_component(canvas, div0, null);
+      append(div7, t0);
+      append(div7, div1);
+      mount_component(toggle, div1, null);
+      append(div1, t1);
+      mount_component(button, div1, null);
+      append(div7, t2);
+      append(div7, div6);
+      append(div6, div5);
+      append(div5, div2);
+      append(div2, p0);
+      append(div2, t4);
+      append(div2, p1);
+      append(p1, t5);
+      append(div2, t6);
+      append(div2, input0);
+      set_input_value(input0, ctx[1]);
+      append(div5, t7);
+      append(div5, div3);
+      append(div3, p2);
       append(div3, t9);
-      append(div3, div2);
-      append(div2, input);
-      set_input_value(input, ctx[0]);
-      append(div2, t10);
-      mount_component(button3, div2, null);
+      append(div3, p3);
+      append(p3, t10);
+      append(div3, t11);
+      append(div3, input1);
+      set_input_value(input1, ctx[0]);
+      append(div5, t12);
+      append(div5, div4);
+      append(div4, p4);
+      append(div4, t14);
+      append(div4, p5_1);
+      append(p5_1, t15);
+      append(div4, t16);
+      append(div4, input2);
+      set_input_value(input2, ctx[2]);
+      append(div7, t17);
+      append(div7, p6);
       current = true;
       if (!mounted) {
-        dispose = listen(input, "input", ctx[4]);
+        dispose = [
+          listen(input0, "change", ctx[7]),
+          listen(input0, "input", ctx[7]),
+          listen(input1, "change", ctx[8]),
+          listen(input1, "input", ctx[8]),
+          listen(input2, "change", ctx[9]),
+          listen(input2, "input", ctx[9])
+        ];
         mounted = true;
       }
     },
     p(ctx2, [dirty]) {
-      if ((!current || dirty & 2) && t2_value !== (t2_value = formatTime(ctx2[1]) + ""))
-        set_data(t2, t2_value);
+      const toggle_changes = {};
+      if (dirty & 65536) {
+        toggle_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      toggle.$set(toggle_changes);
+      const button_changes = {};
+      if (dirty & 65536) {
+        button_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button.$set(button_changes);
       if (!current || dirty & 2)
-        set_data(t4, ctx2[1]);
-      const button0_changes = {};
-      if (dirty & 32) {
-        button0_changes.$$scope = {dirty, ctx: ctx2};
+        set_data(t5, ctx2[1]);
+      if (dirty & 2) {
+        set_input_value(input0, ctx2[1]);
       }
-      button0.$set(button0_changes);
-      const button1_changes = {};
-      if (dirty & 32) {
-        button1_changes.$$scope = {dirty, ctx: ctx2};
+      if (!current || dirty & 1)
+        set_data(t10, ctx2[0]);
+      if (dirty & 1) {
+        set_input_value(input1, ctx2[0]);
       }
-      button1.$set(button1_changes);
-      const button2_changes = {};
-      if (dirty & 32) {
-        button2_changes.$$scope = {dirty, ctx: ctx2};
+      if (!current || dirty & 4)
+        set_data(t15, ctx2[2]);
+      if (dirty & 4) {
+        set_input_value(input2, ctx2[2]);
       }
-      button2.$set(button2_changes);
-      if (dirty & 1 && to_number(input.value) !== ctx2[0]) {
-        set_input_value(input, ctx2[0]);
-      }
-      const button3_changes = {};
-      if (dirty & 32) {
-        button3_changes.$$scope = {dirty, ctx: ctx2};
-      }
-      button3.$set(button3_changes);
     },
     i(local) {
       if (current)
         return;
-      transition_in(button0.$$.fragment, local);
-      transition_in(button1.$$.fragment, local);
-      transition_in(button2.$$.fragment, local);
-      transition_in(button3.$$.fragment, local);
+      transition_in(canvas.$$.fragment, local);
+      transition_in(toggle.$$.fragment, local);
+      transition_in(button.$$.fragment, local);
       current = true;
     },
     o(local) {
-      transition_out(button0.$$.fragment, local);
-      transition_out(button1.$$.fragment, local);
-      transition_out(button2.$$.fragment, local);
-      transition_out(button3.$$.fragment, local);
+      transition_out(canvas.$$.fragment, local);
+      transition_out(toggle.$$.fragment, local);
+      transition_out(button.$$.fragment, local);
       current = false;
     },
     d(detaching) {
       if (detaching)
-        detach(div3);
-      destroy_component(button0);
-      destroy_component(button1);
-      destroy_component(button2);
-      destroy_component(button3);
+        detach(div7);
+      destroy_component(canvas);
+      destroy_component(toggle);
+      destroy_component(button);
       mounted = false;
-      dispose();
+      run_all(dispose);
     }
   };
 }
-function instance15($$self, $$props, $$invalidate) {
-  let $timer;
-  component_subscribe($$self, timer, ($$value) => $$invalidate(1, $timer = $$value));
+function instance11($$self, $$props, $$invalidate) {
   let {location: location2} = $$props;
-  let elapsed = 1220;
-  const setElapsed = () => {
-    timer.setElapsed(elapsed);
-    console.log("... format time: ", formatTime(elapsed));
+  let dt2 = 0.025;
+  let r = 60;
+  let numCircles = 25;
+  let t = 0;
+  let graphX = r * 2;
+  let p5js;
+  let looping = true;
+  const toggleLoop = () => {
+    looping ? p5js.noLoop() : p5js.loop();
+    looping = !looping;
   };
-  function input_input_handler() {
-    elapsed = to_number(this.value);
-    $$invalidate(0, elapsed);
+  let graph = [];
+  let trace = [];
+  const reset = () => {
+    t = 0;
+    graphX = r * 2;
+    graph = [];
+    trace = [];
+    p5js.redraw();
+  };
+  const sketch = (p, el) => {
+    p5js = p;
+    const setup = () => {
+      p.rectMode(p.CENTER);
+      looping = false;
+      p.noLoop();
+    };
+    const onResize = () => {
+    };
+    const epicycle = (x, y, r2, t2, series) => {
+      p.noFill();
+      p.strokeWeight(p.map(series, 1, numCircles * 2 + 1, 4, 1));
+      p.stroke(22, 80 + series * 15, 52 + series * 10, 220);
+      const d = 2 * r2;
+      p.ellipse(x, y, d, d);
+      const px = p.cos(t2 * series) * r2 + x;
+      const py = p.sin(t2 * series) * r2 + y;
+      p.stroke(22, 120 + series * 15, 82 + series * 10, 230);
+      p.fill(22, 120 + series * 15, 82 + series * 10, 230);
+      p.line(x, y, px, py);
+      p.ellipse(px, py, 2, 2);
+      return [px, py];
+    };
+    graphX = r * 2;
+    p.draw = () => {
+      p.background(0);
+      t += dt2;
+      let cx = r * 3.5;
+      let cy = p.height / 2;
+      for (let i = 0; i < numCircles; i++) {
+        const series = i * 2 + 1;
+        const cr = 4 * r / (series * p.PI);
+        [cx, cy] = epicycle(cx, cy, cr, t, series);
+        graphX = p.max(cx + 50, graphX);
+      }
+      if (t < p.TWO_PI * 1.05) {
+        trace.push({x: cx, y: cy});
+      }
+      p.noFill();
+      p.strokeWeight(2);
+      p.stroke(122, 180, 220, 120);
+      p.beginShape();
+      for (const pt of trace) {
+        p.vertex(pt.x, pt.y);
+      }
+      p.endShape();
+      const lastY = graphX[0];
+      if (lastY != p.round(cy)) {
+        graph.unshift(p.round(cy));
+        if (graph.length > p.width * 1.5) {
+          graph = graph.slice(0, p.width - graphX);
+        }
+      }
+      p.line(cx, cy, graphX, graph[0]);
+      p.stroke(22, 120 + numCircles * 22, 82 + numCircles * 12);
+      p.fill(22, 120 + numCircles * 22, 82 + numCircles * 12);
+      p.ellipse(graphX, graph[0], 4, 4);
+      p.strokeWeight(2);
+      p.stroke(22, 120 + numCircles * 13, 82 + numCircles * 8);
+      p.noFill();
+      p.beginShape();
+      for (let i = 0; i <= graph.length; i++) {
+        p.vertex(graphX + i, graph[i]);
+      }
+      p.endShape();
+    };
+    p.keyPressed = () => {
+      switch (p.keyCode) {
+        case 32:
+          toggleLoop();
+          break;
+        case 13:
+          p.redraw();
+          break;
+      }
+    };
+    return {setup, onResize};
+  };
+  function input0_change_input_handler() {
+    r = to_number(this.value);
+    $$invalidate(1, r);
+  }
+  function input1_change_input_handler() {
+    dt2 = to_number(this.value);
+    $$invalidate(0, dt2);
+  }
+  function input2_change_input_handler() {
+    numCircles = to_number(this.value);
+    $$invalidate(2, numCircles);
   }
   $$self.$$set = ($$props2) => {
     if ("location" in $$props2)
-      $$invalidate(3, location2 = $$props2.location);
+      $$invalidate(6, location2 = $$props2.location);
   };
-  return [elapsed, $timer, setElapsed, location2, input_input_handler];
+  return [
+    dt2,
+    r,
+    numCircles,
+    toggleLoop,
+    reset,
+    sketch,
+    location2,
+    input0_change_input_handler,
+    input1_change_input_handler,
+    input2_change_input_handler
+  ];
 }
-var Timer = class extends SvelteComponent {
+var FourierSeries = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance15, create_fragment17, safe_not_equal, {location: 3});
+    init(this, options, instance11, create_fragment12, safe_not_equal, {location: 6});
   }
 };
-var Timer_svelte_default = Timer;
+var FourierSeries_svelte_default = FourierSeries;
 
-// build/dist/math/FourierSeries.svelte.js
+// build/dist/math/FourierTransform.svelte.js
 function create_active_slot4(ctx) {
   let span;
   return {
@@ -19916,7 +18614,7 @@ function create_inactive_slot4(ctx) {
     }
   };
 }
-function create_contents_slot5(ctx) {
+function create_contents_slot4(ctx) {
   let span;
   return {
     c() {
@@ -19933,7 +18631,7 @@ function create_contents_slot5(ctx) {
     }
   };
 }
-function create_fragment18(ctx) {
+function create_fragment13(ctx) {
   let div7;
   let div0;
   let canvas;
@@ -19989,7 +18687,7 @@ function create_fragment18(ctx) {
   toggle.$on("toggle", ctx[3]);
   button = new Button_svelte_default({
     props: {
-      $$slots: {contents: [create_contents_slot5]},
+      $$slots: {contents: [create_contents_slot4]},
       $$scope: {ctx}
     }
   });
@@ -20172,7 +18870,7 @@ function create_fragment18(ctx) {
     }
   };
 }
-function instance16($$self, $$props, $$invalidate) {
+function instance12($$self, $$props, $$invalidate) {
   let {location: location2} = $$props;
   let dt2 = 0.025;
   let r = 60;
@@ -20301,16 +18999,2397 @@ function instance16($$self, $$props, $$invalidate) {
     input2_change_input_handler
   ];
 }
-var FourierSeries = class extends SvelteComponent {
+var FourierTransform = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance16, create_fragment18, safe_not_equal, {location: 6});
+    init(this, options, instance12, create_fragment13, safe_not_equal, {location: 6});
   }
 };
-var FourierSeries_svelte_default = FourierSeries;
+var FourierTransform_svelte_default = FourierTransform;
+
+// build/dist/ui-demo/Buttons.svelte.js
+function create_contents_slot_7(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Button";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_6(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Button expands to size of Text";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_52(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Text";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_42(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Text";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_32(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "A large Button";
+      attr(span, "slot", "contents");
+      attr(span, "class", "font-bold text-4xl");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_22(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "small";
+      attr(span, "slot", "contents");
+      attr(span, "class", "text-sm");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_12(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Button with Text";
+      attr(span, "slot", "contents");
+      attr(span, "class", "text-white font-bold");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot5(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "small";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_fragment14(ctx) {
+  let div4;
+  let div0;
+  let button0;
+  let t0;
+  let button1;
+  let t1;
+  let button2;
+  let t2;
+  let div1;
+  let button3;
+  let t3;
+  let button4;
+  let t4;
+  let button5;
+  let t5;
+  let button6;
+  let t6;
+  let div2;
+  let button7;
+  let t7;
+  let button8;
+  let t8;
+  let button9;
+  let t9;
+  let div3;
+  let button10;
+  let t10;
+  let button11;
+  let t11;
+  let button12;
+  let current;
+  button0 = new Button_svelte_default({
+    props: {
+      $$slots: {contents: [create_contents_slot_7]},
+      $$scope: {ctx}
+    }
+  });
+  button1 = new Button_svelte_default({});
+  button2 = new Button_svelte_default({
+    props: {
+      $$slots: {contents: [create_contents_slot_6]},
+      $$scope: {ctx}
+    }
+  });
+  button3 = new Button_svelte_default({props: {enabled: false}});
+  button4 = new Button_svelte_default({});
+  button5 = new Button_svelte_default({
+    props: {
+      enabled: false,
+      $$slots: {contents: [create_contents_slot_52]},
+      $$scope: {ctx}
+    }
+  });
+  button6 = new Button_svelte_default({
+    props: {
+      $$slots: {contents: [create_contents_slot_42]},
+      $$scope: {ctx}
+    }
+  });
+  button7 = new Button_svelte_default({});
+  button8 = new Button_svelte_default({
+    props: {
+      $$slots: {contents: [create_contents_slot_32]},
+      $$scope: {ctx}
+    }
+  });
+  button9 = new Button_svelte_default({
+    props: {
+      $$slots: {contents: [create_contents_slot_22]},
+      $$scope: {ctx}
+    }
+  });
+  button10 = new Button_svelte_default({props: {enabledClass: "bg-red-700"}});
+  button11 = new Button_svelte_default({
+    props: {
+      enabledClass: "bg-yellow-600",
+      $$slots: {contents: [create_contents_slot_12]},
+      $$scope: {ctx}
+    }
+  });
+  button12 = new Button_svelte_default({
+    props: {
+      $$slots: {contents: [create_contents_slot5]},
+      $$scope: {ctx}
+    }
+  });
+  return {
+    c() {
+      div4 = element("div");
+      div0 = element("div");
+      create_component(button0.$$.fragment);
+      t0 = space();
+      create_component(button1.$$.fragment);
+      t1 = space();
+      create_component(button2.$$.fragment);
+      t2 = space();
+      div1 = element("div");
+      create_component(button3.$$.fragment);
+      t3 = space();
+      create_component(button4.$$.fragment);
+      t4 = space();
+      create_component(button5.$$.fragment);
+      t5 = space();
+      create_component(button6.$$.fragment);
+      t6 = space();
+      div2 = element("div");
+      create_component(button7.$$.fragment);
+      t7 = space();
+      create_component(button8.$$.fragment);
+      t8 = space();
+      create_component(button9.$$.fragment);
+      t9 = space();
+      div3 = element("div");
+      create_component(button10.$$.fragment);
+      t10 = space();
+      create_component(button11.$$.fragment);
+      t11 = space();
+      create_component(button12.$$.fragment);
+      attr(div0, "class", "flex gap-4 bg-yellow-200 items-center space-x-2");
+      attr(div1, "class", "flex gap-4 bg-gray-200 items-center space-x-2");
+      attr(div2, "class", "flex flex-row items-center gap-2 bg-red-200 p-2 space-x-2");
+      attr(div3, "class", "flex flex-row gap-2 bg-blue-400 p-2 space-x-2");
+      attr(div4, "class", "flex flex-col");
+    },
+    m(target, anchor) {
+      insert(target, div4, anchor);
+      append(div4, div0);
+      mount_component(button0, div0, null);
+      append(div0, t0);
+      mount_component(button1, div0, null);
+      append(div0, t1);
+      mount_component(button2, div0, null);
+      append(div4, t2);
+      append(div4, div1);
+      mount_component(button3, div1, null);
+      append(div1, t3);
+      mount_component(button4, div1, null);
+      append(div1, t4);
+      mount_component(button5, div1, null);
+      append(div1, t5);
+      mount_component(button6, div1, null);
+      append(div4, t6);
+      append(div4, div2);
+      mount_component(button7, div2, null);
+      append(div2, t7);
+      mount_component(button8, div2, null);
+      append(div2, t8);
+      mount_component(button9, div2, null);
+      append(div4, t9);
+      append(div4, div3);
+      mount_component(button10, div3, null);
+      append(div3, t10);
+      mount_component(button11, div3, null);
+      append(div3, t11);
+      mount_component(button12, div3, null);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      const button0_changes = {};
+      if (dirty & 2) {
+        button0_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button0.$set(button0_changes);
+      const button2_changes = {};
+      if (dirty & 2) {
+        button2_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button2.$set(button2_changes);
+      const button5_changes = {};
+      if (dirty & 2) {
+        button5_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button5.$set(button5_changes);
+      const button6_changes = {};
+      if (dirty & 2) {
+        button6_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button6.$set(button6_changes);
+      const button8_changes = {};
+      if (dirty & 2) {
+        button8_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button8.$set(button8_changes);
+      const button9_changes = {};
+      if (dirty & 2) {
+        button9_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button9.$set(button9_changes);
+      const button11_changes = {};
+      if (dirty & 2) {
+        button11_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button11.$set(button11_changes);
+      const button12_changes = {};
+      if (dirty & 2) {
+        button12_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button12.$set(button12_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(button0.$$.fragment, local);
+      transition_in(button1.$$.fragment, local);
+      transition_in(button2.$$.fragment, local);
+      transition_in(button3.$$.fragment, local);
+      transition_in(button4.$$.fragment, local);
+      transition_in(button5.$$.fragment, local);
+      transition_in(button6.$$.fragment, local);
+      transition_in(button7.$$.fragment, local);
+      transition_in(button8.$$.fragment, local);
+      transition_in(button9.$$.fragment, local);
+      transition_in(button10.$$.fragment, local);
+      transition_in(button11.$$.fragment, local);
+      transition_in(button12.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(button0.$$.fragment, local);
+      transition_out(button1.$$.fragment, local);
+      transition_out(button2.$$.fragment, local);
+      transition_out(button3.$$.fragment, local);
+      transition_out(button4.$$.fragment, local);
+      transition_out(button5.$$.fragment, local);
+      transition_out(button6.$$.fragment, local);
+      transition_out(button7.$$.fragment, local);
+      transition_out(button8.$$.fragment, local);
+      transition_out(button9.$$.fragment, local);
+      transition_out(button10.$$.fragment, local);
+      transition_out(button11.$$.fragment, local);
+      transition_out(button12.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div4);
+      destroy_component(button0);
+      destroy_component(button1);
+      destroy_component(button2);
+      destroy_component(button3);
+      destroy_component(button4);
+      destroy_component(button5);
+      destroy_component(button6);
+      destroy_component(button7);
+      destroy_component(button8);
+      destroy_component(button9);
+      destroy_component(button10);
+      destroy_component(button11);
+      destroy_component(button12);
+    }
+  };
+}
+function instance13($$self, $$props, $$invalidate) {
+  let {location: location2} = $$props;
+  $$self.$$set = ($$props2) => {
+    if ("location" in $$props2)
+      $$invalidate(0, location2 = $$props2.location);
+  };
+  return [location2];
+}
+var Buttons = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance13, create_fragment14, safe_not_equal, {location: 0});
+  }
+};
+var Buttons_svelte_default = Buttons;
+
+// build/dist/ui-demo/Toggles.svelte.js
+function create_active_slot_3(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Active";
+      attr(span, "slot", "active");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_inactive_slot_3(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Inactive";
+      attr(span, "slot", "inactive");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_active_slot_2(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Active";
+      attr(span, "slot", "active");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_inactive_slot_2(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Inactive";
+      attr(span, "slot", "inactive");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_active_slot_1(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Active";
+      attr(span, "slot", "active");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_inactive_slot_1(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Inactive";
+      attr(span, "slot", "inactive");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_active_slot5(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Active";
+      attr(span, "slot", "active");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_inactive_slot5(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Inactive";
+      attr(span, "slot", "inactive");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_fragment15(ctx) {
+  let div2;
+  let div0;
+  let toggle0;
+  let t0;
+  let toggle1;
+  let t1;
+  let toggle2;
+  let t2;
+  let div1;
+  let toggle3;
+  let t3;
+  let toggle4;
+  let t4;
+  let toggle5;
+  let current;
+  toggle0 = new Toggle_svelte_default({
+    props: {
+      $$slots: {
+        inactive: [create_inactive_slot_3],
+        active: [create_active_slot_3]
+      },
+      $$scope: {ctx}
+    }
+  });
+  toggle1 = new Toggle_svelte_default({});
+  toggle2 = new Toggle_svelte_default({
+    props: {
+      class: "w-32",
+      $$slots: {
+        inactive: [create_inactive_slot_2],
+        active: [create_active_slot_2]
+      },
+      $$scope: {ctx}
+    }
+  });
+  toggle3 = new Toggle_svelte_default({
+    props: {
+      invert: "true",
+      $$slots: {
+        inactive: [create_inactive_slot_1],
+        active: [create_active_slot_1]
+      },
+      $$scope: {ctx}
+    }
+  });
+  toggle4 = new Toggle_svelte_default({props: {invert: "true"}});
+  toggle5 = new Toggle_svelte_default({
+    props: {
+      class: "w-32",
+      invert: "true",
+      $$slots: {
+        inactive: [create_inactive_slot5],
+        active: [create_active_slot5]
+      },
+      $$scope: {ctx}
+    }
+  });
+  return {
+    c() {
+      div2 = element("div");
+      div0 = element("div");
+      create_component(toggle0.$$.fragment);
+      t0 = space();
+      create_component(toggle1.$$.fragment);
+      t1 = space();
+      create_component(toggle2.$$.fragment);
+      t2 = space();
+      div1 = element("div");
+      create_component(toggle3.$$.fragment);
+      t3 = space();
+      create_component(toggle4.$$.fragment);
+      t4 = space();
+      create_component(toggle5.$$.fragment);
+      attr(div0, "class", "flex gap-4 bg-yellow-200 items-center");
+      attr(div1, "class", "flex p-2  gap-4 bg-green-400 items-center");
+      attr(div2, "class", "flex flex-col");
+    },
+    m(target, anchor) {
+      insert(target, div2, anchor);
+      append(div2, div0);
+      mount_component(toggle0, div0, null);
+      append(div0, t0);
+      mount_component(toggle1, div0, null);
+      append(div0, t1);
+      mount_component(toggle2, div0, null);
+      append(div2, t2);
+      append(div2, div1);
+      mount_component(toggle3, div1, null);
+      append(div1, t3);
+      mount_component(toggle4, div1, null);
+      append(div1, t4);
+      mount_component(toggle5, div1, null);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      const toggle0_changes = {};
+      if (dirty & 1) {
+        toggle0_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      toggle0.$set(toggle0_changes);
+      const toggle2_changes = {};
+      if (dirty & 1) {
+        toggle2_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      toggle2.$set(toggle2_changes);
+      const toggle3_changes = {};
+      if (dirty & 1) {
+        toggle3_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      toggle3.$set(toggle3_changes);
+      const toggle5_changes = {};
+      if (dirty & 1) {
+        toggle5_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      toggle5.$set(toggle5_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(toggle0.$$.fragment, local);
+      transition_in(toggle1.$$.fragment, local);
+      transition_in(toggle2.$$.fragment, local);
+      transition_in(toggle3.$$.fragment, local);
+      transition_in(toggle4.$$.fragment, local);
+      transition_in(toggle5.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(toggle0.$$.fragment, local);
+      transition_out(toggle1.$$.fragment, local);
+      transition_out(toggle2.$$.fragment, local);
+      transition_out(toggle3.$$.fragment, local);
+      transition_out(toggle4.$$.fragment, local);
+      transition_out(toggle5.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div2);
+      destroy_component(toggle0);
+      destroy_component(toggle1);
+      destroy_component(toggle2);
+      destroy_component(toggle3);
+      destroy_component(toggle4);
+      destroy_component(toggle5);
+    }
+  };
+}
+var Toggles = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, null, create_fragment15, safe_not_equal, {});
+  }
+};
+var Toggles_svelte_default = Toggles;
+
+// build/dist/ui/IndexTable.svelte.js
+function get_each_context2(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[5] = list[i];
+  return child_ctx;
+}
+function create_default_slot_1(ctx) {
+  let div2;
+  let div1;
+  let div0;
+  let t_value = ctx[5].summary + "";
+  let t;
+  return {
+    c() {
+      div2 = element("div");
+      div1 = element("div");
+      div0 = element("div");
+      t = text(t_value);
+      attr(div0, "class", "contents text-md font-medium text-blue-900");
+      attr(div1, "class", "ml-2");
+      attr(div2, "class", "flex items-center");
+    },
+    m(target, anchor) {
+      insert(target, div2, anchor);
+      append(div2, div1);
+      append(div1, div0);
+      append(div0, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty & 2 && t_value !== (t_value = ctx2[5].summary + ""))
+        set_data(t, t_value);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div2);
+    }
+  };
+}
+function create_default_slot2(ctx) {
+  let div;
+  let t_value = ctx[5].description + "";
+  let t;
+  return {
+    c() {
+      div = element("div");
+      t = text(t_value);
+      attr(div, "class", "text-sm text-gray-900");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      append(div, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty & 2 && t_value !== (t_value = ctx2[5].description + ""))
+        set_data(t, t_value);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div);
+    }
+  };
+}
+function create_each_block2(ctx) {
+  let tr;
+  let td0;
+  let link0;
+  let t0;
+  let td1;
+  let link1;
+  let t1;
+  let current;
+  link0 = new Link({
+    props: {
+      to: ctx[5].link,
+      $$slots: {default: [create_default_slot_1]},
+      $$scope: {ctx}
+    }
+  });
+  link1 = new Link({
+    props: {
+      to: ctx[5].link,
+      $$slots: {default: [create_default_slot2]},
+      $$scope: {ctx}
+    }
+  });
+  return {
+    c() {
+      tr = element("tr");
+      td0 = element("td");
+      create_component(link0.$$.fragment);
+      t0 = space();
+      td1 = element("td");
+      create_component(link1.$$.fragment);
+      t1 = space();
+      attr(td0, "class", "px-2 py-2 sm:px-6 sm:py-2 sm:whitespace-nowrap");
+      attr(td1, "class", "px-6 py-3 sm:whitespace-nowrap");
+      attr(tr, "class", "hover:bg-blue-300 ease-in transition duration-300 bg-white");
+    },
+    m(target, anchor) {
+      insert(target, tr, anchor);
+      append(tr, td0);
+      mount_component(link0, td0, null);
+      append(tr, t0);
+      append(tr, td1);
+      mount_component(link1, td1, null);
+      append(tr, t1);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const link0_changes = {};
+      if (dirty & 2)
+        link0_changes.to = ctx2[5].link;
+      if (dirty & 258) {
+        link0_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      link0.$set(link0_changes);
+      const link1_changes = {};
+      if (dirty & 2)
+        link1_changes.to = ctx2[5].link;
+      if (dirty & 258) {
+        link1_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      link1.$set(link1_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(link0.$$.fragment, local);
+      transition_in(link1.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(link0.$$.fragment, local);
+      transition_out(link1.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(tr);
+      destroy_component(link0);
+      destroy_component(link1);
+    }
+  };
+}
+function create_fragment16(ctx) {
+  let div1;
+  let span;
+  let t0;
+  let div0;
+  let input;
+  let t1;
+  let div4;
+  let div3;
+  let div2;
+  let table;
+  let thead;
+  let t5;
+  let tbody;
+  let current;
+  let mounted;
+  let dispose;
+  let each_value = ctx[1];
+  let each_blocks = [];
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block2(get_each_context2(ctx, each_value, i));
+  }
+  const out = (i) => transition_out(each_blocks[i], 1, 1, () => {
+    each_blocks[i] = null;
+  });
+  return {
+    c() {
+      div1 = element("div");
+      span = element("span");
+      span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>`;
+      t0 = space();
+      div0 = element("div");
+      input = element("input");
+      t1 = space();
+      div4 = element("div");
+      div3 = element("div");
+      div2 = element("div");
+      table = element("table");
+      thead = element("thead");
+      thead.innerHTML = `<tr><th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">entry</th> 
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Description</th></tr>`;
+      t5 = space();
+      tbody = element("tbody");
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      attr(span, "class", "absolute w-auto p-2 flex items-center text-gray-600 ");
+      attr(input, "class", "min-w-full py-2 text-sm\n      bg-gray-200 border-b-2 border-gray-400\n      text-white bg-gray-100 pl-12\n      focus:outline-none focus:bg-gray-100 focus:text-gray-800\n      focus:border-gray-500\n      ");
+      attr(input, "type", "text");
+      attr(div0, "class", "flex-grow");
+      attr(div1, "class", "pt-2 flex flex-row relative ");
+      attr(thead, "class", "bg-gray-700 text-gray-200");
+      attr(tbody, "class", "bg-gray-200 divide-y-2 divide-gray-300");
+      attr(table, "class", "min-w-full divide-y divide-gray-300");
+      attr(div2, "class", "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg");
+      attr(div3, "class", "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8");
+      attr(div4, "class", "mx-1 overflow-x-auto sm:-mx-6 lg:-mx-8");
+    },
+    m(target, anchor) {
+      insert(target, div1, anchor);
+      append(div1, span);
+      append(div1, t0);
+      append(div1, div0);
+      append(div0, input);
+      set_input_value(input, ctx[0]);
+      insert(target, t1, anchor);
+      insert(target, div4, anchor);
+      append(div4, div3);
+      append(div3, div2);
+      append(div2, table);
+      append(table, thead);
+      append(table, t5);
+      append(table, tbody);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(tbody, null);
+      }
+      current = true;
+      if (!mounted) {
+        dispose = [
+          listen(input, "input", ctx[4]),
+          listen(input, "input", ctx[2])
+        ];
+        mounted = true;
+      }
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & 1 && input.value !== ctx2[0]) {
+        set_input_value(input, ctx2[0]);
+      }
+      if (dirty & 2) {
+        each_value = ctx2[1];
+        let i;
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context2(ctx2, each_value, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+            transition_in(each_blocks[i], 1);
+          } else {
+            each_blocks[i] = create_each_block2(child_ctx);
+            each_blocks[i].c();
+            transition_in(each_blocks[i], 1);
+            each_blocks[i].m(tbody, null);
+          }
+        }
+        group_outros();
+        for (i = each_value.length; i < each_blocks.length; i += 1) {
+          out(i);
+        }
+        check_outros();
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      for (let i = 0; i < each_value.length; i += 1) {
+        transition_in(each_blocks[i]);
+      }
+      current = true;
+    },
+    o(local) {
+      each_blocks = each_blocks.filter(Boolean);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        transition_out(each_blocks[i]);
+      }
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div1);
+      if (detaching)
+        detach(t1);
+      if (detaching)
+        detach(div4);
+      destroy_each(each_blocks, detaching);
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function instance14($$self, $$props, $$invalidate) {
+  let {entries = []} = $$props;
+  let search = "";
+  let filtered = entries;
+  const filter = () => {
+    const txt = search.trim().toLowerCase();
+    if (txt == "") {
+      $$invalidate(1, filtered = entries);
+      return;
+    }
+    $$invalidate(1, filtered = entries.filter((x) => x.summary.toLowerCase().includes(txt) || x.description.toLowerCase().includes(txt)));
+  };
+  function input_input_handler() {
+    search = this.value;
+    $$invalidate(0, search);
+  }
+  $$self.$$set = ($$props2) => {
+    if ("entries" in $$props2)
+      $$invalidate(3, entries = $$props2.entries);
+  };
+  return [search, filtered, filter, entries, input_input_handler];
+}
+var IndexTable = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance14, create_fragment16, safe_not_equal, {entries: 3});
+  }
+};
+var IndexTable_svelte_default = IndexTable;
+
+// build/dist/svelte/LinksTable.svelte.js
+function create_fragment17(ctx) {
+  let indextable;
+  let current;
+  indextable = new IndexTable_svelte_default({props: {entries: ctx[0]}});
+  return {
+    c() {
+      create_component(indextable.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(indextable, target, anchor);
+      current = true;
+    },
+    p: noop,
+    i(local) {
+      if (current)
+        return;
+      transition_in(indextable.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(indextable.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(indextable, detaching);
+    }
+  };
+}
+function instance15($$self, $$props, $$invalidate) {
+  let {location: location2} = $$props;
+  let entries = [
+    {
+      link: "store/timer",
+      summary: "Custom Svelte Store for Timer",
+      description: "Tryout setInterval on store"
+    },
+    {
+      link: "p5/2D",
+      summary: "p5js 2D Demo",
+      description: "A simple 2D Demo to test svelte integration with p5.js"
+    },
+    {
+      link: "p5/3D",
+      summary: "3D Demo",
+      description: "Test 3D WebGL Rendering"
+    },
+    {
+      link: "timer",
+      summary: "Timer without Store",
+      description: "Tryout setInterval w/o store"
+    }
+  ];
+  $$self.$$set = ($$props2) => {
+    if ("location" in $$props2)
+      $$invalidate(1, location2 = $$props2.location);
+  };
+  return [entries, location2];
+}
+var LinksTable = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance15, create_fragment17, safe_not_equal, {location: 1});
+  }
+};
+var LinksTable_svelte_default = LinksTable;
+
+// build/dist/svelte/store/timer/store.js
+var time = writable(0);
+var newTimer = () => {
+  const {subscribe: subscribe2, set, update: update2} = writable(0);
+  let timer2 = null;
+  let startedAt;
+  let lapStart;
+  let elapsed = 0;
+  let oldElapsed = 0;
+  const init2 = () => {
+    timer2 = null;
+    startedAt = void 0;
+    lapStart = 0;
+    elapsed = 0;
+    oldElapsed = 0;
+    set(elapsed);
+  };
+  const setElapsed = (x) => {
+    oldElapsed = x;
+    elapsed = x;
+    startedAt = Date.now() - x;
+    set(x);
+  };
+  const start = () => {
+    if (timer2) {
+      console.warn("calling start on already started timer");
+      return;
+    }
+    console.log("before start", {startedAt, lapStart, oldElapsed, elapsed});
+    startedAt || (startedAt = new Date());
+    lapStart = Date.now();
+    oldElapsed = elapsed;
+    console.log("start", {startedAt, lapStart, oldElapsed, elapsed});
+    timer2 = setInterval(() => {
+      elapsed = Date.now() - lapStart + oldElapsed;
+      console.log(" ... setting elapsed", timer2, elapsed);
+      set(elapsed);
+    }, 40);
+    console.log("started", {startedAt, lapStart, oldElapsed, elapsed, timer: timer2});
+  };
+  const stop = () => {
+    if (!timer2) {
+      console.warn("trying to pause when timer isn't running");
+      return;
+    }
+    clearInterval(timer2);
+    timer2 = null;
+  };
+  const reset = () => {
+    stop();
+    init2();
+    console.log("reset", {startedAt, lapStart, oldElapsed, elapsed, timer: timer2});
+  };
+  return {
+    subscribe: subscribe2,
+    start,
+    stop,
+    reset,
+    setElapsed
+  };
+};
+var timer = newTimer();
+
+// build/dist/svelte/store/timer/Timer.svelte.js
+function create_contents_slot_33(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Start";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_23(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Pause";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_13(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Reset";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot6(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "set";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_fragment18(ctx) {
+  let div3;
+  let p;
+  let t1;
+  let div0;
+  let t2_value = formatTime(ctx[1]) + "";
+  let t2;
+  let t3;
+  let t4;
+  let t5;
+  let t6;
+  let div1;
+  let button0;
+  let t7;
+  let button1;
+  let t8;
+  let button2;
+  let t9;
+  let div2;
+  let input;
+  let t10;
+  let button3;
+  let current;
+  let mounted;
+  let dispose;
+  button0 = new Button_svelte_default({
+    props: {
+      class: "w-24",
+      $$slots: {contents: [create_contents_slot_33]},
+      $$scope: {ctx}
+    }
+  });
+  button0.$on("click", timer.start);
+  button1 = new Button_svelte_default({
+    props: {
+      enabledClass: "bg-yellow-400",
+      $$slots: {contents: [create_contents_slot_23]},
+      $$scope: {ctx}
+    }
+  });
+  button1.$on("click", timer.stop);
+  button2 = new Button_svelte_default({
+    props: {
+      enabledClass: "bg-red-400",
+      $$slots: {contents: [create_contents_slot_13]},
+      $$scope: {ctx}
+    }
+  });
+  button2.$on("click", timer.reset);
+  button3 = new Button_svelte_default({
+    props: {
+      enabledClass: "bg-yellow-800",
+      $$slots: {contents: [create_contents_slot6]},
+      $$scope: {ctx}
+    }
+  });
+  button3.$on("click", ctx[2]);
+  return {
+    c() {
+      div3 = element("div");
+      p = element("p");
+      p.textContent = "A test for using store to set and reset a timer.\n    store.ts contains all the logic and this ui is only a representation of\n    the store";
+      t1 = space();
+      div0 = element("div");
+      t2 = text(t2_value);
+      t3 = text(" | ");
+      t4 = text(ctx[1]);
+      t5 = text(" |");
+      t6 = space();
+      div1 = element("div");
+      create_component(button0.$$.fragment);
+      t7 = space();
+      create_component(button1.$$.fragment);
+      t8 = space();
+      create_component(button2.$$.fragment);
+      t9 = space();
+      div2 = element("div");
+      input = element("input");
+      t10 = space();
+      create_component(button3.$$.fragment);
+      attr(p, "class", "bg-gray-600 text-gray-300 rounded p-2 justify-left");
+      attr(div0, "class", "border-t border-gray-400 mt-4 py-2\n    flex flex-row gap-4 justify-center font-mono ");
+      attr(div1, "class", "flex flex-row gap-4 mt-4 justify-center");
+      attr(input, "type", "number");
+      attr(input, "class", "w-24 px-2");
+      attr(div2, "class", "flex flex-row gap-4 mt-4 justify-center");
+      attr(div3, "class", "flex flex-col");
+    },
+    m(target, anchor) {
+      insert(target, div3, anchor);
+      append(div3, p);
+      append(div3, t1);
+      append(div3, div0);
+      append(div0, t2);
+      append(div0, t3);
+      append(div0, t4);
+      append(div0, t5);
+      append(div3, t6);
+      append(div3, div1);
+      mount_component(button0, div1, null);
+      append(div1, t7);
+      mount_component(button1, div1, null);
+      append(div1, t8);
+      mount_component(button2, div1, null);
+      append(div3, t9);
+      append(div3, div2);
+      append(div2, input);
+      set_input_value(input, ctx[0]);
+      append(div2, t10);
+      mount_component(button3, div2, null);
+      current = true;
+      if (!mounted) {
+        dispose = listen(input, "input", ctx[4]);
+        mounted = true;
+      }
+    },
+    p(ctx2, [dirty]) {
+      if ((!current || dirty & 2) && t2_value !== (t2_value = formatTime(ctx2[1]) + ""))
+        set_data(t2, t2_value);
+      if (!current || dirty & 2)
+        set_data(t4, ctx2[1]);
+      const button0_changes = {};
+      if (dirty & 32) {
+        button0_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button0.$set(button0_changes);
+      const button1_changes = {};
+      if (dirty & 32) {
+        button1_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button1.$set(button1_changes);
+      const button2_changes = {};
+      if (dirty & 32) {
+        button2_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button2.$set(button2_changes);
+      if (dirty & 1 && to_number(input.value) !== ctx2[0]) {
+        set_input_value(input, ctx2[0]);
+      }
+      const button3_changes = {};
+      if (dirty & 32) {
+        button3_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button3.$set(button3_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(button0.$$.fragment, local);
+      transition_in(button1.$$.fragment, local);
+      transition_in(button2.$$.fragment, local);
+      transition_in(button3.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(button0.$$.fragment, local);
+      transition_out(button1.$$.fragment, local);
+      transition_out(button2.$$.fragment, local);
+      transition_out(button3.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div3);
+      destroy_component(button0);
+      destroy_component(button1);
+      destroy_component(button2);
+      destroy_component(button3);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function instance16($$self, $$props, $$invalidate) {
+  let $timer;
+  component_subscribe($$self, timer, ($$value) => $$invalidate(1, $timer = $$value));
+  let {location: location2} = $$props;
+  let elapsed = 1220;
+  const setElapsed = () => {
+    timer.setElapsed(elapsed);
+    console.log("... format time: ", formatTime(elapsed));
+  };
+  function input_input_handler() {
+    elapsed = to_number(this.value);
+    $$invalidate(0, elapsed);
+  }
+  $$self.$$set = ($$props2) => {
+    if ("location" in $$props2)
+      $$invalidate(3, location2 = $$props2.location);
+  };
+  return [elapsed, $timer, setElapsed, location2, input_input_handler];
+}
+var Timer = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance16, create_fragment18, safe_not_equal, {location: 3});
+  }
+};
+var Timer_svelte_default = Timer;
+
+// build/dist/svelte/timer/StatefulTimer.svelte.js
+function create_fragment19(ctx) {
+  let div;
+  let t;
+  return {
+    c() {
+      div = element("div");
+      t = text(ctx[0]);
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      append(div, t);
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & 1)
+        set_data(t, ctx2[0]);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(div);
+    }
+  };
+}
+function instance17($$self, $$props, $$invalidate) {
+  let {state = "paused"} = $$props;
+  let {elapsed = 0} = $$props;
+  let startedAt;
+  const resetTimer = (x) => {
+    console.log("reset:", {state});
+    if (state == "start") {
+      start();
+    } else if (state == "paused") {
+      pause();
+    } else {
+      stop();
+    }
+  };
+  const start = () => {
+    console.log("starting a timer");
+  };
+  const pause = () => {
+    console.log("pausing the timer");
+  };
+  const stop = () => {
+    console.log("stopping the timer");
+  };
+  $$self.$$set = ($$props2) => {
+    if ("state" in $$props2)
+      $$invalidate(0, state = $$props2.state);
+    if ("elapsed" in $$props2)
+      $$invalidate(1, elapsed = $$props2.elapsed);
+  };
+  $$self.$$.update = () => {
+    if ($$self.$$.dirty & 1) {
+      $:
+        resetTimer(state);
+    }
+  };
+  return [state, elapsed];
+}
+var StatefulTimer = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance17, create_fragment19, safe_not_equal, {state: 0, elapsed: 1});
+  }
+};
+var StatefulTimer_svelte_default = StatefulTimer;
+
+// build/dist/svelte/timer/NoStoreTimer.svelte.js
+function create_contents_slot_34(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Start";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_24(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Pause";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot_14(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "Reset";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_contents_slot7(ctx) {
+  let span;
+  return {
+    c() {
+      span = element("span");
+      span.textContent = "set";
+      attr(span, "slot", "contents");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create_fragment20(ctx) {
+  let div4;
+  let p;
+  let t1;
+  let div1;
+  let statefultimer;
+  let updating_state;
+  let updating_elapsed;
+  let t2;
+  let div0;
+  let t3;
+  let t4;
+  let div2;
+  let button0;
+  let t5;
+  let button1;
+  let t6;
+  let button2;
+  let t7;
+  let div3;
+  let input;
+  let t8;
+  let button3;
+  let current;
+  let mounted;
+  let dispose;
+  function statefultimer_state_binding(value) {
+    ctx[5](value);
+  }
+  function statefultimer_elapsed_binding(value) {
+    ctx[6](value);
+  }
+  let statefultimer_props = {};
+  if (ctx[0] !== void 0) {
+    statefultimer_props.state = ctx[0];
+  }
+  if (ctx[1] !== void 0) {
+    statefultimer_props.elapsed = ctx[1];
+  }
+  statefultimer = new StatefulTimer_svelte_default({props: statefultimer_props});
+  binding_callbacks.push(() => bind(statefultimer, "state", statefultimer_state_binding));
+  binding_callbacks.push(() => bind(statefultimer, "elapsed", statefultimer_elapsed_binding));
+  button0 = new Button_svelte_default({
+    props: {
+      class: "w-24",
+      $$slots: {contents: [create_contents_slot_34]},
+      $$scope: {ctx}
+    }
+  });
+  button0.$on("click", ctx[7]);
+  button1 = new Button_svelte_default({
+    props: {
+      enabledClass: "bg-yellow-400",
+      $$slots: {contents: [create_contents_slot_24]},
+      $$scope: {ctx}
+    }
+  });
+  button1.$on("click", ctx[8]);
+  button2 = new Button_svelte_default({
+    props: {
+      enabledClass: "bg-red-400",
+      $$slots: {contents: [create_contents_slot_14]},
+      $$scope: {ctx}
+    }
+  });
+  button2.$on("click", ctx[9]);
+  button3 = new Button_svelte_default({
+    props: {
+      enabledClass: "bg-yellow-800",
+      $$slots: {contents: [create_contents_slot7]},
+      $$scope: {ctx}
+    }
+  });
+  button3.$on("click", ctx[11]);
+  return {
+    c() {
+      div4 = element("div");
+      p = element("p");
+      p.textContent = "Storeless timer can be controlled by setting the state of the Timer";
+      t1 = space();
+      div1 = element("div");
+      create_component(statefultimer.$$.fragment);
+      t2 = space();
+      div0 = element("div");
+      t3 = text(ctx[1]);
+      t4 = space();
+      div2 = element("div");
+      create_component(button0.$$.fragment);
+      t5 = space();
+      create_component(button1.$$.fragment);
+      t6 = space();
+      create_component(button2.$$.fragment);
+      t7 = space();
+      div3 = element("div");
+      input = element("input");
+      t8 = space();
+      create_component(button3.$$.fragment);
+      attr(p, "class", "bg-gray-600 text-gray-300 rounded p-2 justify-left");
+      attr(div1, "class", "border-t border-gray-400 mt-4 py-2\n    flex flex-row gap-4 justify-center font-mono ");
+      attr(div2, "class", "flex flex-row gap-4 mt-4 justify-center");
+      attr(input, "type", "number");
+      attr(input, "class", "w-24 px-2");
+      attr(div3, "class", "flex flex-row gap-4 mt-4 justify-center");
+      attr(div4, "class", "flex flex-col");
+    },
+    m(target, anchor) {
+      insert(target, div4, anchor);
+      append(div4, p);
+      append(div4, t1);
+      append(div4, div1);
+      mount_component(statefultimer, div1, null);
+      append(div1, t2);
+      append(div1, div0);
+      append(div0, t3);
+      append(div4, t4);
+      append(div4, div2);
+      mount_component(button0, div2, null);
+      append(div2, t5);
+      mount_component(button1, div2, null);
+      append(div2, t6);
+      mount_component(button2, div2, null);
+      append(div4, t7);
+      append(div4, div3);
+      append(div3, input);
+      set_input_value(input, ctx[2]);
+      append(div3, t8);
+      mount_component(button3, div3, null);
+      current = true;
+      if (!mounted) {
+        dispose = listen(input, "input", ctx[10]);
+        mounted = true;
+      }
+    },
+    p(ctx2, [dirty]) {
+      const statefultimer_changes = {};
+      if (!updating_state && dirty & 1) {
+        updating_state = true;
+        statefultimer_changes.state = ctx2[0];
+        add_flush_callback(() => updating_state = false);
+      }
+      if (!updating_elapsed && dirty & 2) {
+        updating_elapsed = true;
+        statefultimer_changes.elapsed = ctx2[1];
+        add_flush_callback(() => updating_elapsed = false);
+      }
+      statefultimer.$set(statefultimer_changes);
+      if (!current || dirty & 2)
+        set_data(t3, ctx2[1]);
+      const button0_changes = {};
+      if (dirty & 4096) {
+        button0_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button0.$set(button0_changes);
+      const button1_changes = {};
+      if (dirty & 4096) {
+        button1_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button1.$set(button1_changes);
+      const button2_changes = {};
+      if (dirty & 4096) {
+        button2_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button2.$set(button2_changes);
+      if (dirty & 4 && to_number(input.value) !== ctx2[2]) {
+        set_input_value(input, ctx2[2]);
+      }
+      const button3_changes = {};
+      if (dirty & 4096) {
+        button3_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      button3.$set(button3_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(statefultimer.$$.fragment, local);
+      transition_in(button0.$$.fragment, local);
+      transition_in(button1.$$.fragment, local);
+      transition_in(button2.$$.fragment, local);
+      transition_in(button3.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(statefultimer.$$.fragment, local);
+      transition_out(button0.$$.fragment, local);
+      transition_out(button1.$$.fragment, local);
+      transition_out(button2.$$.fragment, local);
+      transition_out(button3.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div4);
+      destroy_component(statefultimer);
+      destroy_component(button0);
+      destroy_component(button1);
+      destroy_component(button2);
+      destroy_component(button3);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function instance18($$self, $$props, $$invalidate) {
+  let {location: location2} = $$props;
+  let state;
+  let elapsed;
+  let newElapsed;
+  const setState = (x) => {
+    $$invalidate(0, state = x);
+  };
+  function statefultimer_state_binding(value) {
+    state = value;
+    $$invalidate(0, state);
+  }
+  function statefultimer_elapsed_binding(value) {
+    elapsed = value;
+    $$invalidate(1, elapsed);
+  }
+  const click_handler = () => setState("start");
+  const click_handler_1 = () => setState("paused");
+  const click_handler_2 = () => setState("stopped");
+  function input_input_handler() {
+    newElapsed = to_number(this.value);
+    $$invalidate(2, newElapsed);
+  }
+  const click_handler_3 = () => $$invalidate(1, elapsed = newElapsed);
+  $$self.$$set = ($$props2) => {
+    if ("location" in $$props2)
+      $$invalidate(4, location2 = $$props2.location);
+  };
+  return [
+    state,
+    elapsed,
+    newElapsed,
+    setState,
+    location2,
+    statefultimer_state_binding,
+    statefultimer_elapsed_binding,
+    click_handler,
+    click_handler_1,
+    click_handler_2,
+    input_input_handler,
+    click_handler_3
+  ];
+}
+var NoStoreTimer = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance18, create_fragment20, safe_not_equal, {location: 4});
+  }
+};
+var NoStoreTimer_svelte_default = NoStoreTimer;
+
+// build/dist/svelte/p5/P2DTest.svelte.js
+function create_fragment21(ctx) {
+  let div4;
+  let canvas;
+  let t0;
+  let div3;
+  let div2;
+  let div0;
+  let p0;
+  let t2;
+  let p1;
+  let t3_value = Math.round(ctx[2]) + "";
+  let t3;
+  let t4;
+  let input0;
+  let input0_max_value;
+  let t5;
+  let div1;
+  let p2;
+  let t7;
+  let p3;
+  let t8_value = Math.round(ctx[3]) + "";
+  let t8;
+  let t9;
+  let input1;
+  let input1_max_value;
+  let current;
+  let mounted;
+  let dispose;
+  canvas = new Canvas_svelte_default({
+    props: {height: "400", sketch: ctx[4]}
+  });
+  return {
+    c() {
+      div4 = element("div");
+      create_component(canvas.$$.fragment);
+      t0 = space();
+      div3 = element("div");
+      div2 = element("div");
+      div0 = element("div");
+      p0 = element("p");
+      p0.textContent = "x:";
+      t2 = space();
+      p1 = element("p");
+      t3 = text(t3_value);
+      t4 = space();
+      input0 = element("input");
+      t5 = space();
+      div1 = element("div");
+      p2 = element("p");
+      p2.textContent = "y:";
+      t7 = space();
+      p3 = element("p");
+      t8 = text(t8_value);
+      t9 = space();
+      input1 = element("input");
+      attr(p0, "class", "table-cell w-12 font-mono text-right");
+      attr(p1, "class", "table-cell w-24 truncate font-mono pl-2");
+      attr(input0, "class", "table-cell align-left");
+      attr(input0, "type", "range");
+      attr(input0, "min", "0");
+      attr(input0, "max", input0_max_value = Math.round(ctx[0]));
+      attr(div0, "class", "table-row");
+      attr(p2, "class", "table-cell w-12 font-mono text-right");
+      attr(p3, "class", "table-cell w-24 truncate font-mono pl-2");
+      attr(input1, "class", "table-cell align-left");
+      attr(input1, "type", "range");
+      attr(input1, "min", "0");
+      attr(input1, "max", input1_max_value = Math.round(ctx[1]));
+      attr(div1, "class", "table-row");
+      attr(div2, "class", "table-row-group");
+      attr(div3, "class", "table w-full");
+      attr(div4, "class", "flex flex-col");
+    },
+    m(target, anchor) {
+      insert(target, div4, anchor);
+      mount_component(canvas, div4, null);
+      append(div4, t0);
+      append(div4, div3);
+      append(div3, div2);
+      append(div2, div0);
+      append(div0, p0);
+      append(div0, t2);
+      append(div0, p1);
+      append(p1, t3);
+      append(div0, t4);
+      append(div0, input0);
+      set_input_value(input0, ctx[2]);
+      append(div2, t5);
+      append(div2, div1);
+      append(div1, p2);
+      append(div1, t7);
+      append(div1, p3);
+      append(p3, t8);
+      append(div1, t9);
+      append(div1, input1);
+      set_input_value(input1, ctx[3]);
+      current = true;
+      if (!mounted) {
+        dispose = [
+          listen(input0, "change", ctx[6]),
+          listen(input0, "input", ctx[6]),
+          listen(input1, "change", ctx[7]),
+          listen(input1, "input", ctx[7])
+        ];
+        mounted = true;
+      }
+    },
+    p(ctx2, [dirty]) {
+      if ((!current || dirty & 4) && t3_value !== (t3_value = Math.round(ctx2[2]) + ""))
+        set_data(t3, t3_value);
+      if (!current || dirty & 1 && input0_max_value !== (input0_max_value = Math.round(ctx2[0]))) {
+        attr(input0, "max", input0_max_value);
+      }
+      if (dirty & 4) {
+        set_input_value(input0, ctx2[2]);
+      }
+      if ((!current || dirty & 8) && t8_value !== (t8_value = Math.round(ctx2[3]) + ""))
+        set_data(t8, t8_value);
+      if (!current || dirty & 2 && input1_max_value !== (input1_max_value = Math.round(ctx2[1]))) {
+        attr(input1, "max", input1_max_value);
+      }
+      if (dirty & 8) {
+        set_input_value(input1, ctx2[3]);
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(canvas.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(canvas.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div4);
+      destroy_component(canvas);
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+var vx = 1;
+var vy = 1;
+var dt = 0;
+function instance19($$self, $$props, $$invalidate) {
+  let {location: location2} = $$props;
+  let width;
+  let height;
+  let x = 100;
+  let y = 100;
+  const sketch = (p, el) => {
+    let w = p.random(50, 100);
+    let h = p.random(50, 100);
+    const setup = () => {
+      $$invalidate(0, width = p.width - w);
+      $$invalidate(1, height = p.height - h);
+      $$invalidate(2, x = width / 2 - w / 2);
+      $$invalidate(3, y = height / 2 - h / 2);
+    };
+    const onResize = () => {
+      $$invalidate(0, width = p.width - w);
+      $$invalidate(1, height = p.height - h);
+    };
+    const update2 = () => {
+      $$invalidate(2, x += vx * dt);
+      $$invalidate(3, y += vy * dt);
+    };
+    p.draw = () => {
+      p.background(0);
+      update2();
+      p.fill(255);
+      p.rect(x, y, w, h);
+    };
+    return {setup, onResize};
+  };
+  function input0_change_input_handler() {
+    x = to_number(this.value);
+    $$invalidate(2, x);
+  }
+  function input1_change_input_handler() {
+    y = to_number(this.value);
+    $$invalidate(3, y);
+  }
+  $$self.$$set = ($$props2) => {
+    if ("location" in $$props2)
+      $$invalidate(5, location2 = $$props2.location);
+  };
+  return [
+    width,
+    height,
+    x,
+    y,
+    sketch,
+    location2,
+    input0_change_input_handler,
+    input1_change_input_handler
+  ];
+}
+var P2DTest = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance19, create_fragment21, safe_not_equal, {location: 5});
+  }
+};
+var P2DTest_svelte_default = P2DTest;
+
+// build/dist/svelte/p5/P3DTest.svelte.js
+function create_fragment22(ctx) {
+  let div3;
+  let canvas;
+  let t0;
+  let div2;
+  let div1;
+  let div0;
+  let p0;
+  let t2;
+  let p1;
+  let t3_value = ctx[0].toFixed(2) + "";
+  let t3;
+  let t4;
+  let input;
+  let current;
+  let mounted;
+  let dispose;
+  canvas = new Canvas_svelte_default({
+    props: {mode: "3D", sketch: ctx[1]}
+  });
+  return {
+    c() {
+      div3 = element("div");
+      create_component(canvas.$$.fragment);
+      t0 = space();
+      div2 = element("div");
+      div1 = element("div");
+      div0 = element("div");
+      p0 = element("p");
+      p0.textContent = "speed:";
+      t2 = space();
+      p1 = element("p");
+      t3 = text(t3_value);
+      t4 = space();
+      input = element("input");
+      attr(p0, "class", "table-cell w-12 font-mono text-right");
+      attr(p1, "class", "table-cell w-24 truncate font-mono pl-2");
+      attr(input, "class", "table-cell align-left");
+      attr(input, "type", "range");
+      attr(input, "step", "0.01");
+      attr(input, "min", "0.0");
+      attr(input, "max", "0.1");
+      attr(div0, "class", "table-row");
+      attr(div1, "class", "table-row-group");
+      attr(div2, "class", "table w-full");
+      attr(div3, "class", "flex flex-col");
+    },
+    m(target, anchor) {
+      insert(target, div3, anchor);
+      mount_component(canvas, div3, null);
+      append(div3, t0);
+      append(div3, div2);
+      append(div2, div1);
+      append(div1, div0);
+      append(div0, p0);
+      append(div0, t2);
+      append(div0, p1);
+      append(p1, t3);
+      append(div0, t4);
+      append(div0, input);
+      set_input_value(input, ctx[0]);
+      current = true;
+      if (!mounted) {
+        dispose = [
+          listen(input, "change", ctx[3]),
+          listen(input, "input", ctx[3])
+        ];
+        mounted = true;
+      }
+    },
+    p(ctx2, [dirty]) {
+      if ((!current || dirty & 1) && t3_value !== (t3_value = ctx2[0].toFixed(2) + ""))
+        set_data(t3, t3_value);
+      if (dirty & 1) {
+        set_input_value(input, ctx2[0]);
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(canvas.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(canvas.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div3);
+      destroy_component(canvas);
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function instance20($$self, $$props, $$invalidate) {
+  let {location: location2} = $$props;
+  let speed = 0.01;
+  const sketch = (p, el) => {
+    let x = 100;
+    let y = 100;
+    let w = p.random(50, 100);
+    let h = p.random(50, 100);
+    p.draw = () => {
+      p.background(0);
+      p.normalMaterial();
+      p.translate(0, 0, 0);
+      p.push();
+      p.rotateZ(p.frameCount * speed);
+      p.rotateX(p.frameCount * speed);
+      p.rotateY(p.frameCount * speed);
+      p.torus(70, 20);
+      p.pop();
+    };
+    return {};
+  };
+  function input_change_input_handler() {
+    speed = to_number(this.value);
+    $$invalidate(0, speed);
+  }
+  $$self.$$set = ($$props2) => {
+    if ("location" in $$props2)
+      $$invalidate(2, location2 = $$props2.location);
+  };
+  return [speed, sketch, location2, input_change_input_handler];
+}
+var P3DTest = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance20, create_fragment22, safe_not_equal, {location: 2});
+  }
+};
+var P3DTest_svelte_default = P3DTest;
+
+// build/dist/svelte/Index.svelte.js
+function create_default_slot3(ctx) {
+  let route0;
+  let t0;
+  let route1;
+  let t1;
+  let route2;
+  let t2;
+  let route3;
+  let t3;
+  let route4;
+  let current;
+  route0 = new Route({
+    props: {path: "/", component: LinksTable_svelte_default}
+  });
+  route1 = new Route({
+    props: {
+      path: "store/timer",
+      component: Timer_svelte_default
+    }
+  });
+  route2 = new Route({
+    props: {path: "timer", component: NoStoreTimer_svelte_default}
+  });
+  route3 = new Route({
+    props: {path: "p5/2D", component: P2DTest_svelte_default}
+  });
+  route4 = new Route({
+    props: {path: "p5/3D", component: P3DTest_svelte_default}
+  });
+  return {
+    c() {
+      create_component(route0.$$.fragment);
+      t0 = space();
+      create_component(route1.$$.fragment);
+      t1 = space();
+      create_component(route2.$$.fragment);
+      t2 = space();
+      create_component(route3.$$.fragment);
+      t3 = space();
+      create_component(route4.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(route0, target, anchor);
+      insert(target, t0, anchor);
+      mount_component(route1, target, anchor);
+      insert(target, t1, anchor);
+      mount_component(route2, target, anchor);
+      insert(target, t2, anchor);
+      mount_component(route3, target, anchor);
+      insert(target, t3, anchor);
+      mount_component(route4, target, anchor);
+      current = true;
+    },
+    p: noop,
+    i(local) {
+      if (current)
+        return;
+      transition_in(route0.$$.fragment, local);
+      transition_in(route1.$$.fragment, local);
+      transition_in(route2.$$.fragment, local);
+      transition_in(route3.$$.fragment, local);
+      transition_in(route4.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(route0.$$.fragment, local);
+      transition_out(route1.$$.fragment, local);
+      transition_out(route2.$$.fragment, local);
+      transition_out(route3.$$.fragment, local);
+      transition_out(route4.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(route0, detaching);
+      if (detaching)
+        detach(t0);
+      destroy_component(route1, detaching);
+      if (detaching)
+        detach(t1);
+      destroy_component(route2, detaching);
+      if (detaching)
+        detach(t2);
+      destroy_component(route3, detaching);
+      if (detaching)
+        detach(t3);
+      destroy_component(route4, detaching);
+    }
+  };
+}
+function create_fragment23(ctx) {
+  let router;
+  let current;
+  router = new Router({
+    props: {
+      $$slots: {default: [create_default_slot3]},
+      $$scope: {ctx}
+    }
+  });
+  return {
+    c() {
+      create_component(router.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(router, target, anchor);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      const router_changes = {};
+      if (dirty & 2) {
+        router_changes.$$scope = {dirty, ctx: ctx2};
+      }
+      router.$set(router_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(router.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(router.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(router, detaching);
+    }
+  };
+}
+function instance21($$self, $$props, $$invalidate) {
+  let {location: location2} = $$props;
+  $$self.$$set = ($$props2) => {
+    if ("location" in $$props2)
+      $$invalidate(0, location2 = $$props2.location);
+  };
+  return [location2];
+}
+var Index = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance21, create_fragment23, safe_not_equal, {location: 0});
+  }
+};
+var Index_svelte_default = Index;
+
+// build/dist/LinksTable.svelte.js
+function create_fragment24(ctx) {
+  let indextable;
+  let current;
+  indextable = new IndexTable_svelte_default({props: {entries: ctx[0]}});
+  return {
+    c() {
+      create_component(indextable.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(indextable, target, anchor);
+      current = true;
+    },
+    p: noop,
+    i(local) {
+      if (current)
+        return;
+      transition_in(indextable.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(indextable.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(indextable, detaching);
+    }
+  };
+}
+function instance22($$self, $$props, $$invalidate) {
+  let {location: location2} = $$props;
+  let entries = [
+    {
+      link: "apps/stopwatch",
+      summary: "Stop Watch",
+      description: "Work in progress Stop watch for competetive test"
+    },
+    {
+      link: "beyond/spirograph",
+      summary: "Spirograph",
+      description: "Spirograph creates beautiful patterns"
+    },
+    {
+      link: "beyond/parametric-eq",
+      summary: "Line Animation",
+      description: "Line animations using parametric equations"
+    },
+    {
+      link: "math/fs",
+      summary: "Fourier Series ",
+      description: "Fourier series using spinning discs"
+    },
+    {
+      link: "svelte",
+      summary: "Svelte experiments",
+      description: "Tryout things ing svelte"
+    },
+    {
+      link: "ui/buttons",
+      summary: "Buttons UI",
+      description: "Test ui/button component"
+    },
+    {
+      link: "ui/toggles",
+      summary: "Toggle UI",
+      description: "Test ui/toggle component"
+    }
+  ];
+  $$self.$$set = ($$props2) => {
+    if ("location" in $$props2)
+      $$invalidate(1, location2 = $$props2.location);
+  };
+  return [entries, location2];
+}
+var LinksTable2 = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance22, create_fragment24, safe_not_equal, {location: 1});
+  }
+};
+var LinksTable_svelte_default2 = LinksTable2;
 
 // build/dist/App.svelte.js
-function create_default_slot3(ctx) {
+function create_default_slot4(ctx) {
   let nav;
   let t0;
   let div1;
@@ -20332,57 +21411,43 @@ function create_default_slot3(ctx) {
   let route7;
   let t8;
   let route8;
-  let t9;
-  let route9;
   let current;
   nav = new Nav_svelte_default({});
   route0 = new Route({
-    props: {path: "demo/2D", component: P2DTest_svelte_default}
-  });
-  route1 = new Route({
-    props: {path: "demo/3D", component: P3DTest_svelte_default}
-  });
-  route2 = new Route({
-    props: {
-      path: "beyond/spirograph",
-      component: Spirograph_svelte_default
-    }
-  });
-  route3 = new Route({
-    props: {
-      path: "beyond/parametric-eq",
-      component: ParametricEqLines_svelte_default
-    }
-  });
-  route4 = new Route({
     props: {
       path: "apps/stopwatch",
       component: TestTimer_svelte_default
     }
   });
-  route5 = new Route({
+  route1 = new Route({
     props: {
-      path: "demo/ui/buttons",
-      component: Buttons_svelte_default
+      path: "beyond/spirograph",
+      component: Spirograph_svelte_default
     }
   });
-  route6 = new Route({
+  route2 = new Route({
     props: {
-      path: "demo/ui/toggles",
-      component: Toggles_svelte_default
+      path: "beyond/parametric-eq",
+      component: ParametricEqLines_svelte_default
     }
   });
-  route7 = new Route({
-    props: {
-      path: "learn/svelte/store/timer",
-      component: Timer_svelte_default
-    }
-  });
-  route8 = new Route({
+  route3 = new Route({
     props: {path: "math/fs", component: FourierSeries_svelte_default}
   });
-  route9 = new Route({
-    props: {path: "/", component: LinksTable_svelte_default}
+  route4 = new Route({
+    props: {path: "math/fft", component: FourierTransform_svelte_default}
+  });
+  route5 = new Route({
+    props: {path: "ui/buttons", component: Buttons_svelte_default}
+  });
+  route6 = new Route({
+    props: {path: "ui/toggles", component: Toggles_svelte_default}
+  });
+  route7 = new Route({
+    props: {path: "svelte/*", component: Index_svelte_default}
+  });
+  route8 = new Route({
+    props: {path: "/", component: LinksTable_svelte_default2}
   });
   return {
     c() {
@@ -20407,8 +21472,6 @@ function create_default_slot3(ctx) {
       create_component(route7.$$.fragment);
       t8 = space();
       create_component(route8.$$.fragment);
-      t9 = space();
-      create_component(route9.$$.fragment);
       attr(div0, "class", "flex mt-6 flex-col mx-4");
       attr(div1, "class", "bg-gray-200 mt-14 w-screen h-screen flex flex-col");
     },
@@ -20434,8 +21497,6 @@ function create_default_slot3(ctx) {
       mount_component(route7, div0, null);
       append(div0, t8);
       mount_component(route8, div0, null);
-      append(div0, t9);
-      mount_component(route9, div0, null);
       current = true;
     },
     p: noop,
@@ -20452,7 +21513,6 @@ function create_default_slot3(ctx) {
       transition_in(route6.$$.fragment, local);
       transition_in(route7.$$.fragment, local);
       transition_in(route8.$$.fragment, local);
-      transition_in(route9.$$.fragment, local);
       current = true;
     },
     o(local) {
@@ -20466,7 +21526,6 @@ function create_default_slot3(ctx) {
       transition_out(route6.$$.fragment, local);
       transition_out(route7.$$.fragment, local);
       transition_out(route8.$$.fragment, local);
-      transition_out(route9.$$.fragment, local);
       current = false;
     },
     d(detaching) {
@@ -20484,17 +21543,16 @@ function create_default_slot3(ctx) {
       destroy_component(route6);
       destroy_component(route7);
       destroy_component(route8);
-      destroy_component(route9);
     }
   };
 }
-function create_fragment19(ctx) {
+function create_fragment25(ctx) {
   let router;
   let current;
   router = new Router({
     props: {
       url: ctx[0],
-      $$slots: {default: [create_default_slot3]},
+      $$slots: {default: [create_default_slot4]},
       $$scope: {ctx}
     }
   });
@@ -20530,7 +21588,7 @@ function create_fragment19(ctx) {
     }
   };
 }
-function instance17($$self, $$props, $$invalidate) {
+function instance23($$self, $$props, $$invalidate) {
   let {url = ""} = $$props;
   $$self.$$set = ($$props2) => {
     if ("url" in $$props2)
@@ -20541,7 +21599,7 @@ function instance17($$self, $$props, $$invalidate) {
 var App = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance17, create_fragment19, safe_not_equal, {url: 0});
+    init(this, options, instance23, create_fragment25, safe_not_equal, {url: 0});
   }
 };
 var App_svelte_default = App;
