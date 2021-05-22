@@ -9,8 +9,9 @@ export let location;
 
 let dt = 0.025;
 let r = 60.0;
-let numCircles = 4
+let numCircles = 25
 let t = 0.0;
+let graphX = r *2;
 
 let p5js: p5
 
@@ -25,6 +26,7 @@ let trace = []
 
 const reset = () => {
   t = 0.0;
+  graphX = r * 2
   graph = []
   trace = []
   p5js.redraw()
@@ -49,7 +51,7 @@ const sketch = (p: p5, el) => {
 
     p.noFill()
     p.strokeWeight(p.map(series, 1, numCircles*2+1, 4, 1))
-    p.stroke(22, 80 + series*15, 52 + series * 10, 180)
+    p.stroke(22, 80 + series*15, 52 + series * 10, 220)
 
     //  draw the circle
     const d = 2 * r
@@ -70,14 +72,14 @@ const sketch = (p: p5, el) => {
     return [px, py]
   }
 
-  let graphX = r * numCircles/2
+  graphX = r * 2
 
   p.draw = () => {
     p.background(0);
     t += dt
 
     // initial centre of the base circle
-    let cx = r * 3
+    let cx = r * 3.5
     let cy = p.height/2
 
     for(let i = 0; i < numCircles; i++) {
@@ -176,7 +178,7 @@ const sketch = (p: p5, el) => {
       <div class="table-row">
         <p class="table-cell w-12 font-mono text-right">circles: </p>
         <p class="table-cell w-24 truncate font-mono pl-2"> {numCircles} </p>
-        <input class="table-cell align-left" type=range min="1" max="10" bind:value={numCircles} >
+        <input class="table-cell align-left" type=range min="1" max="50" bind:value={numCircles} >
       </div>
     </div>
   </div>
