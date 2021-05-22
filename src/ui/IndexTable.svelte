@@ -18,11 +18,12 @@ const filter = () => {
     x => x.summary.toLowerCase().includes(txt) ||
       x.description.toLowerCase().includes(txt))
 }
+
 </script>
 
-<div class="bg-white shadow py-2 px-4 flex items-center">
-  <div>
-    <span class="w-auto flex justify-end items-center text-gray-600 p-2">
+<div class="pt-2 flex items-center relative">
+  <div class="absolute m-2">
+    <span class="w-auto items-center text-gray-500 ">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
         fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -30,10 +31,15 @@ const filter = () => {
       </svg>
     </span>
   </div>
+
   <div class="flex-grow">
     <input bind:value={search} on:input={filter}
-      class="min-w-full py-2 text-sm text-white bg-gray-600 rounded-md pl-10
-        focus:outline-none focus:bg-gray-100 focus:text-gray-800" type=text />
+      class="min-w-full py-2 text-sm
+      bg-gray-200 border-b-2 border-gray-400
+      text-white bg-gray-100 pl-12
+      focus:outline-none focus:bg-gray-100 focus:text-gray-800
+      focus:border-gray-500
+      " type=text />
   </div>
 </div>
 
