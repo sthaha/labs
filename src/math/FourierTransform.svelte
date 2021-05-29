@@ -84,18 +84,6 @@ const sketch = (p: p5, el) => {
 
   p5js = p;
 
-  const circle = (r: number) => {
-    const path = []
-    for (let angle = 0; angle <= p.TWO_PI; angle += p.TWO_PI/20) {
-      path.push({x: p.cos(angle) * r, y: p.sin(angle) * r })
-    }
-    return path
-  }
-
-  const sqWaveY = () => {
-    const r = [100, -100, 100, -100, 100, -100]
-    return r
-  }
 
   const dft = (signal: number[]) => {
     const N = signal.length
@@ -203,12 +191,14 @@ const sketch = (p: p5, el) => {
       return
     }
 
-    /* plot = circle(50) */
     const norm = normalize(plot)
-    /* console.log({norm}) */
 
     dftX = dft(norm.map(c => c.x))
+    dftX.sort((a, b) => b.amplitude - a.amplitude)
+
     dftY = dft(norm.map(c => c.y))
+    dftY.sort((a, b) => b.amplitude - a.amplitude)
+
     recompute = false
   }
 
@@ -288,6 +278,22 @@ const clearScribble = () => {
   refreshScribble = true
 }
 
+const circle = (p: p5,x: number, y: number, r: number) => {
+  const path = []
+  for (let angle = 0; angle <= p.TWO_PI * 1.01; angle += p.TWO_PI/50) {
+    path.push(new p.createVector(
+      x + r + p.cos(angle) * r,
+      y + r + p.sin(angle) * r
+    ))
+  }
+  return path
+}
+
+
+const setCircle = () => {
+  plot = circle(p5js, 10, 10, 80)
+  refreshScribble = true
+}
 
 const scribble = (p: p5, el) => {
 
@@ -343,8 +349,11 @@ const scribble = (p: p5, el) => {
     <Canvas height=200 sketch={scribble} />
   </div>
   <div class="flex flex-row m-4 gap-2">
-    <Button on:click={clearScribble}>
+    <Button class="bg-yellow-700" on:click={clearScribble}>
       <span slot="contents"> Clear </span>
+    </Button>
+    <Button on:click={setCircle}>
+      <span slot="contents"> Circle </span>
     </Button>
   </div>
 
@@ -369,10 +378,10 @@ const scribble = (p: p5, el) => {
   </div>
 
   <p class="bg-gray-600 text-gray-300 rounded p-2 justify-left my-2">
-    <em>Credits:</em> Used
+    <em>Credits:</em> Based on the
     <a target="_blank"
-      href="https://www.youtube.com/watch?v=Mm2eYfj0SgA"
-      class="text-yellow-400" > Coding Train Fourier Series </a> Tutorial as a
-    reference for the Fourier Series Equations  </p>
+      href="https://www.youtube.com/watch?v=MY4luNgGfms"
+      class="text-yellow-400" > Coding Train Fourier Transformation </a> Tutorial.
+  </p>
 
 </div>
