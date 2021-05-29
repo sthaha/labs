@@ -7,11 +7,7 @@ import Canvas from "../p5/Canvas.svelte";
 export let location;
 
 
-let dt = 0.025;
-let r = 60.0;
-let n = 4
 let t = 0.0;
-
 let p5js: p5
 
 let looping : boolean = true
@@ -31,9 +27,52 @@ const reset = () => {
 }
 
 
+
 const sketch = (p: p5, el) => {
 
-  p5js = p
+  p5js = p;
+
+  const circle = (r: number) => {
+    const path = []
+    for (let angle = 0; angle <= p.TWO_PI; angle += p.TWO_PI/20) {
+      path.push({x: p.cos(angle) * r, y: p.sin(angle) * r })
+    }
+    return path
+  }
+
+  const sqWaveY = () => {
+    const r = [100, -100, 100, -100, 100, -100]
+    return r
+  }
+
+  const dft = (signal: number[]) => {
+    const N = signal.length
+
+    const result = signal.map((x, k) => {
+
+      const sigma = signal.reduce((acc, x, n) => {
+        const theta = 2 * p.PI * k * n / N
+
+        const r = x * p.cos(theta)
+        const i = x * p.sin(theta)
+
+        return {real: acc.real  + r, img: acc.img - i}
+      }, {real:0, img: 0})
+
+
+      const real  = sigma.real / N
+      const img  = sigma.img / N
+
+      const frequency = k
+      const amplitude = p.sqrt(real * real + img * img)
+      const phase = p.atan2(img, real)
+
+      return {real, img, frequency, amplitude, phase }
+    })
+
+    console.log({signal, result})
+    return result
+  }
 
 
   const setup = () => {
@@ -45,87 +84,88 @@ const sketch = (p: p5, el) => {
   const onResize = ()=> {
   }
 
-  const update = ()=> {
-    t += dt
-  }
-
-
-
-  const circle = (cx, cy, r, t, series) => {
+  const epicycle = (x, y, t, freq, amp, phase) => {
 
     p.noFill()
-    p.strokeWeight(p.map(series, 1, n*2+1, 4, 1))
-    p.stroke(22, 80 + series*15, 52 + series * 10, 180)
+    p.strokeWeight(1) // todo
+    p.stroke(22, 80 + freq*15, 52 + freq * 10, 220)
 
-    const d = 2 * r
-    p.ellipse(cx, cy, d, d)
+    //  draw the circle
+    const d = 2 * amp
+    p.ellipse(x, y, d, d)
 
-    // point based on the rotation
-    const x = p.cos(t * series) * r +  cx
-    const y = p.sin(t * series) * r +  cy
+    // point based on the rotation (function of time) and the epicycle
+    const px = p.cos(t * freq + phase) * amp +  x
+    const py = p.sin(t * freq + phase) * amp +  y
 
 
-    p.stroke(22, 120 + series*15, 82 + series * 10, 230)
-    p.fill(22, 120 + series*15, 82 + series * 10, 230)
-    p.line(cx, cy, x, y)
-    p.ellipse(x, y, 2, 2)
+    p.stroke(22, 120 + freq*15, 82 + freq * 10, 230)
+    p.fill(22, 120 + freq*15, 82 + freq * 10, 230)
 
-    return [x, y]
+    // a line from the center to the point tracking the rotation
+    p.line(x, y, px, py)
+    p.ellipse(px, py, 2, 2)
+
+    return [px, py]
   }
 
-  let graphX = r * n/2
+  const circlePath = circle(100)
+  const dftX = dft(circlePath.map(c => c.x))
+  const dftY = dft(circlePath.map(c => c.y))
 
   p.draw = () => {
     p.background(0);
-    update()
 
-    p.noFill()
-    p.strokeWeight(2)
+    t += p.TWO_PI/dftX.length
 
-    let cx = r * 3
-    let cy = p.height/2
-    for(let i = 0; i < n; i++) {
-      const series = i * 2 + 1;
-      const cr = 4 / (series * p.PI) * r;
+    // initial centre of the base circle
+    let leftX = 100
+    let leftY = p.height/2
 
-      [cx, cy] = circle(cx, cy, cr, t, series)
 
-      graphX = p.max(cx, graphX)
+    // xs need to be phase shifted
+    for (const v of dftX) {
+      const { frequency, amplitude, phase }  = v;
+      [leftX, leftY] = epicycle(leftX, leftY, t, frequency, amplitude, phase + p.HALF_PI)
     }
 
-    if (t <= p.TWO_PI * 1.2){
-      trace.push({x: cx, y: cy})
+    // initial centre of the base circle
+    let topX = p.width * 0.3
+    let topY = 100
+    for (const v of dftY) {
+      const { frequency, amplitude, phase }  = v;
+      [topX, topY] = epicycle(topX, topY, t, frequency, amplitude, phase)
     }
 
-    p.noFill()
-    p.strokeWeight(2)
-    p.stroke(122, 180, 220,  120)
+    // todo trace the points around the circle
 
-    p.beginShape()
-    for (const pt of trace) {
-      p.vertex(pt.x, pt.y)
-    }
-    p.endShape()
-
-    const lastY = graphX[0]
-
-    if (lastY != p.round(cy)){
-      graph.unshift(p.round(cy))
-      if (graph.length > p.width * 1.5) {
-        graph = graph.slice(0, p.width - graphX)
+    // push to the graph
+    if (t <= p.TWO_PI * 1.1){
+      const last = graph[0]
+      const x = p.round(topX)
+      const y = p.round(leftY)
+      if (!last || last.x != x || last.y != y){
+        graph.unshift({x: p.round(topX), y: p.round(leftY)})
       }
     }
 
-    p.line(cx, cy, graphX+50, graph[0])
-    p.ellipse(graphX+50, graph[0], 2, 2)
+    const numCircles = dftX.length
 
-    p.strokeWeight(3)
-    p.stroke(22, 120 + n*15, 82 + n*10)
+    p.line(leftX, leftY, topX, leftY)
+    p.line(topX,  topY, topX, leftY)
 
+    /* p.stroke(200) */
+    /* p.fill(200) */
+    /* p.ellipse(leftX, graph[0], 4, 4) */
+
+    p.strokeWeight(2)
+    p.stroke(200, 200, 200)
+    p.noFill()
 
     p.beginShape()
-    for (let i = 0; i <= graph.length; i++) {
-      p.vertex(graphX + 50 + i, graph[i])
+    for (const g of  graph) {
+      console.log(g.x, g.y)
+      p.vertex(g.x, g.y)
     }
     p.endShape()
 
@@ -163,21 +203,6 @@ const sketch = (p: p5, el) => {
 
   <div class="table w-full">
     <div class="table-row-group">
-      <div class="table-row">
-        <p class="table-cell w-12 font-mono text-right">radius: </p>
-        <p class="table-cell w-24 truncate font-mono pl-2"> {r} </p>
-        <input class="table-cell align-left" type=range min="10" max=80 bind:value={r} >
-      </div>
-      <div class="table-row">
-        <p class="table-cell w-12 font-mono text-right">speed: </p>
-        <p class="table-cell w-24 truncate font-mono pl-2"> {dt} </p>
-        <input class="table-cell align-left" type=range min="0.01" max="0.1" step="0.001" bind:value={dt} >
-      </div>
-      <div class="table-row">
-        <p class="table-cell w-12 font-mono text-right">iterations: </p>
-        <p class="table-cell w-24 truncate font-mono pl-2"> {n} </p>
-        <input class="table-cell align-left" type=range min="1" max="10" bind:value={n} >
-      </div>
     </div>
   </div>
 
