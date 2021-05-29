@@ -13,11 +13,8 @@ import Spirograph from "./beyond/Spirograph.svelte";
 import FS from "./math/FourierSeries.svelte";
 import FFT from "./math/FourierTransform.svelte";
 
-import Buttons from "./ui-demo/Buttons.svelte";
-import Toggles from "./ui-demo/Toggles.svelte";
-
 import SvelteIndex from "./svelte/Index.svelte";
-
+import UIDemo from "./ui-demo/Index.svelte";
 
 import LinksTable from './LinksTable.svelte';
 
@@ -37,9 +34,7 @@ export let url = "";
       <Route path="math/fs" component="{FS}" />
       <Route path="math/fft" component="{FFT}" />
 
-      <Route path="ui/buttons" component="{Buttons}" />
-      <Route path="ui/toggles" component="{Toggles}" />
-
+      <Route path="ui/*" component="{UIDemo}" />
       <Route path="svelte/*" component="{SvelteIndex}" />
 
       <Route path="/" component="{LinksTable}" />

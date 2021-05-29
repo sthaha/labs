@@ -11,8 +11,7 @@ let entries = [
   {link: "math/fs", summary: "Fourier Series ", description: "Fourier series using spinning discs"},
   /* {link: "math/fft", summary: "Discrete Fourier Transform ", description: ""}, */
   {link: "svelte", summary: "Svelte experiments", description: "Tryout things ing svelte"},
-  {link: "ui/buttons", summary: "Buttons UI", description: "Test ui/button component"},
-  {link: "ui/toggles", summary: "Toggle UI", description: "Test ui/toggle component"},
+  {link: "ui", summary: "UI components", description: "UI components used in the lab"},
 ]
 </script>
 
