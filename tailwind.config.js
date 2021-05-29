@@ -1,6 +1,6 @@
 const purge = {
-  content: ['./src/**/*.svelte', './public/*.html'],
-  enabled: false, // process.env.ROLLUP_WATCH,
+  content: ['./public/**/*.html', './src/**/*.svelte'],
+  enabled: true, // process.env.ROLLUP_WATCH,
   mode: 'all',
   options: {
     whitelistPatterns: [/svelte-/],
@@ -11,6 +11,7 @@ const purge = {
 }
 
 module.exports = {
+  mode: 'jit',
   purge,
   future: {
     removeDeprecatedGapUtilities: true,
@@ -40,4 +41,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};

@@ -2,13 +2,13 @@
 module.exports = {
   mount: {
     public: {url: '/', static: true},
-    src: {url: '/dist'},
+    src: {url: '/_dist'},
   },
   plugins: [
-    '@snowpack/plugin-postcss',
     '@snowpack/plugin-svelte',
-    '@snowpack/plugin-dotenv',
     '@snowpack/plugin-typescript',
+    '@snowpack/plugin-postcss',
+    '@snowpack/plugin-dotenv',
     '@snowpack/plugin-optimize',
   ],
   routes: [
@@ -23,7 +23,7 @@ module.exports = {
     /* ... */
   },
   devOptions: {
-    /* ... */
+    tailwindConfig: './tailwind.config.js',
   },
   buildOptions: {
     /* ... */
