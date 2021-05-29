@@ -25,7 +25,8 @@ let entries = [
   {link: "beyond/spirograph", summary: "Spirograph", description: "Spirograph creates beautiful patterns"},
   {link: "beyond/parametric-eq", summary: "Line Animation", description: "Line animations using parametric equations"},
   {link: "math/fs", summary: "Fourier Series ", description: "Fourier series using spinning discs"},
-  /* {link: "math/fft", summary: "Discrete Fourier Transform ", description: ""}, */
+  {link: "math/fft", summary: "Discrete Fourier Transform ",
+    description: "Plot your drawing into spinning discs "},
   {link: "svelte", summary: "Svelte experiments", description: "Tryout things ing svelte"},
   {link: "ui", summary: "UI components", description: "UI components used in the lab"},
 ]

@@ -16,104 +16,48 @@ const toggleLoop = () => {
   looping = !looping
 }
 
-let plot = [
-    { x: 62, y: 139 }, { x: 61, y: 120 }, { x: 56, y: 99 }, { x: 55, y: 93 },
-    { x: 54, y: 83 }, { x: 54, y: 75 }, { x: 54, y: 74 }, { x: 54, y: 67 },
-    { x: 54, y: 65 }, { x: 54, y: 64 }, { x: 54, y: 61 }, { x: 54, y: 60 },
-    { x: 54, y: 58 }, { x: 54, y: 55 }, { x: 54, y: 54 }, { x: 54, y: 52 },
-    { x: 54, y: 51 }, { x: 54, y: 50 }, { x: 55, y: 49 }, { x: 56, y: 49 },
-    { x: 57, y: 49 }, { x: 58, y: 49 }, { x: 59, y: 49 }, { x: 60, y: 49 },
-    { x: 65, y: 53 }, { x: 66, y: 53 }, { x: 66, y: 54 }, { x: 66, y: 55 },
-    { x: 65, y: 60 }, { x: 61, y: 61 }, { x: 55, y: 58 }, { x: 53, y: 52 },
-    { x: 54, y: 52 }, { x: 60, y: 53 }, { x: 83, y: 67 }, { x: 84, y: 67 },
-    { x: 114, y: 74 }, { x: 117, y: 75 }, { x: 160, y: 80 }, { x: 161, y: 80 },
-    { x: 162, y: 80 }, { x: 170, y: 82 }, { x: 171, y: 82 }, { x: 173, y: 83 },
-    { x: 174, y: 83 }, { x: 173, y: 83 }, { x: 171, y: 83 }, { x: 156, y: 83 },
-    { x: 125, y: 93 }, { x: 123, y: 94 }, { x: 122, y: 95 }, { x: 120, y: 96 },
-    { x: 119, y: 97 }, { x: 117, y: 98 }, { x: 116, y: 99 }, { x: 114, y: 99 },
-    { x: 113, y: 101 }, { x: 111, y: 101 }, { x: 110, y: 102 }, { x: 109, y: 103 },
-    { x: 86, y: 116 }, { x: 84, y: 117 }, { x: 76, y: 123 }, { x: 75, y: 124 },
-    { x: 74, y: 125 }, { x: 73, y: 125 }, { x: 73, y: 126 }, { x: 72, y: 126 },
-    { x: 71, y: 126 }, { x: 71, y: 127 }, { x: 70, y: 127 }, { x: 70, y: 128 },
-    { x: 67, y: 130 }, { x: 65, y: 133 }, { x: 63, y: 136 }, { x: 62, y: 138 },
-    { x: 62, y: 139 }, { x: 62, y: 138 }
+const vec = (x, y) => new p5.Vector(x, y)
 
-  //  { x: 100, y: 156 }, { x: 99, y: 155 }, { x: 98, y: 152 },
-  //  { x: 96, y: 150 }, { x: 95, y: 147 }, { x: 93, y: 143 },
-  //  { x: 87, y: 132 }, { x: 85, y: 129 }, { x: 81, y: 122 },
-  //  { x: 80, y: 119 }, { x: 79, y: 117 }, { x: 77, y: 115 },
-  //  { x: 76, y: 113 }, { x: 74, y: 111 }, { x: 72, y: 106 },
-  //  { x: 71, y: 105 }, { x: 70, y: 103 }, { x: 69, y: 101 },
-  //  { x: 68, y: 100 }, { x: 67, y: 98 }, { x: 66, y: 96 },
-  //  { x: 64, y: 91 }, { x: 63, y: 90 }, { x: 61, y: 86 },
-  //  { x: 61, y: 85 }, { x: 60, y: 84 }, { x: 60, y: 83 },
-  //  { x: 60, y: 82 }, { x: 59, y: 82 }, { x: 59, y: 81 },
-  //  { x: 59, y: 80 }, { x: 59, y: 81 }, { x: 60, y: 81 },
-  //  { x: 60, y: 82 }, { x: 61, y: 82 }, { x: 62, y: 82 },
-  //  { x: 62, y: 83 }, { x: 64, y: 84 }, { x: 65, y: 84 },
-  //  { x: 66, y: 85 }, { x: 67, y: 86 }, { x: 69, y: 87 },
-  //  { x: 70, y: 88 }, { x: 72, y: 89 }, { x: 74, y: 91 },
-  //  { x: 76, y: 92 }, { x: 77, y: 92 }, { x: 78, y: 93 },
-  //  { x: 79, y: 93 }, { x: 80, y: 94 }, { x: 81, y: 94 },
-  //  { x: 82, y: 95 }, { x: 85, y: 96 }, { x: 86, y: 96 },
-  //  { x: 87, y: 97 }, { x: 88, y: 97 }, { x: 89, y: 98 },
-  //  { x: 91, y: 99 }, { x: 93, y: 100 }, { x: 94, y: 101 },
-  //  { x: 98, y: 103 }, { x: 102, y: 105 }, { x: 104, y: 107 },
-  //  { x: 106, y: 108 }, { x: 107, y: 109 }, { x: 109, y: 111 },
-  //  { x: 111, y: 112 }, { x: 112, y: 114 }, { x: 115, y: 116 },
-  //  { x: 116, y: 117 }, { x: 117, y: 118 }, { x: 119, y: 120 },
-  //  { x: 120, y: 121 }, { x: 122, y: 122 }, { x: 123, y: 123 },
-  //  { x: 124, y: 125 }, { x: 126, y: 126 }, { x: 127, y: 127 },
-  //  { x: 128, y: 128 }, { x: 131, y: 130 }, { x: 132, y: 131 },
-  //  { x: 133, y: 131 }, { x: 133, y: 132 }, { x: 134, y: 132 },
-  //  { x: 134, y: 133 }, { x: 135, y: 133 }, { x: 134, y: 133 },
-  //  { x: 132, y: 133 }, { x: 131, y: 133 }, { x: 128, y: 133 },
-  //  { x: 125, y: 133 }, { x: 122, y: 133 }, { x: 119, y: 133 },
-  //  { x: 112, y: 132 }, { x: 109, y: 132 }, { x: 101, y: 131 },
-  //  { x: 99, y: 130 }, { x: 96, y: 130 }, { x: 93, y: 129 },
-  //  { x: 91, y: 129 }, { x: 86, y: 127 }, { x: 85, y: 126 },
-  //  { x: 82, y: 126 }, { x: 77, y: 123 }, { x: 74, y: 122 },
-  //  { x: 73, y: 122 }, { x: 71, y: 121 }, { x: 69, y: 120 },
-  //  { x: 68, y: 119 }, { x: 67, y: 119 }, { x: 65, y: 118 },
-  //  { x: 64, y: 118 }, { x: 63, y: 118 }, { x: 62, y: 118 },
-  //  { x: 61, y: 118 }, { x: 59, y: 118 }, { x: 58, y: 118 },
-  //  { x: 56, y: 118 }, { x: 55, y: 118 }, { x: 54, y: 118 },
-  //  { x: 52, y: 118 }, { x: 51, y: 118 }, { x: 50, y: 118 },
-  //  { x: 49, y: 118 }, { x: 48, y: 118 }, { x: 47, y: 118 },
-  //  { x: 46, y: 118 }, { x: 47, y: 118 }, { x: 48, y: 117 },
-  //  { x: 49, y: 117 }, { x: 50, y: 116 }, { x: 52, y: 115 },
-  //  { x: 54, y: 114 }, { x: 57, y: 113 }, { x: 60, y: 111 },
-  //  { x: 63, y: 109 }, { x: 66, y: 107 }, { x: 70, y: 105 },
-  //  { x: 74, y: 101 }, { x: 81, y: 97 }, { x: 85, y: 93 },
-  //  { x: 86, y: 92 }, { x: 88, y: 90 }, { x: 90, y: 88 },
-  //  { x: 93, y: 84 }, { x: 94, y: 83 }, { x: 96, y: 81 },
-  //  { x: 99, y: 78 }, { x: 100, y: 76 }, { x: 103, y: 71 },
-  //  { x: 104, y: 69 }, { x: 105, y: 68 }, { x: 105, y: 67 },
-  //  { x: 106, y: 66 }, { x: 107, y: 65 }, { x: 107, y: 64 },
-  //  { x: 108, y: 63 }, { x: 108, y: 62 }, { x: 109, y: 61 },
-  //  { x: 110, y: 61 }, { x: 111, y: 61 }, { x: 111, y: 62 },
-  //  { x: 111, y: 63 }, { x: 111, y: 64 }, { x: 111, y: 65 },
-  //  { x: 111, y: 67 }, { x: 111, y: 68 }, { x: 111, y: 70 },
-  //  { x: 111, y: 72 }, { x: 109, y: 77 }, { x: 108, y: 81 },
-  //  { x: 107, y: 83 }, { x: 106, y: 86 }, { x: 106, y: 87 },
-  //  { x: 105, y: 90 }, { x: 105, y: 92 }, { x: 104, y: 93 },
-  //  { x: 104, y: 95 }, { x: 104, y: 97 }, { x: 103, y: 103 },
-  //  { x: 103, y: 104 }, { x: 103, y: 105 }, { x: 103, y: 106 },
-  //  { x: 103, y: 107 }, { x: 102, y: 110 }, { x: 102, y: 111 },
-  //  { x: 102, y: 112 }, { x: 102, y: 115 }, { x: 102, y: 116 },
-  //  { x: 102, y: 117 }, { x: 101, y: 120 }, { x: 101, y: 121 },
-  //  { x: 101, y: 122 }, { x: 101, y: 124 }, { x: 100, y: 125 },
-  //  { x: 100, y: 126 }, { x: 100, y: 127 }, { x: 100, y: 128 },
-  //  { x: 100, y: 129 }, { x: 100, y: 130 }, { x: 99, y: 130 },
-  //  { x: 99, y: 131 }, { x: 99, y: 133 }, { x: 99, y: 134 },
-  //  { x: 99, y: 135 }, { x: 99, y: 136 }, { x: 98, y: 138 },
-  //  { x: 98, y: 139 }, { x: 98, y: 140 }, { x: 98, y: 141 },
-  //  { x: 98, y: 142 }, { x: 98, y: 144 }, { x: 98, y: 148 },
-  //  { x: 98, y: 149 }, { x: 98, y: 150 }, { x: 98, y: 151 },
-  //  { x: 98, y: 152 }, { x: 98, y: 153 }, { x: 98, y: 154 },
-  //  { x: 98, y: 155 }, { x: 97, y: 156 }, { x: 97, y: 158 },
-  //  { x: 97, y: 159 }, { x: 96, y: 160 }, { x: 96, y: 161 },
-  //  { x: 96, y: 162 }, { x: 96, y: 161 }, { x: 96, y: 160 }
+let plot = [
+  vec( 100, 156 ), vec( 99, 155 ), vec( 98, 152 ), vec( 96, 150 ),
+  vec( 95, 147 ), vec( 93, 143 ), vec( 87, 132 ), vec( 85, 129 ), vec( 81, 122 ),
+  vec( 80, 119 ), vec( 79, 117 ), vec( 77, 115 ), vec( 76, 113 ), vec( 74, 111 ), vec( 72, 106 ),
+  vec( 71, 105 ), vec( 70, 103 ), vec( 69, 101 ), vec( 68, 100 ), vec( 67, 98 ), vec( 66, 96 ),
+  vec( 64, 91 ), vec( 63, 90 ), vec( 61, 86 ), vec( 61, 85 ), vec( 60, 84 ), vec( 60, 83 ),
+  vec( 60, 82 ), vec( 59, 82 ), vec( 59, 81 ), vec( 59, 80 ), vec( 59, 81 ), vec( 60, 81 ),
+  vec( 60, 82 ), vec( 61, 82 ), vec( 62, 82 ), vec( 62, 83 ), vec( 64, 84 ), vec( 65, 84 ),
+  vec( 66, 85 ), vec( 67, 86 ), vec( 69, 87 ), vec( 70, 88 ), vec( 72, 89 ), vec( 74, 91 ),
+  vec( 76, 92 ), vec( 77, 92 ), vec( 78, 93 ), vec( 79, 93 ), vec( 80, 94 ), vec( 81, 94 ),
+  vec( 82, 95 ), vec( 85, 96 ), vec( 86, 96 ), vec( 87, 97 ), vec( 88, 97 ), vec( 89, 98 ),
+  vec( 91, 99 ), vec( 93, 100 ), vec( 94, 101 ), vec( 98, 103 ), vec( 102, 105 ), vec( 104, 107 ),
+  vec( 106, 108 ), vec( 107, 109 ), vec( 109, 111 ), vec( 111, 112 ), vec( 112, 114 ), vec( 115, 116 ),
+  vec( 116, 117 ), vec( 117, 118 ), vec( 119, 120 ), vec( 120, 121 ), vec( 122, 122 ), vec( 123, 123 ),
+  vec( 124, 125 ), vec( 126, 126 ), vec( 127, 127 ), vec( 128, 128 ), vec( 131, 130 ), vec( 132, 131 ),
+  vec( 133, 131 ), vec( 133, 132 ), vec( 134, 132 ), vec( 134, 133 ), vec( 135, 133 ), vec( 134, 133 ),
+  vec( 132, 133 ), vec( 131, 133 ), vec( 128, 133 ), vec( 125, 133 ), vec( 122, 133 ), vec( 119, 133 ),
+  vec( 112, 132 ), vec( 109, 132 ), vec( 101, 131 ), vec( 99, 130 ), vec( 96, 130 ), vec( 93, 129 ),
+  vec( 91, 129 ), vec( 86, 127 ), vec( 85, 126 ), vec( 82, 126 ), vec( 77, 123 ), vec( 74, 122 ),
+  vec( 73, 122 ), vec( 71, 121 ), vec( 69, 120 ), vec( 68, 119 ), vec( 67, 119 ), vec( 65, 118 ),
+  vec( 64, 118 ), vec( 63, 118 ), vec( 62, 118 ), vec( 61, 118 ), vec( 59, 118 ), vec( 58, 118 ),
+  vec( 56, 118 ), vec( 55, 118 ), vec( 54, 118 ), vec( 52, 118 ), vec( 51, 118 ), vec( 50, 118 ),
+  vec( 49, 118 ), vec( 48, 118 ), vec( 47, 118 ), vec( 46, 118 ), vec( 47, 118 ), vec( 48, 117 ),
+  vec( 49, 117 ), vec( 50, 116 ), vec( 52, 115 ), vec( 54, 114 ), vec( 57, 113 ), vec( 60, 111 ),
+  vec( 63, 109 ), vec( 66, 107 ), vec( 70, 105 ), vec( 74, 101 ), vec( 81, 97 ), vec( 85, 93 ),
+  vec( 86, 92 ), vec( 88, 90 ), vec( 90, 88 ), vec( 93, 84 ), vec( 94, 83 ), vec( 96, 81 ),
+  vec( 99, 78 ), vec( 100, 76 ), vec( 103, 71 ), vec( 104, 69 ), vec( 105, 68 ), vec( 105, 67 ),
+  vec( 106, 66 ), vec( 107, 65 ), vec( 107, 64 ), vec( 108, 63 ), vec( 108, 62 ), vec( 109, 61 ),
+  vec( 110, 61 ), vec( 111, 61 ), vec( 111, 62 ), vec( 111, 63 ), vec( 111, 64 ), vec( 111, 65 ),
+  vec( 111, 67 ), vec( 111, 68 ), vec( 111, 70 ), vec( 111, 72 ), vec( 109, 77 ), vec( 108, 81 ),
+  vec( 107, 83 ), vec( 106, 86 ), vec( 106, 87 ), vec( 105, 90 ), vec( 105, 92 ), vec( 104, 93 ),
+  vec( 104, 95 ), vec( 104, 97 ), vec( 103, 103 ), vec( 103, 104 ), vec( 103, 105 ), vec( 103, 106 ),
+  vec( 103, 107 ), vec( 102, 110 ), vec( 102, 111 ), vec( 102, 112 ), vec( 102, 115 ), vec( 102, 116 ),
+  vec( 102, 117 ), vec( 101, 120 ), vec( 101, 121 ), vec( 101, 122 ), vec( 101, 124 ), vec( 100, 125 ),
+  vec( 100, 126 ), vec( 100, 127 ), vec( 100, 128 ), vec( 100, 129 ), vec( 100, 130 ), vec( 99, 130 ),
+  vec( 99, 131 ), vec( 99, 133 ), vec( 99, 134 ), vec( 99, 135 ), vec( 99, 136 ), vec( 98, 138 ),
+  vec( 98, 139 ), vec( 98, 140 ), vec( 98, 141 ), vec( 98, 142 ), vec( 98, 144 ), vec( 98, 148 ),
+  vec( 98, 149 ), vec( 98, 150 ), vec( 98, 151 ), vec( 98, 152 ), vec( 98, 153 ), vec( 98, 154 ),
+  vec( 98, 155 ), vec( 97, 156 ), vec( 97, 158 ), vec( 97, 159 ), vec( 96, 160 ), vec( 96, 161 ),
+  vec( 96, 162 ), vec( 96, 161 ), vec( 96, 160 )
 ]
 
 let recompute = true
@@ -124,10 +68,11 @@ let trace = []
 
 const reset = () => {
   t = 0.0;
-  plot = []
-  recompute = true
 
+  graph = [];
+  recompute = true
   trace = []
+
   p5js.redraw()
 }
 
@@ -174,7 +119,7 @@ const sketch = (p: p5, el) => {
       const amplitude = p.sqrt(real * real + img * img)
       const phase = p.atan2(img, real)
 
-      return {real, img, frequency, amplitude, phase }
+      return {frequency, amplitude, phase }
     })
 
     return result
@@ -193,7 +138,7 @@ const sketch = (p: p5, el) => {
   const epicycle = (x, y, t, freq, amp, phase) => {
 
     p.noFill()
-    p.strokeWeight(1) // todo
+    p.strokeWeight(2) // todo
     p.stroke(22, 80 + freq*15, 52 + freq * 10, 220)
 
     //  draw the circle
@@ -215,63 +160,103 @@ const sketch = (p: p5, el) => {
     return [px, py]
   }
 
+  const normalize =(points) => {
+    // find the left, top, right, bottom points
+
+    let left = points[0]
+    let top = points[0]
+    let bottom = points[0]
+    let right = points[0]
+
+    for (const pt of points) {
+      if (pt.x < left.x){
+        left = pt
+      }
+      if (pt.x > right.x){
+        right = pt
+      }
+      if (pt.y < top.y){
+        top = pt
+      }
+      if (pt.y > bottom.y){
+        bottom = pt
+      }
+    }
+
+    const shiftX = (right.x - left.x) /2
+    const shiftY = (bottom.y - top.y) /2
+    /* console.log({top, bottom, shiftY}) */
+    /* console.log({left, right, shiftX}) */
+
+    const tv = p.createVector(-shiftX, -shiftY)
+
+    return points.map(v => {
+      v = v.copy()
+      v.add(tv)
+      v.rotate(-p.PI/2)
+      return v
+    })
+  }
+
   const computeDFT = () => {
     if (!recompute){
       return
     }
 
-    dftX = dft(plot.map(c => c.x))
-    dftY = dft(plot.map(c => c.y))
+    /* plot = circle(50) */
+    const norm = normalize(plot)
+    /* console.log({norm}) */
+
+    dftX = dft(norm.map(c => c.x))
+    dftY = dft(norm.map(c => c.y))
     recompute = false
   }
 
   p.draw = () => {
     p.background(0);
-    if (plot.length == 0)
+    if (plot.length == 0){
       return
+    }
 
     computeDFT()
     t += p.TWO_PI/dftX.length
 
-    // initial centre of the base circle
-    let leftX = 100
-    let leftY = p.height/2
+    let leftX = p.width/2
+    let leftY = 100
 
-
-    // xs need to be phase shifted
-    for (const v of dftX) {
+    for (const v of dftY) {
       const { frequency, amplitude, phase }  = v;
-      [leftX, leftY] = epicycle(leftX, leftY, t, frequency, amplitude, phase + p.HALF_PI)
+      [leftX, leftY] = epicycle(leftX, leftY, t, frequency, amplitude, phase - p.PI)
     }
 
     // initial centre of the base circle
-    let topX = p.width * 0.3
-    let topY = 100
-    for (const v of dftY) {
+    let topX = 100
+    let topY = p.height/2
+    for (const v of dftX) {
       const { frequency, amplitude, phase }  = v;
-      [topX, topY] = epicycle(topX, topY, t, frequency, amplitude, phase)
+      [topX, topY] = epicycle(topX, topY, t, frequency, amplitude, phase + p.HALF_PI)
     }
 
     // todo trace the points around the circle
 
     // push to the graph
-    if (t <= p.TWO_PI * 1.1){
-      const last = graph[0]
-      const x = p.round(topX)
-      const y = p.round(leftY)
+    if (t <= p.TWO_PI * 1.05){
+      const last = graph[graph.lenth-1]
+      const x = p.round(leftX)
+      const y = p.round(topY)
       if (!last || last.x != x || last.y != y){
-        graph.unshift({x: p.round(topX), y: p.round(leftY)})
+        graph.push({x, y})
       }
     }
 
     const numCircles = dftX.length
 
-    p.line(leftX, leftY, topX, leftY)
-    p.line(topX,  topY, topX, leftY)
+    p.line(leftX, leftY, leftX, topY)
+    p.line(topX, topY, leftX, topY)
 
-    /* p.stroke(200) */
-    /* p.fill(200) */
-    /* p.ellipse(leftX, graph[0], 4, 4) */
+    p.stroke(200)
+    p.fill(200)
+    p.ellipse(leftX, topY, 4, 4)
 
     p.strokeWeight(2)
     p.stroke(200, 200, 200)
@@ -326,7 +311,7 @@ const scribble = (p: p5, el) => {
       return
     }
 
-    plot.push({x,y})
+    plot.push(p.createVector(x, y))
     refreshScribble = true
     return false
 
@@ -338,7 +323,7 @@ const scribble = (p: p5, el) => {
     }
     refreshScribble = false
 
-    console.log({plot})
+    /* console.log({plot}) */
     p.background(40)
     p.beginShape()
     for (const pt of  plot) {
