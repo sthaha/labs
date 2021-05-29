@@ -52,7 +52,8 @@ const download = () => {
       ].join(",")
     ).join("\n")
 
-  exportCSV(taskName || "test-time.csv", data)
+  const now = new Date()
+  exportCSV(taskName || `timesheet-${now.toISOString()}.csv`, data)
 }
 
 
