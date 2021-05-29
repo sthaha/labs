@@ -7,14 +7,14 @@
     },
     "/index.html": {
       "entry": [
-        "/dist/index.js"
+        "/_dist/index.js"
       ],
       "css": [
-        "/dist/index.css",
+        "/_dist/index.css",
         "/favicon.ico"
       ],
       "js": [
-        "/dist/index.js"
+        "/_dist/index.js"
       ]
     }
   },
