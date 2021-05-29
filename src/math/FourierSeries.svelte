@@ -82,7 +82,7 @@ const sketch = (p: p5, el) => {
     let cx = r * 3.5
     let cy = p.height/2
 
-    for(let i = 0; i < numCircles; i++) {
+    for (let i = 0; i < numCircles; i++) {
       const series = i * 2 + 1; // 1, 3, 5, 7 ..
       const cr = 4 * r / (series * p.PI);
       [cx, cy] = epicycle(cx, cy, cr, t, series)
