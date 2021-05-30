@@ -25,14 +25,19 @@ const sketch = (p: p5, el) => {
   const y2 = (t: number) => p.cos(t/2) * 20 + p.sin(t/7) * 75;
 
   let hue = 0
-  const h = (t: number) => hue++ % 256
+  const dAngle = p.TWO_PI/256
+  const h = (t: number) => {
+    hue = (hue + dAngle) % p.TWO_PI;
+    return ((p.sin(hue) + 1) * 128).toFixed()
+  }
+  /* const h = (t: number) => hue++ % 256 */
   // const h = (t: number) =>  p.map(p.sin(t/8), -1, 1, 0, 255);
 
   let t = 0
   p.draw = () => {
     p.translate(p.width/2, p.height/2)
 
-    p.background(0)
+    p.background(5)
     p.stroke(h(t), 80, 80, 20)
 
     // p.point(x1(t), y1(t))
