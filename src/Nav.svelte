@@ -25,7 +25,7 @@
     <div class="ml-auto w-12 h-12 flex justify-center items-center
       rounded-full bg-gray-900 hover:bg-gray-700 hover:text-gray-100
       hover:ring-4 hover:ring-green-500">
-      <a href=https://github.com/sthaha/svelte-ts-p5-js target="_blank">
+      <a href=https://github.com/sthaha/labs target="_blank">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
         </svg>
