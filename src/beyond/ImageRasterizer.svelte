@@ -10,7 +10,11 @@ let lines = 12
 
 const sketch = (p: p5, el) => {
 
+  let processed : () => {}
+
   let img: p5.Image
+  let xTiles = 0
+  let yTiles = 0
 
   const setup = () => {
     p.background(0)
@@ -18,50 +22,108 @@ const sketch = (p: p5, el) => {
     p.fill("black");
 
     const loc = 'http://192.168.2.10:5000/foobar.png'
+    processed = rasterizeImage(loc)
 
-    img = p.loadImage(loc);
-    console.log(img.width, img.height)
   }
 
 
-  let t = 0
-  let tileSize  = 8
-  let dotSize  = 4
-  p.draw = () => {
-    p.background(255)
-    p.noStroke()
-    p.fill("black")
-    img.resize(p.width, p.height)
-    /* console.log("draw: ", img.width, img.height) */
 
+  let loaded = false;
+  const rasterized = []
 
-    /* p.translate(-p.width/2, -p.height/2) */
-
-    const c = img.get(p.mouseX, p.mouseY)
-    p.fill(c)
-    const b = p.brightness(c)
-    /* console.log({c, b: p.brightness(c)}) */
-    p.ellipse(p.width/2, p.height/2, 18, 18)
-
-    const xTiles = img.width/tileSize
-    const yTiles = img.height/tileSize
-
-
-    for (let y =0; y < yTiles; y++) {
-      const iy = y * tileSize
-
-      for (let x =0; x < xTiles; x++) {
+  const rasterizeImage = (loc) => {
+    const rasterizeRow = (r, x, size) => {
+      const limit = p.min(x+size, xTiles)
+      if (x == 0) {
+        rasterized[y] = []
+      }
+      for ( ;x < limit; x++) {
         const ix = x * tileSize
+        const iy = r * tileSize
+
         const clr = img.get(ix, iy)
         const b = p.brightness(clr)
+        const sz = p.map(b, 15, 80, 1.0, 0.0) * dotSize
 
-        const sz = p.map(b, 5, 80, 1.0, 0.0) * dotSize
-        p.fill(clr)
-        p.ellipse(ix, iy, sz)
+        rasterized[y][x] = {b, sz, clr}
       }
+      return limit == xTiles ? [r+1, 0] : [r, limit]
+    }
+
+    let y = 0;
+    let x = 0;
+    let step = 0;
+    let done = false;
+
+    return () => {
+      if (done) {
+        return true
+      }
+
+      switch (step++) {
+        case 0:
+          img = p.loadImage(loc, () => loaded=true);
+          return false
+
+        case 1:
+          if(!loaded){
+            step = 1;
+            return false
+          }
+          img.resize(500, 500)
+          return false
+
+        case 2:
+          yTiles = img.height/tileSize
+          xTiles = img.width/tileSize
+          return false
+
+        default:
+          if (y < yTiles){
+            [y, x] = rasterizeRow(y, x, 30)
+            return false
+          }
+        done = true
+        return true
+      }
+
+    }
+  }
+
+  let t = 0
+  let tileSize  = 8
+  let dotSize  = 5
+
+  p.draw = () => {
+    p.background(255)
+    if (!processed()) {
+
+      if (loaded) {
+        p.image(img, 0, 0)
+        const c = img.get(p.mouseX, p.mouseY)
+        p.fill(c)
+        const b = p.brightness(c)
+        /* console.log({c, b: p.brightness(c)}) */
+        p.ellipse(p.width/2, p.height/2, 18, 18)
+      }
+      /* p.text("Processing ...", p.width/2, p.height/2) */
+      return
     }
     p.fill("black")
-    p.text(`${xTiles} x ${yTiles}: ${c}, ${b}`, 100, 100)
+    if (t == 0){
+      console.log(rasterized)
+      t++
+    }
+
+    for (let y = 0; y < yTiles; y++){
+      const iy = y * tileSize
+
+      for (let x = 0; x < xTiles; x++){
+        const ix = x * tileSize
+        const {b, sz} = rasterized[y][x]
+        p.ellipse(ix, iy, sz, sz)
+      }
+    }
   }
 
   let looping : boolean = true
