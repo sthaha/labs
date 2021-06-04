@@ -26,7 +26,7 @@ let entries = [
   {link: "apps/stopwatch", summary: "Stop Watch", description: "Work in progress Stop watch for competetive test"},
   {link: "beyond/spirograph", summary: "Spirograph", description: "Spirograph creates beautiful patterns"},
   {link: "beyond/parametric-eq", summary: "Line Animation", description: "Line animations using parametric equations"},
-  {link: "beyond/circles", summary: "Cirle Harmonics", description: "Hack and Hustle"},
+  {link: "beyond/circles", summary: "Circle Harmonics", description: " ... "},
   /* {link: "beyond/img-rasterizer", summary: "Image Rasteriser", */
     /* description: "WIP"}, */
   {link: "math/fs", summary: "Fourier Series ", description: "Fourier series using spinning discs"},
