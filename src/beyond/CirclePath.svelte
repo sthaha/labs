@@ -6,7 +6,7 @@ import p5 from "p5";
 
 
 let dt = 0.031415
-let radius = 50
+let radius = 60
 
 const sketch = (p: p5, el) => {
 
@@ -51,7 +51,7 @@ const sketch = (p: p5, el) => {
 
   }
   let t = 0
-  const Margin = 35
+  const Margin = 30
 
   const xPaths = []
   const yPaths = []
@@ -62,10 +62,12 @@ const ys = []
     p.background(5)
 
     // draw N circles veritical and horizontal
+
+    radius = p.min(p.width, p.height)/12
     const d = radius * 2
     const Offset = d * 2
 
-    const xCircles = p.ceil( (p.width - Offset) / (d + Margin))
+    const xCircles = p.ceil( (p.width - Offset - radius) / (d + Margin))
 
     p.stroke(200)
     p.strokeWeight(3)
@@ -83,7 +85,7 @@ const ys = []
       storePoints && xPaths[i].push(x)
     }
 
-    const yCircles = p.ceil((p.height - Offset) / (d + Margin))
+    const yCircles = p.ceil((p.height - Offset - radius) / (d + Margin))
     for (let i = 0; i < yCircles; i++) {
       const y = circleY(t * (i+1), i, d, Offset)
       ys[i] = y

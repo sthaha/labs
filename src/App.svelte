@@ -27,8 +27,8 @@ let entries = [
   {link: "beyond/spirograph", summary: "Spirograph", description: "Spirograph creates beautiful patterns"},
   {link: "beyond/parametric-eq", summary: "Line Animation", description: "Line animations using parametric equations"},
   {link: "beyond/circles", summary: "Cirle Harmonics", description: "Hack and Hustle"},
-  {link: "beyond/img-rasterizer", summary: "Image Rasteriser",
-    description: "WIP"},
+  /* {link: "beyond/img-rasterizer", summary: "Image Rasteriser", */
+    /* description: "WIP"}, */
   {link: "math/fs", summary: "Fourier Series ", description: "Fourier series using spinning discs"},
   {link: "math/fft", summary: "Discrete Fourier Transform ",
     description: "Plot your drawing into spinning discs "},
