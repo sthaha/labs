@@ -9,6 +9,8 @@ import StopWatch from "./apps/TestTimer.svelte";
 
 import ParametricEqLines from "./beyond/ParametricEqLines.svelte";
 import Spirograph from "./beyond/Spirograph.svelte";
+import ImgRasterizer from "./beyond/ImageRasterizer.svelte";
+import CirclePath from "./beyond/CirclePath.svelte";
 
 import FS from "./math/FourierSeries.svelte";
 import FFT from "./math/FourierTransform.svelte";
@@ -24,6 +26,9 @@ let entries = [
   {link: "apps/stopwatch", summary: "Stop Watch", description: "Work in progress Stop watch for competetive test"},
   {link: "beyond/spirograph", summary: "Spirograph", description: "Spirograph creates beautiful patterns"},
   {link: "beyond/parametric-eq", summary: "Line Animation", description: "Line animations using parametric equations"},
+  {link: "beyond/circles", summary: "Cirle Harmonics", description: "Hack and Hustle"},
+  {link: "beyond/img-rasterizer", summary: "Image Rasteriser",
+    description: "WIP"},
   {link: "math/fs", summary: "Fourier Series ", description: "Fourier series using spinning discs"},
   {link: "math/fft", summary: "Discrete Fourier Transform ",
     description: "Plot your drawing into spinning discs "},
@@ -43,6 +48,8 @@ let entries = [
 
       <Route path="beyond/spirograph" component="{Spirograph}" />
       <Route path="beyond/parametric-eq" component="{ParametricEqLines}" />
+      <Route path="beyond/img-rasterizer" component="{ImgRasterizer}" />
+      <Route path="beyond/circles" component="{CirclePath}" />
 
       <Route path="math/fs" component="{FS}" />
       <Route path="math/fft" component="{FFT}" />
